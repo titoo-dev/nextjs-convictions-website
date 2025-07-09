@@ -1,9 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, Users } from "lucide-react";
+import { Menu, Users } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 
 export default function Home() {
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
       {/* Header */}
@@ -46,12 +48,49 @@ export default function Home() {
               </Select>
             </nav>
 
-            {/* Mobile menu button */}
-            <button className="md:hidden p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
+            {/* Mobile menu */}
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="md:hidden text-gray-600 hover:text-gray-900 hover:bg-gray-100">
+                  <Menu className="w-6 h-6" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-80">
+                <SheetHeader>
+                  <SheetTitle>Navigation</SheetTitle>
+                </SheetHeader>
+                <nav className="flex flex-col space-y-4">
+                  <Button variant="ghost" className="justify-start text-gray-600 hover:text-gray-900 transition-colors font-medium">
+                    Create a petition
+                  </Button>
+                  <Button variant="ghost" className="justify-start text-gray-600 hover:text-gray-900 transition-colors font-medium">
+                    Support Us
+                  </Button>
+                  <Button variant="ghost" className="justify-start text-gray-600 hover:text-gray-900 transition-colors font-medium">
+                    Login
+                  </Button>
+
+                  <div className="pt-4 px-3 border-t">
+                    <Select defaultValue="fr">
+                      <SelectTrigger className="w-full">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="en">
+                          <span>English</span>
+                        </SelectItem>
+                        <SelectItem value="fr">
+                          <span>Français</span>
+                        </SelectItem>
+                        <SelectItem value="es">
+                          <span>Español</span>
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </nav>
+              </SheetContent>
+            </Sheet>
           </div>
         </div>
       </header>
