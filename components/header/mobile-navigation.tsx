@@ -9,7 +9,7 @@ export function MobileNavigation() {
       <MobileNavigationButton>Login</MobileNavigationButton>
       <div className="pt-4 px-3 border-t">
         <Select defaultValue="fr">
-          <SelectTrigger className="w-full">
+          <SelectTrigger className="w-full shadow-none">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>

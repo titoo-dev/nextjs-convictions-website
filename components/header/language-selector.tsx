@@ -3,7 +3,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 export function LanguageSelector() {
   return (
     <Select defaultValue="fr">
-      <SelectTrigger className="w-fit border-none bg-transparent hover:bg-gray-100 text-gray-600 hover:text-gray-900 transition-colors font-medium">
+      <SelectTrigger className="w-fit border-none bg-transparent hover:bg-gray-100 text-gray-600 hover:text-gray-900 transition-colors font-medium shadow-none">
         <SelectValue />
       </SelectTrigger>
       <SelectContent>

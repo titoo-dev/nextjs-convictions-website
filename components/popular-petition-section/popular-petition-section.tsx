@@ -37,7 +37,6 @@ export function PopularPetitionSection({ category }: PopularPetitionSectionProps
                 <Suspense fallback={<PetitionGridSkeleton />}>
                     <PetitionContent category={category} />
                 </Suspense>
-                {/* <ViewAllButton /> */}
             </div>
         </section>
     );
