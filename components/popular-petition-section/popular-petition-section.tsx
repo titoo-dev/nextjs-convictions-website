@@ -7,23 +7,32 @@ import { Suspense } from "react";
 import { PetitionGridSkeleton } from "./petition-grid-skeleton";
 import { FilterSection } from "./filter-section";
 
-async function PetitionContent() {
+type PetitionContentProps = {
+    category?: string;
+};
+
+async function PetitionContent({ category }: PetitionContentProps) {
     const { petitions: popularPetitions } = await getPublicPetitions({
-        category: 'ALL',
+        category: category || 'ALL',
         language: 'FR',
     });
 
     return <PetitionsGrid petitions={popularPetitions} />;
 }
 
-export function PopularPetitionSection() {
+
+type PopularPetitionSectionProps = {
+    category?: string;
+};
+
+export function PopularPetitionSection({ category }: PopularPetitionSectionProps) {
     return (
         <section className="py-16 px-4 sm:px-6 lg:px-8">
             <div className="max-w-7xl mx-auto">
                 <SectionHeader />
                 <FilterSection />
                 <Suspense fallback={<PetitionGridSkeleton />}>
-                    <PetitionContent />
+                    <PetitionContent category={category} />
                 </Suspense>
                 <ViewAllButton />
             </div>
