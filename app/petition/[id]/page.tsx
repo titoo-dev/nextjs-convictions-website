@@ -8,6 +8,7 @@ import { ShareSection } from '@/components/petition/share-section';
 import { getUniquePublicPetition } from '@/actions/get-unique-public-petition';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+import RenderWhen from '@/components/render-when';
 
 export default async function PetitionPage(props: { params: Promise<{ id: string }> }) {
     const params = await props.params;
@@ -55,7 +56,9 @@ export default async function PetitionPage(props: { params: Promise<{ id: string
 
                     {/* Sidebar */}
                     <div className="space-y-6">
-                        <SignatureCounter petition={petition} />
+                        <RenderWhen condition={petition.usersSignedNumber > 0}>
+                            <SignatureCounter petition={petition} />
+                        </RenderWhen>
                         <SignForm petition={petition} />
                         <ShareSection />
                     </div>
