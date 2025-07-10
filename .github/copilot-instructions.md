@@ -22,3 +22,7 @@
 - Use TypeScript strict mode to catch potential type-related breaking changes
 - Implement proper error handling to prevent runtime failures
 - Review dependencies and ensure updates don't introduce breaking changes
+
+- Always prefer `type` aliases over `interface` declarations in TypeScript for better consistency and flexibility
+- Use `type` for union types, intersections, and computed types
+- Reserve `interface` only when declaration merging is specifically needed
