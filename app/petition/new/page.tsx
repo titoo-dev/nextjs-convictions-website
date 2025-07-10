@@ -114,7 +114,7 @@ export default function NewPetitionPage() {
                 </div>
 
                 {/* Progress Header */}
-                <div className="mb-8">
+                <div className="mb-4">
                     <div className="flex items-center justify-between mb-4">
                         <h1 className="text-3xl font-bold">Create New Petition</h1>
                     </div>
@@ -123,7 +123,7 @@ export default function NewPetitionPage() {
                 </div>
 
                 {/* Step Content */}
-                <Card className="mb-8">
+                <Card className="mb-8 shadow-none">
                     <CardContent className="p-6">
                         {renderStepContent()}
                     </CardContent>
