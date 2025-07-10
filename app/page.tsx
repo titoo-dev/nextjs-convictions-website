@@ -1,7 +1,5 @@
-import { Header } from '@/components/header/header';
 import { HeroSection } from '@/components/hero-section/hero-section';
 import { PopularPetitionSection } from '@/components/popular-petition-section/popular-petition-section';
-import { Facebook, Instagram, Twitter } from 'lucide-react';
 
 export default function Home() {
 	return (
