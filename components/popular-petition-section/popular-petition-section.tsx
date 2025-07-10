@@ -1,7 +1,6 @@
 import { getPublicPetitions } from "@/actions/get-public-petitions";
 import { SectionHeader } from "./section-header";
 import { PetitionsGrid } from "./petition-grid";
-import { ViewAllButton } from "./view-all-button";
 import { Suspense } from "react";
 import { PetitionGridSkeleton } from "./petition-grid-skeleton";
 import { FilterSection } from "./filter-section";
@@ -38,7 +37,7 @@ export function PopularPetitionSection({ category }: PopularPetitionSectionProps
                 <Suspense fallback={<PetitionGridSkeleton />}>
                     <PetitionContent category={category} />
                 </Suspense>
-                <ViewAllButton />
+                {/* <ViewAllButton /> */}
             </div>
         </section>
     );
