@@ -1,4 +1,3 @@
-
 import { getPublicPetitions } from "@/actions/get-public-petitions";
 import { SectionHeader } from "./section-header";
 import { PetitionsGrid } from "./petition-grid";
@@ -6,6 +5,7 @@ import { ViewAllButton } from "./view-all-button";
 import { Suspense } from "react";
 import { PetitionGridSkeleton } from "./petition-grid-skeleton";
 import { FilterSection } from "./filter-section";
+import { EmptyState } from "./empty-state";
 
 type PetitionContentProps = {
     category?: string;
@@ -16,6 +16,10 @@ async function PetitionContent({ category }: PetitionContentProps) {
         category: category || 'ALL',
         language: 'FR',
     });
+
+    if (popularPetitions.length === 0) {
+        return <EmptyState />;
+    }
 
     return <PetitionsGrid petitions={popularPetitions} />;
 }

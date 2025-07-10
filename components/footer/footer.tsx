@@ -1,7 +1,8 @@
 import { Facebook, Instagram, Twitter } from "lucide-react";
+import Link from "next/link";
 
 export function Footer() {
-    return (
+	return (
 		<footer className="bg-slate-900 text-slate-300">
 			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 				<div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -12,28 +13,28 @@ export function Footer() {
 						</h3>
 						<ul className="space-y-2">
 							<li>
-								<a
+								<Link
 									href="/"
 									className="hover:text-white transition-colors"
 								>
 									Home
-								</a>
+								</Link>
 							</li>
 							<li>
-								<a
+								<Link
 									href="/create"
 									className="hover:text-white transition-colors"
 								>
 									Create a petition
-								</a>
+								</Link>
 							</li>
 							<li>
-								<a
+								<Link
 									href="/support"
 									className="hover:text-white transition-colors"
 								>
 									Support Us
-								</a>
+								</Link>
 							</li>
 						</ul>
 					</div>
@@ -81,20 +82,20 @@ export function Footer() {
 						</h3>
 						<ul className="space-y-2">
 							<li>
-								<a
+								<Link
 									href="/privacy"
 									className="hover:text-white transition-colors"
 								>
 									Data policy
-								</a>
+								</Link>
 							</li>
 							<li>
-								<a
+								<Link
 									href="/terms"
 									className="hover:text-white transition-colors"
 								>
 									Terms of use
-								</a>
+								</Link>
 							</li>
 						</ul>
 					</div>
