@@ -1,4 +1,15 @@
+"use client";
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Calendar as CalendarIcon, Clock, Info } from 'lucide-react';
+import { useState } from 'react';
+import { format } from 'date-fns';
+import { cn } from '@/lib/utils';
 
 type PetitionData = {
     title: string;
@@ -6,38 +17,223 @@ type PetitionData = {
     objective: string;
     destination: string;
     signatureGoal: number;
+    content?: string;
+    mediaType?: 'PICTURE' | 'VIDEO_YOUTUBE';
+    pictureUrl?: string;
+    videoYoutubeUrl?: string;
+    publishNow?: boolean;
+    scheduledDate?: string;
+    scheduledTime?: string;
 };
 
 type PublishStepProps = {
     formData: PetitionData;
+    updateFormData: (updates: Partial<PetitionData>) => void;
 };
 
-export function PublishStep({ formData }: PublishStepProps) {
+export function PublishStep({ formData, updateFormData }: PublishStepProps) {
+    const [publishNow, setPublishNow] = useState(formData.publishNow ?? true);
+    const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+
+    const handlePublishOptionChange = (isNow: boolean) => {
+        setPublishNow(isNow);
+        updateFormData({ publishNow: isNow });
+    };
+
+    const handleDateSelect = (date: Date | undefined) => {
+        if (date) {
+            updateFormData({ scheduledDate: format(date, 'yyyy-MM-dd') });
+            setIsCalendarOpen(false);
+        }
+    };
+
+    const selectedDate = formData.scheduledDate ? new Date(formData.scheduledDate) : undefined;
+    const today = new Date();
+    const minDate = new Date(today.getTime() + 24 * 60 * 60 * 1000); // Tomorrow
+
     return (
         <div className="space-y-6">
-            <h2 className="text-2xl font-bold">Review and publish</h2>
-            <Card>
-                <CardHeader>
-                    <CardTitle>{formData.title}</CardTitle>
-                    <CardDescription>Category: {formData.category}</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                    <div>
-                        <strong>Objective:</strong>
-                        <p className="text-sm text-gray-600">{formData.objective}</p>
+            <div>
+                <h2 className="text-2xl font-bold mb-2">Publication scheduling</h2>
+                <p className="text-gray-600 mb-4">
+                    Choose when to publish your petition.
+                </p>
+                <p className="text-gray-600">
+                    You can publish it immediately or schedule an ideal launch date and time (ex. upcoming event, global day, etc.).
+                </p>
+            </div>
+
+            {/* Publication Options */}
+            <div className="space-y-4">
+                <div className="space-y-3">
+                    <label className="flex items-center space-x-3 cursor-pointer group">
+                        <input
+                            type="radio"
+                            name="publishOption"
+                            checked={publishNow}
+                            onChange={() => handlePublishOptionChange(true)}
+                            className="h-4 w-4 text-orange-500 border-gray-300 focus:ring-orange-500"
+                        />
+                        <span className="text-gray-900 group-hover:text-gray-700 transition-colors font-medium">
+                            Publish now
+                        </span>
+                    </label>
+
+                    <label className="flex items-center space-x-3 cursor-pointer group">
+                        <input
+                            type="radio"
+                            name="publishOption"
+                            checked={!publishNow}
+                            onChange={() => handlePublishOptionChange(false)}
+                            className="h-4 w-4 text-orange-500 border-gray-300 focus:ring-orange-500"
+                        />
+                        <span className="text-gray-900 group-hover:text-gray-700 transition-colors font-medium">
+                            Publish later
+                        </span>
+                    </label>
+                </div>
+
+                {/* Scheduled Publishing Form */}
+                {!publishNow && (
+                    <div className="ml-7 space-y-4 border-l-2 border-gray-200 pl-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                                <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                                    <CalendarIcon className="w-4 h-4" />
+                                    Date
+                                </label>
+                                <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
+                                    <PopoverTrigger asChild>
+                                        <Button
+                                            variant="outline"
+                                            className={cn(
+                                                "w-full justify-start text-left font-normal",
+                                                !selectedDate && "text-muted-foreground"
+                                            )}
+                                        >
+                                            <CalendarIcon className="mr-2 h-4 w-4" />
+                                            {selectedDate ? (
+                                                format(selectedDate, "PPP")
+                                            ) : (
+                                                <span>Pick a date</span>
+                                            )}
+                                        </Button>
+                                    </PopoverTrigger>
+                                    <PopoverContent className="w-auto p-0" align="start">
+                                        <Calendar
+                                            mode="single"
+                                            selected={selectedDate}
+                                            onSelect={handleDateSelect}
+                                            disabled={(date) => date < minDate}
+                                            initialFocus
+                                        />
+                                    </PopoverContent>
+                                </Popover>
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                                    <Clock className="w-4 h-4" />
+                                    Time
+                                </label>
+                                <Input
+                                    type="time"
+                                    value={formData.scheduledTime || ''}
+                                    onChange={(e) => updateFormData({ scheduledTime: e.target.value })}
+                                    className="w-full"
+                                />
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <strong>Destination:</strong>
-                        <p className="text-sm text-gray-600">{formData.destination}</p>
-                    </div>
-                    <div>
-                        <strong>Signature Goal:</strong>
-                        <p className="text-sm text-gray-600">
-                            {formData.signatureGoal.toLocaleString()}
+                )}
+            </div>
+
+            {/* Advice Alert */}
+            <Alert className="bg-orange-50 border-orange-200">
+                <Info className="h-4 w-4 text-orange-600" />
+                <AlertDescription className="text-orange-700">
+                    <strong>💡 Advice</strong>
+                    A good timing can maximize the visibility of your petition. Plan if possible around an event related to your cause.
+                </AlertDescription>
+            </Alert>
+
+            {/* Petition Preview Summary */}
+            <div className="space-y-4">
+                <h3 className="text-lg font-semibold text-gray-900">Petition Summary</h3>
+                <Card className="border-gray-200 shadow-sm">
+                    <CardHeader className="pb-3">
+                        <div className="flex items-start justify-between">
+                            <div className="space-y-1">
+                                <CardTitle className="text-lg leading-tight">
+                                    {formData.title || 'Untitled Petition'}
+                                </CardTitle>
+                                <CardDescription className="text-sm">
+                                    Category: {formData.category || 'Not specified'}
+                                </CardDescription>
+                            </div>
+                            {formData.pictureUrl && (
+                                <div className="flex-shrink-0 ml-4">
+                                    <img 
+                                        src={formData.pictureUrl} 
+                                        alt="Petition" 
+                                        className="w-16 h-16 rounded-lg object-cover border"
+                                    />
+                                </div>
+                            )}
+                        </div>
+                    </CardHeader>
+                    <CardContent className="space-y-3 pt-0">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                            <div>
+                                <span className="font-medium text-gray-900">Destination:</span>
+                                <p className="text-gray-600 mt-1">
+                                    {formData.destination || 'Not specified'}
+                                </p>
+                            </div>
+                            <div>
+                                <span className="font-medium text-gray-900">Signature Goal:</span>
+                                <p className="text-gray-600 mt-1">
+                                    {formData.signatureGoal?.toLocaleString() || 'Not set'} signatures
+                                </p>
+                            </div>
+                        </div>
+                        {formData.objective && (
+                            <div className="text-sm">
+                                <span className="font-medium text-gray-900">Objective:</span>
+                                <p className="text-gray-600 mt-1 line-clamp-3">
+                                    {formData.objective}
+                                </p>
+                            </div>
+                        )}
+                        {formData.videoYoutubeUrl && (
+                            <div className="text-sm">
+                                <span className="font-medium text-gray-900">Video:</span>
+                                <p className="text-blue-600 mt-1 truncate">
+                                    {formData.videoYoutubeUrl}
+                                </p>
+                            </div>
+                        )}
+                    </CardContent>
+                </Card>
+            </div>
+
+            {/* Publishing Info */}
+            <div className="bg-gray-50 rounded-lg p-4 border">
+                <div className="flex items-start gap-3">
+                    <Info className="w-5 h-5 text-gray-500 mt-0.5 flex-shrink-0" />
+                    <div className="text-sm text-gray-600">
+                        <p className="font-medium text-gray-900 mb-1">Ready to publish?</p>
+                        <p>
+                            {publishNow 
+                                ? "Your petition will be published immediately and become visible to the public."
+                                : `Your petition will be published${selectedDate ? ` on ${format(selectedDate, "PPP")}` : ' on the selected date'}${formData.scheduledTime ? ` at ${formData.scheduledTime}` : ''}.`
+                            }
+                        </p>
+                        <p className="mt-2">
+                            Once published, you can share it on social media and start collecting signatures.
                         </p>
                     </div>
-                </CardContent>
-            </Card>
+                </div>
+            </div>
         </div>
     );
 }
