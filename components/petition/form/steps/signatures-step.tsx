@@ -1,6 +1,5 @@
 import { Input } from '@/components/ui/input';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Lightbulb } from 'lucide-react';
 
 type PetitionData = {
     signatureGoal: number;

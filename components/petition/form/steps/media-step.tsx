@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import { validateImageUrl, validateYouTubeUrl, validateImageFile, getYouTubeThumbnail } from '@/lib/utils';
 
 type PetitionData = {
-    mediaType?: 'image' | 'youtube';
+    mediaType: 'PICTURE' | 'VIDEO_YOUTUBE';
     pictureUrl?: string;
     videoYoutubeUrl?: string;
 };
@@ -34,7 +34,7 @@ export function MediaStep({ formData, updateFormData }: MediaStepProps) {
 
     // Validate image URL when it changes
     useEffect(() => {
-        if (formData.mediaType === 'image' && formData.pictureUrl) {
+        if (formData.mediaType === 'PICTURE' && formData.pictureUrl) {
             const validation = validateImageUrl(formData.pictureUrl);
             setImageValidation(validation);
             
@@ -59,7 +59,7 @@ export function MediaStep({ formData, updateFormData }: MediaStepProps) {
 
     // Validate YouTube URL when it changes
     useEffect(() => {
-        if (formData.mediaType === 'youtube' && formData.videoYoutubeUrl) {
+        if (formData.mediaType === 'VIDEO_YOUTUBE' && formData.videoYoutubeUrl) {
             const validation = validateYouTubeUrl(formData.videoYoutubeUrl);
             setYoutubeValidation(validation);
         } else {
@@ -174,9 +174,9 @@ export function MediaStep({ formData, updateFormData }: MediaStepProps) {
                         <input
                             type="radio"
                             name="mediaType"
-                            value="image"
-                            checked={formData.mediaType === 'image'}
-                            onChange={() => updateFormData({ mediaType: 'image' })}
+                            value="PICTURE"
+                            checked={formData.mediaType === 'PICTURE'}
+                            onChange={() => updateFormData({ mediaType: 'PICTURE' })}
                             className="h-4 w-4 text-orange-500 border-gray-300 focus:ring-orange-500"
                         />
                         <span className="text-gray-900 group-hover:text-gray-700 transition-colors">An image</span>
@@ -186,9 +186,9 @@ export function MediaStep({ formData, updateFormData }: MediaStepProps) {
                         <input
                             type="radio"
                             name="mediaType"
-                            value="youtube"
-                            checked={formData.mediaType === 'youtube'}
-                            onChange={() => updateFormData({ mediaType: 'youtube' })}
+                            value="VIDEO_YOUTUBE"
+                            checked={formData.mediaType === 'VIDEO_YOUTUBE'}
+                            onChange={() => updateFormData({ mediaType: 'VIDEO_YOUTUBE' })}
                             className="h-4 w-4 text-orange-500 border-gray-300 focus:ring-orange-500"
                         />
                         <span className="text-gray-900 group-hover:text-gray-700 transition-colors">A video YouTube</span>
@@ -197,7 +197,7 @@ export function MediaStep({ formData, updateFormData }: MediaStepProps) {
             </div>
 
             {/* Image Upload Section */}
-            {formData.mediaType === 'image' && (
+            {formData.mediaType === 'PICTURE' && (
                 <div className="space-y-4">
                     {/* URL Input */}
                     <div className="space-y-2">
@@ -301,7 +301,7 @@ export function MediaStep({ formData, updateFormData }: MediaStepProps) {
             )}
 
             {/* YouTube Video Section */}
-            {formData.mediaType === 'youtube' && (
+            {formData.mediaType === 'VIDEO_YOUTUBE' && (
                 <div className="space-y-4">
                     <div className="space-y-2">
                         <label className="text-sm font-medium text-gray-700">YouTube URL</label>
