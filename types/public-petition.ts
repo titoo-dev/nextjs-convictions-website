@@ -9,7 +9,7 @@ export interface PublicPetition {
 	mediaType: 'PICTURE' | 'VIDEO_YOUTUBE';
 	videoYoutubeUrl: string;
 	signatureGoal: number;
-	publishedAt: Date;
+	publishedAt: string;
 	isPublished: boolean;
 	usersSignedNumber: number;
 	offsetMarketing: number;
