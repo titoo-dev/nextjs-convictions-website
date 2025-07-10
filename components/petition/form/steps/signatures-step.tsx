@@ -1,4 +1,6 @@
 import { Input } from '@/components/ui/input';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Lightbulb } from 'lucide-react';
 
 type PetitionData = {
     signatureGoal: number;
@@ -12,21 +14,30 @@ type SignaturesStepProps = {
 export function SignaturesStep({ formData, updateFormData }: SignaturesStepProps) {
     return (
         <div className="space-y-6">
-            <h2 className="text-2xl font-bold">Signature goal</h2>
             <div>
-                <label className="block text-sm font-medium mb-2">
-                    How many signatures do you want to collect?
-                </label>
+                <h2 className="text-2xl font-bold mb-2">Desired number of signatures</h2>
+                <p className="text-gray-600 mb-6">
+                    Set a realistic but mobilizing goal. Determine the number of signatures you want to reach to give weight to your message.
+                </p>
+            </div>
+
+            <div>
                 <Input
                     type="number"
                     min="1"
-                    value={formData.signatureGoal}
-                    onChange={(e) => updateFormData({ signatureGoal: Number(e.target.value) })}
+                    placeholder="1000"
+                    value={formData.signatureGoal || ''}
+                    onChange={(e) => updateFormData({ signatureGoal: Number(e.target.value) || 0 })}
+                    className="text-lg py-3 px-4"
                 />
-                <p className="text-sm text-gray-600 mt-2">
-                    Setting a realistic goal helps build momentum for your petition.
-                </p>
             </div>
+
+            <Alert className="bg-orange-50 border-orange-200">
+                <AlertDescription className="text-orange-700">
+                    <strong>💡 Advice</strong>
+                    Start with an accessible goal (ex: 500, 1000), you can increase it if your petition gains popularity.
+                </AlertDescription>
+            </Alert>
         </div>
     );
 }
