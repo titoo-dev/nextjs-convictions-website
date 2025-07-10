@@ -2,6 +2,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { cn } from '@/lib/utils';
 
 type PetitionData = {
     category: string;
@@ -32,24 +33,27 @@ const categories = [
 ];
 
 export function TitleStep({ formData, updateFormData }: TitleStepProps) {
-    return (
+	return (
 		<div className="space-y-6">
 			<div>
 				<h2 className="text-2xl font-bold mb-4">Select theme</h2>
-				<div className="flex flex-wrap gap-2 mb-6">
+				<div className="flex flex-wrap gap-2 sm:gap-3 justify-start mb-6">
 					{categories.map((category) => (
-						<Badge
+						<button
 							key={category}
-							variant={
+							type="button"
+							className={cn(
+								'inline-flex items-center justify-center rounded-full px-4 py-2 text-sm font-medium',
+								'border border-border focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
+								'min-w-0 whitespace-nowrap transition-colors cursor-pointer',
 								formData.category === category
-									? 'default'
-									: 'outline'
-							}
-							className="cursor-pointer px-3 py-1 text-sm"
+									? 'bg-primary text-primary-foreground border-primary shadow-sm'
+									: 'bg-background text-muted-foreground hover:bg-accent hover:text-accent-foreground hover:border-accent'
+							)}
 							onClick={() => updateFormData({ category })}
 						>
 							{category}
-						</Badge>
+						</button>
 					))}
 				</div>
 			</div>
