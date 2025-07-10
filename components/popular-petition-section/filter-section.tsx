@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { useRouter, useSearchParams } from "next/navigation";
 
 type CategoryFilter = {
     id: string;
@@ -11,13 +11,20 @@ type CategoryFilter = {
 
 const categories: CategoryFilter[] = [
     { id: "all", label: "Toutes", value: "ALL" },
-    { id: "environment", label: "Environnement", value: "ENVIRONMENT" },
-    { id: "social", label: "Social", value: "SOCIAL" },
-    { id: "politics", label: "Politique", value: "POLITICS" },
+    { id: "culture", label: "Culture", value: "CULTURE" },
+    { id: "religion", label: "Religion", value: "RELIGION" },
+    { id: "women-rights", label: "Droits des femmes", value: "WOMEN_RIGHTS" },
+    { id: "men-rights", label: "Droits des hommes", value: "MEN_RIGHTS" },
     { id: "education", label: "Éducation", value: "EDUCATION" },
+    { id: "environment", label: "Environnement", value: "ENVIRONMENT" },
+    { id: "racism", label: "Racisme", value: "RACISM" },
+    { id: "politics", label: "Politique", value: "POLITICS" },
+    { id: "handicap", label: "Handicap", value: "HANDICAP" },
     { id: "health", label: "Santé", value: "HEALTH" },
-    { id: "economy", label: "Économie", value: "ECONOMY" },
-    { id: "rights", label: "Droits", value: "RIGHTS" },
+    { id: "transport", label: "Transport", value: "TRANSPORT" },
+    { id: "immigration", label: "Immigration", value: "IMMIGRATION" },
+    { id: "justice", label: "Justice", value: "JUSTICE" },
+    { id: "animals", label: "Animaux", value: "ANIMALS" },
 ];
 
 type FilterChipProps = {
@@ -46,12 +53,20 @@ function FilterChip({ category, isActive, onClick }: FilterChipProps) {
 }
 
 export function FilterSection() {
-    const [activeCategory, setActiveCategory] = useState<string>("ALL");
+    const router = useRouter();
+    const searchParams = useSearchParams();
+    const activeCategory = searchParams.get("category") || "ALL";
 
     const handleCategoryChange = (value: string) => {
-        setActiveCategory(value);
-        // TODO: Implement actual filtering logic here
-        // This could involve updating URL params or calling a filtering function
+        const params = new URLSearchParams(searchParams.toString());
+        
+        if (value === "ALL") {
+            params.delete("category");
+        } else {
+            params.set("category", value);
+        }
+        
+        router.push(`?${params.toString()}`);
     };
 
     return (
