@@ -10,17 +10,18 @@ import { Calendar as CalendarIcon, Clock, Info } from 'lucide-react';
 import { useState } from 'react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
+import Image from 'next/image';
 
 type PetitionData = {
-    title: string;
     category: string;
+    title: string;
     objective: string;
+    content: string;
     destination: string;
-    signatureGoal: number;
-    content?: string;
-    mediaType?: 'PICTURE' | 'VIDEO_YOUTUBE';
+    mediaType: 'PICTURE' | 'VIDEO_YOUTUBE';
     pictureUrl?: string;
     videoYoutubeUrl?: string;
+    signatureGoal: number;
     publishNow?: boolean;
     scheduledDate?: string;
     scheduledTime?: string;
@@ -172,10 +173,12 @@ export function PublishStep({ formData, updateFormData }: PublishStepProps) {
                             </div>
                             {formData.pictureUrl && (
                                 <div className="flex-shrink-0 ml-4">
-                                    <img 
+                                    <Image 
                                         src={formData.pictureUrl} 
                                         alt="Petition" 
                                         className="w-16 h-16 rounded-lg object-cover border"
+                                        width={64}
+                                        height={64}
                                     />
                                 </div>
                             )}

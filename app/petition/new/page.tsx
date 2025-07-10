@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { PenTool, Target, FileText, Image, Users, Globe, ArrowLeft } from 'lucide-react';
+import { PenTool, Target, FileText, Image as ImageIcon, Users, Globe, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 
 import { StepIndicator } from '@/components/petition/form/step-indicator';
@@ -26,15 +26,26 @@ type PetitionData = {
     pictureUrl?: string;
     videoYoutubeUrl?: string;
     signatureGoal: number;
+    publishNow?: boolean;
+    scheduledDate?: string;
+    scheduledTime?: string;
 };
 
 const steps: { id: Step; title: string; icon: React.ReactNode }[] = [
-    { id: 'title', title: 'Title', icon: <PenTool className="w-4 h-4" /> },
-    { id: 'objective', title: 'Objective', icon: <Target className="w-4 h-4" /> },
-    { id: 'writing', title: 'Writing', icon: <FileText className="w-4 h-4" /> },
-    { id: 'media', title: 'Media', icon: <Image className="w-4 h-4" /> },
-    { id: 'signatures', title: 'Signatures', icon: <Users className="w-4 h-4" /> },
-    { id: 'publish', title: 'Publish', icon: <Globe className="w-4 h-4" /> },
+	{ id: 'title', title: 'Title', icon: <PenTool className="w-4 h-4" /> },
+	{
+		id: 'objective',
+		title: 'Objective',
+		icon: <Target className="w-4 h-4" />,
+	},
+	{ id: 'writing', title: 'Writing', icon: <FileText className="w-4 h-4" /> },
+	{ id: 'media', title: 'Media', icon: <ImageIcon className="w-4 h-4" /> },
+	{
+		id: 'signatures',
+		title: 'Signatures',
+		icon: <Users className="w-4 h-4" />,
+	},
+	{ id: 'publish', title: 'Publish', icon: <Globe className="w-4 h-4" /> },
 ];
 
 export default function NewPetitionPage() {
@@ -82,7 +93,7 @@ export default function NewPetitionPage() {
             case 'signatures':
                 return <SignaturesStep formData={formData} updateFormData={updateFormData} />;
             case 'publish':
-                return <PublishStep formData={formData} />;
+                return <PublishStep formData={formData} updateFormData={updateFormData} />;
             default:
                 return null;
         }
