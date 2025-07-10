@@ -37,7 +37,6 @@ export function PetitionCard({ petition }: PetitionCardProps) {
 				<CardContent className="pt-0">
 					<PetitionStats
 						signaturesCount={petition.usersSignedNumber}
-						petitionId={petition.id}
 					/>
 				</CardContent>
 			</Card>

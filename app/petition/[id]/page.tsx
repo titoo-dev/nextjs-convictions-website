@@ -17,18 +17,18 @@ export default async function PetitionPage(props: { params: Promise<{ id: string
 
     if (!petition) {
         return (
-            <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-                <div className="text-center">
-                    <h1 className="text-2xl font-bold text-gray-900 mb-2">
-                        Petition Not Found
-                    </h1>
-                    <p className="text-gray-600">
-                        The petition you're looking for doesn't exist or has
-                        been removed.
-                    </p>
-                </div>
-            </div>
-        );
+			<div className="min-h-screen bg-gray-50 flex items-center justify-center">
+				<div className="text-center">
+					<h1 className="text-2xl font-bold text-gray-900 mb-2">
+						Petition Not Found
+					</h1>
+					<p className="text-gray-600">
+						The petition you&apos;re looking for doesn&apos;t exist
+						or has been removed.
+					</p>
+				</div>
+			</div>
+		);
     }
 
     return (

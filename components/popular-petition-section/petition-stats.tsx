@@ -1,14 +1,11 @@
-import Link from 'next/link';
 import { Button } from '../ui/button';
 
 type PetitionStatsProps = {
 	signaturesCount: number;
-	petitionId: string;
 };
 
 export function PetitionStats({
 	signaturesCount,
-	petitionId,
 }: PetitionStatsProps) {
 	return (
 		<div className="flex items-center justify-between">
