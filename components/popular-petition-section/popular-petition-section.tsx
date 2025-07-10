@@ -5,6 +5,7 @@ import { PetitionsGrid } from "./petition-grid";
 import { ViewAllButton } from "./view-all-button";
 import { Suspense } from "react";
 import { PetitionGridSkeleton } from "./petition-grid-skeleton";
+import { FilterSection } from "./filter-section";
 
 async function PetitionContent() {
     const { petitions: popularPetitions } = await getPublicPetitions({
@@ -20,6 +21,7 @@ export function PopularPetitionSection() {
         <section className="py-16 px-4 sm:px-6 lg:px-8">
             <div className="max-w-7xl mx-auto">
                 <SectionHeader />
+                <FilterSection />
                 <Suspense fallback={<PetitionGridSkeleton />}>
                     <PetitionContent />
                 </Suspense>
