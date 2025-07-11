@@ -7,8 +7,19 @@ const PictureSchema = z.object({
 const AuthorSchema = z.object({
 	id: z.string(),
 	name: z.string(),
-	picture: PictureSchema,
+	picture: PictureSchema.nullable(),
 	pictureUrl: z.string(),
+});
+
+const CommentSchema = z.object({
+	id: z.string(),
+	content: z.string(),
+	likesNumber: z.number(),
+	createdAt: z.string(),
+	status: z.string(),
+	author: AuthorSchema,
+	isMine: z.boolean(),
+	isLiked: z.boolean(),
 });
 
 const PublicPetitionSchema = z.object({
@@ -18,7 +29,7 @@ const PublicPetitionSchema = z.object({
 	sequenceNumber: z.number(),
 	title: z.string(),
 	objective: z.string(),
-	destination: z.string(),
+	destination: z.string().nullable(),
 	mediaType: z.enum(['PICTURE', 'VIDEO_YOUTUBE']),
 	videoYoutubeUrl: z.string(),
 	signatureGoal: z.number(),
@@ -31,7 +42,7 @@ const PublicPetitionSchema = z.object({
 	pictureUrl: z.string(),
 	videoUrl: z.string(),
 	status: z.string(),
-	comments: z.array(z.string()),
+	comments: z.array(CommentSchema),
 	author: AuthorSchema,
 	isMine: z.boolean(),
 	urlPetition: z.string(),
@@ -39,8 +50,9 @@ const PublicPetitionSchema = z.object({
 	litigationNumber: z.number(),
 });
 
-export { PictureSchema, AuthorSchema, PublicPetitionSchema };
+export { PictureSchema, AuthorSchema, CommentSchema, PublicPetitionSchema };
 
 export type Picture = z.infer<typeof PictureSchema>;
 export type Author = z.infer<typeof AuthorSchema>;
+export type Comment = z.infer<typeof CommentSchema>;
 export type PublicPetition = z.infer<typeof PublicPetitionSchema>;

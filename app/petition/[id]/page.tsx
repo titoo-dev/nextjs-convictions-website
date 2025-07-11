@@ -2,6 +2,7 @@ import { PetitionHero } from '@/components/petition/petition-hero';
 import { PetitionAuthor } from '@/components/petition/petition-author';
 import { PetitionDetails } from '@/components/petition/petition-details';
 import { PetitionContent } from '@/components/petition/petition-content';
+import { PetitionComments } from '@/components/petition/petition-comments';
 import { SignatureCounter } from '@/components/petition/signature-counter';
 import { SignForm } from '@/components/petition/sign-form';
 import { ShareSection } from '@/components/petition/share-section';
@@ -52,6 +53,7 @@ export default async function PetitionPage(props: { params: Promise<{ id: string
                         <PetitionAuthor petition={petition} />
                         <PetitionDetails petition={petition} />
                         <PetitionContent petition={petition} />
+                        <PetitionComments petition={petition} />
                     </div>
 
                     {/* Sidebar */}
