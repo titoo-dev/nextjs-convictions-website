@@ -1,6 +1,6 @@
 'use server'
 
-import { PublicPetition } from '../types/public-petition'
+import { PublicPetition } from '../schemas/public-petition'
 
 export interface GetPetitionsResponse {
     petitions: PublicPetition[]

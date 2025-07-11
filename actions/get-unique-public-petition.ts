@@ -1,4 +1,4 @@
-import { PublicPetition } from '../types/public-petition'
+import { PublicPetition } from '../schemas/public-petition'
 
 'use server'
 

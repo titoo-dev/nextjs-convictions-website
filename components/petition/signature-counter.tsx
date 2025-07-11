@@ -2,7 +2,7 @@
 
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { PublicPetition } from '@/types/public-petition';
+import { PublicPetition } from '@/schemas/public-petition';
 
 type SignatureCounterProps = {
     petition: PublicPetition;

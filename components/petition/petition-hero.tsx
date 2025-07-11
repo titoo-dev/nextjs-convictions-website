@@ -1,5 +1,5 @@
 import { getYouTubeVideoId } from '@/lib/utils';
-import { PublicPetition } from '@/types/public-petition';
+import { PublicPetition } from '@/schemas/public-petition';
 import Image from 'next/image';
 
 type PetitionHeroProps = {

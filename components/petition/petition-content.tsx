@@ -1,7 +1,7 @@
 'use client';
 
 import { Card, CardContent } from '@/components/ui/card';
-import { PublicPetition } from '@/types/public-petition';
+import { PublicPetition } from '@/schemas/public-petition';
 
 type PetitionContentProps = {
     petition: PublicPetition;
