@@ -48,7 +48,7 @@ export function SignForm({ petition }: SignFormProps) {
                     petitionId: petition.id,
                     email: email.trim(),
                     comment: comment.trim() || undefined,
-                    isOptin: true,
+                    isOptin: notifications === 'yes',
                     lang: 'EN',
                     name: 'Titosy',
                 });
