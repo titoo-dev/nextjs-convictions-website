@@ -8,12 +8,12 @@ type PetitionHeroProps = {
 
 export function PetitionHero({ petition }: PetitionHeroProps) {
     return (
-        <div className="space-y-6">
-            <h1 className="text-2xl md:text-4xl font-bold text-gray-900">
+        <div className="space-y-4 md:space-y-6">
+            <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 leading-tight">
                 {petition.title}
             </h1>
-            <div className="relative rounded-xl overflow-hidden">
-                <div className="w-full h-64 md:h-80 bg-gray-100 overflow-hidden">
+            <div className="relative rounded-lg md:rounded-xl overflow-hidden">
+                <div className="w-full h-48 sm:h-56 md:h-64 lg:h-80 bg-gray-100 overflow-hidden">
                     {petition.mediaType === 'VIDEO_YOUTUBE' &&
                     petition.videoYoutubeUrl ? (
                         <iframe

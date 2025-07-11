@@ -30,7 +30,7 @@ export function PetitionContent({ petition }: PetitionContentProps) {
 					{contentArray.map((item: ContentItem, index: number) => (
 						<p
 							key={index}
-							className="mb-4 text-gray-700 leading-relaxed"
+							className="mb-3 sm:mb-4 text-sm sm:text-base text-gray-700 leading-relaxed break-words"
 						>
 							{item.insert}
 						</p>

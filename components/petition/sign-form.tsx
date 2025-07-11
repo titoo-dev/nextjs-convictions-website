@@ -93,7 +93,7 @@ export function SignForm({ petition }: SignFormProps) {
         <>
             <Card className="shadow-none">
                 <CardHeader>
-                    <CardTitle className="text-xl">
+                    <CardTitle className="text-lg sm:text-xl">
                         {isAlreadySigned
                             ? 'You already signed'
                             : 'Sign this petition'}
@@ -103,7 +103,7 @@ export function SignForm({ petition }: SignFormProps) {
                     <div className="transition-all duration-300 ease-in-out">
                         <form onSubmit={handleSubmit} className="space-y-4">
                             {error && (
-                                <div className="p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md animate-in fade-in-0 slide-in-from-top-2 duration-200">
+                                <div className="p-3 text-xs sm:text-sm text-red-600 bg-red-50 border border-red-200 rounded-md animate-in fade-in-0 slide-in-from-top-2 duration-200">
                                     {error}
                                 </div>
                             )}
@@ -121,12 +121,12 @@ export function SignForm({ petition }: SignFormProps) {
                             <Button
                                 type="submit"
                                 disabled={isSubmitting || !email.trim() || isAlreadySigned}
-                                className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 disabled:opacity-50 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] relative"
+                                className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 sm:py-3 text-sm sm:text-base disabled:opacity-50 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] relative"
                             >
                                 {isSubmitting ? (
                                     <div className="flex items-center justify-center">
-                                        <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2"></div>
-                                        Signing...
+                                        <div className="animate-spin rounded-full h-3 w-3 sm:h-4 sm:w-4 border-2 border-white border-t-transparent mr-2"></div>
+                                        <span className="text-sm sm:text-base">Signing...</span>
                                     </div>
                                 ) : isAlreadySigned ? (
                                     'Already signed'

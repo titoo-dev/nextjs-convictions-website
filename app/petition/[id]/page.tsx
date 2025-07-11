@@ -34,9 +34,9 @@ export default async function PetitionPage(props: { params: Promise<{ id: string
 
     return (
         <div className="min-h-screen bg-gray-50">
-            <div className="container mx-auto px-4 py-8 max-w-7xl">
+            <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-8 max-w-7xl">
                 {/* Back Navigation */}
-                <div className="mb-6">
+                <div className="mb-4 sm:mb-6">
                     <Link 
                         href="/"
                         className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 group"
@@ -46,9 +46,9 @@ export default async function PetitionPage(props: { params: Promise<{ id: string
                     </Link>
                 </div>
 
-                <div className="grid lg:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
                     {/* Main Content */}
-                    <div className="lg:col-span-2 space-y-4">
+                    <div className="lg:col-span-2 space-y-3 sm:space-y-4">
                         <PetitionHero petition={petition} />
                         <PetitionAuthor petition={petition} />
                         <PetitionDetails petition={petition} />
@@ -57,7 +57,7 @@ export default async function PetitionPage(props: { params: Promise<{ id: string
                     </div>
 
                     {/* Sidebar */}
-                    <div className="space-y-6">
+                    <div className="space-y-4 sm:space-y-6">
                         <RenderWhen condition={petition.usersSignedNumber > 0}>
                             <SignatureCounter petition={petition} />
                         </RenderWhen>
