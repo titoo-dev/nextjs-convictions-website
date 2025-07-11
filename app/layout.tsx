@@ -5,6 +5,7 @@ import './globals.css';
 import NextTopLoader from 'nextjs-toploader';
 import { Header } from '@/components/header/header';
 import { Footer } from '@/components/footer/footer';
+import { Toaster } from 'sonner';
 
 const inter = Inter({
 	variable: '--font-inter',
@@ -41,6 +42,7 @@ export default function RootLayout({
 				<div className="bg-background text-foreground">{children}</div>
 
 				<Footer />
+				<Toaster />
 			</body>
 		</html>
 	);
