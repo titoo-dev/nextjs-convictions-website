@@ -45,13 +45,13 @@ export function SignForm({ petition }: SignFormProps) {
 
             try {
                 const result = await signPublicPetition({
-                    petitionId: petition.id,
-                    email: email.trim(),
-                    comment: comment.trim() || undefined,
-                    isOptin: notifications === 'yes',
-                    lang: 'EN',
-                    name: 'Titosy',
-                });
+					petitionId: petition.id,
+					email: email.trim(),
+					comment: comment.trim() || undefined,
+					isOptin: notifications === 'yes',
+					lang: 'EN',
+					name: name,
+				});
 
                 if (result.success) {
                     setSuccess(true);
