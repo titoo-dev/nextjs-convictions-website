@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useTransition, useEffect } from 'react';
+import { useState, useTransition, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from 'sonner';
@@ -15,15 +15,12 @@ type SignFormProps = {
 };
 
 export function SignForm({ petition }: SignFormProps) {
-    const [email, setEmail] = useState('');
-    const [name, setName] = useState('');
-    const [comment, setComment] = useState('');
-    const [notifications, setNotifications] = useState('yes');
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState(false);
     const [showSuccessDialog, setShowSuccessDialog] = useState(false);
     const [isPending, startTransition] = useTransition();
+    const formRef = useRef<HTMLFormElement>(null);
 
     // Show toast if already signed on component mount
     useEffect(() => {
@@ -35,9 +32,17 @@ export function SignForm({ petition }: SignFormProps) {
         }
     }, [petition.isISign]);
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (!petition || !email.trim()) return;
+        if (!petition) return;
+
+        const formData = new FormData(e.currentTarget);
+        const email = formData.get('email') as string;
+        const name = formData.get('name') as string;
+        const comment = formData.get('comment') as string;
+        const notifications = formData.get('notifications') as string;
+
+        if (!email?.trim()) return;
 
         startTransition(async () => {
             setIsLoading(true);
@@ -62,10 +67,7 @@ export function SignForm({ petition }: SignFormProps) {
                         duration: 5000,
                     });
                     // Reset form
-                    setEmail('');
-                    setName('');
-                    setComment('');
-                    setNotifications('yes');
+                    formRef.current?.reset();
                 } else {
                     setError(result.error || 'Failed to sign petition');
                     toast.error('Failed to sign petition', {
@@ -101,7 +103,7 @@ export function SignForm({ petition }: SignFormProps) {
                 </CardHeader>
                 <CardContent>
                     <div className="transition-all duration-300 ease-in-out">
-                        <form onSubmit={handleSubmit} className="space-y-4">
+                        <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
                             {error && (
                                 <div className="p-3 text-xs sm:text-sm text-red-600 bg-red-50 border border-red-200 rounded-md animate-in fade-in-0 slide-in-from-top-2 duration-200">
                                     {error}
@@ -109,19 +111,13 @@ export function SignForm({ petition }: SignFormProps) {
                             )}
 
                             <PetitionFormInputs
-                                email={email}
-                                name={name}
-                                comment={comment}
-                                onEmailChange={setEmail}
-                                onNameChange={setName}
-                                onCommentChange={setComment}
                                 disabled={isSubmitting || isAlreadySigned}
                             />
 
                             <Button
                                 type="submit"
-                                disabled={isSubmitting || !email.trim() || isAlreadySigned}
-                                className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 sm:py-3 text-sm sm:text-base disabled:opacity-50 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] relative"
+                                disabled={isSubmitting || isAlreadySigned}
+                                className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 sm:py-3 text-sm sm:text-base disabled:opacity-50"
                             >
                                 {isSubmitting ? (
                                     <div className="flex items-center justify-center">
@@ -136,8 +132,6 @@ export function SignForm({ petition }: SignFormProps) {
                             </Button>
 
                             <NotificationOptions
-                                value={notifications}
-                                onValueChange={setNotifications}
                                 disabled={isSubmitting || isAlreadySigned}
                             />
                         </form>

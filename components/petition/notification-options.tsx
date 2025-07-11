@@ -2,19 +2,15 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 
 type NotificationOptionsProps = {
-	value: string;
-	onValueChange: (value: string) => void;
 	disabled?: boolean;
 };
 
 export function NotificationOptions({
-	value,
-	onValueChange,
 	disabled = false,
 }: NotificationOptionsProps) {
 	return (
 		<div className="transition-all duration-300 ease-in-out">
-			<RadioGroup value={value} onValueChange={onValueChange} disabled={disabled}>
+			<RadioGroup name="notifications" defaultValue="yes" disabled={disabled}>
 				<div className="flex items-center space-x-2 transition-all duration-200 hover:bg-gray-50 p-2 rounded-md">
 					<RadioGroupItem value="yes" id="yes" disabled={disabled} />
 					<Label htmlFor="yes" className="text-sm cursor-pointer">

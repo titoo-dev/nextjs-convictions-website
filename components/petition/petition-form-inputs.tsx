@@ -2,22 +2,10 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 
 type PetitionFormInputsProps = {
-	email: string;
-	name: string;
-	comment: string;
-	onEmailChange: (value: string) => void;
-	onNameChange: (value: string) => void;
-	onCommentChange: (value: string) => void;
 	disabled?: boolean;
 };
 
 export function PetitionFormInputs({
-    email,
-    name,
-    comment,
-    onEmailChange,
-    onNameChange,
-    onCommentChange,
     disabled = false,
 }: PetitionFormInputsProps) {
     return (
@@ -25,9 +13,8 @@ export function PetitionFormInputs({
             <div>
                 <Input
                     type="email"
+                    name="email"
                     placeholder="Your email"
-                    value={email}
-                    onChange={(e) => onEmailChange(e.target.value)}
                     required
                     disabled={disabled}
                     className="w-full"
@@ -37,9 +24,8 @@ export function PetitionFormInputs({
             <div>
                 <Input
                     type="text"
+                    name="name"
                     placeholder="Your name (optional)"
-                    value={name}
-                    onChange={(e) => onNameChange(e.target.value)}
                     disabled={disabled}
                     className="w-full"
                 />
@@ -47,9 +33,8 @@ export function PetitionFormInputs({
 
             <div>
                 <Textarea
+                    name="comment"
                     placeholder="Leave a comment (optional)"
-                    value={comment}
-                    onChange={(e) => onCommentChange(e.target.value)}
                     disabled={disabled}
                     className="w-full min-h-[100px] resize-none"
                 />
