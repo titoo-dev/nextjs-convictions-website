@@ -31,13 +31,22 @@ export function DonationForm() {
 	};
 
 	const getFinalAmount = () => {
-		if (customAmount) return parseFloat(customAmount);
+		if (customAmount) {
+			const amount = parseFloat(customAmount);
+			return amount > 0 ? amount : null;
+		}
 		return selectedAmount;
 	};
 
 	const handleSubmit = async () => {
 		const amount = getFinalAmount();
-		if (!amount || amount <= 0) return;
+		if (!amount || amount <= 0) {
+			toast.error('Please enter a valid amount', {
+				description: 'Amount must be greater than 0',
+				duration: 3000,
+			});
+			return;
+		}
 
 		setIsLoading(true);
 
