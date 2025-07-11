@@ -16,7 +16,7 @@ export function SignatureCounter({ petition }: SignatureCounterProps) {
         <Card className="shadow-none">
             <CardContent className="p-6 text-center">
                 <div className="relative">
-                    <div className="text-4xl font-bold text-green-600 mb-2">
+                    <div className="text-4xl font-bold mb-2">
                         {petition.usersSignedNumber}
                     </div>
                     <Badge variant="secondary" className="mb-4">
