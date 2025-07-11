@@ -25,3 +25,9 @@
 
 - Always prefer `type` aliases over `interface` declarations in TypeScript for better consistency and flexibility
 - Use `type` for union types, intersections, and computed types
+
+### File Naming Conventions
+- Use kebab-case (dash-separated) naming for all file names
+- Example: `my-component.tsx`, `user-profile.ts`, `api-client.js`
+- Keep file names descriptive and lowercase
+- Use appropriate file extensions (.tsx for React components, .ts for TypeScript files, .js for JavaScript files)
