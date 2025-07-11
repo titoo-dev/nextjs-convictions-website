@@ -3,6 +3,7 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Share2 } from 'lucide-react';
+import { Facebook, Twitter, MessageCircle } from 'lucide-react';
 
 export function ShareSection() {
     return (
@@ -18,22 +19,25 @@ export function ShareSection() {
                     <Button
                         variant="outline"
                         size="sm"
-                        className="flex-1"
+                        className="flex-1 flex items-center justify-center gap-2"
                     >
+                        <Facebook className="h-4 w-4" />
                         Facebook
                     </Button>
                     <Button
                         variant="outline"
                         size="sm"
-                        className="flex-1"
+                        className="flex-1 flex items-center justify-center gap-2"
                     >
+                        <Twitter className="h-4 w-4" />
                         Twitter
                     </Button>
                     <Button
                         variant="outline"
                         size="sm"
-                        className="flex-1"
+                        className="flex-1 flex items-center justify-center gap-2"
                     >
+                        <MessageCircle className="h-4 w-4" />
                         WhatsApp
                     </Button>
                 </div>
