@@ -32,19 +32,20 @@ export function SuccessDialog({ open, onOpenChange }: SuccessDialogProps) {
 							</svg>
 						</div>
 					</div>
-					<DialogTitle className="text-xl font-semibold">
-						Your commitment doesn't stop here!
+					<DialogTitle className="text-xl font-semibold text-center">
+						Your commitment doesn&apos;t stop here!
 					</DialogTitle>
-					<DialogDescription className="text-base text-muted-foreground">
-						The true engine of change, it's our collective action. Help this
-						petition reach more people committed to a better world.
+					<DialogDescription className="text-base text-muted-foreground text-center">
+						The true engine of change, it&apos;s our collective
+						action. Help this petition reach more people committed
+						to a better world.
 					</DialogDescription>
 				</DialogHeader>
 
 				<div className="space-y-4">
 					<p className="text-sm font-medium">
-						Do you want to contribute 7€ to strengthen its visibility in the
-						media?
+						Do you want to contribute 7€ to strengthen its
+						visibility in the media?
 					</p>
 
 					<div className="space-y-3">
@@ -52,7 +53,8 @@ export function SuccessDialog({ open, onOpenChange }: SuccessDialogProps) {
 							className="w-full bg-orange-500 hover:bg-orange-600 text-white font-medium py-3"
 							onClick={() => onOpenChange(false)}
 						>
-							Yes, I want to donate 7€ to help the petition reach its goal
+							Yes, I want to donate 7€ to help the petition reach
+							its goal
 						</Button>
 
 						<Button
