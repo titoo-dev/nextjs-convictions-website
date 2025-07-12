@@ -146,6 +146,13 @@
             "thankYou": "¡Gracias por tu apoyo!"
         },
         "form": {
+            "page": {
+                "title": "Crear Nueva Petición",
+                "back": "Atrás",
+                "previous": "Anterior",
+                "next": "Siguiente",
+                "publishPetition": "Publicar Petición"
+            },
             "steps": {
                 "title": "Título",
                 "objective": "Objetivo",
@@ -298,9 +305,21 @@
                     "description": "Una vez publicada, puedes compartirla en redes sociales y comenzar a recopilar firmas."
                 }
             }
+        },
+        "page": {
+            "notFound": {
+                "title": "Petición No Encontrada",
+                "description": "La petición que buscas no existe o ha sido eliminada."
+            },
+            "back": "Atrás"
         }
     },
     "support": {
+        "page": {
+            "title": "Apóyanos",
+            "subtitle": "Únete al cambio, apoya la plataforma.",
+            "description": "¿Crees en el poder de las peticiones para mover las cosas? Nosotros también. Al donar, contribuyes a fortalecer una plataforma independiente que da voz a todos. Juntos, hagamos oír las causas que importan. Cada donación es un acto de compromiso."
+        },
         "illustration": {
             "alt": "Ilustración de apoyo mostrando personas haciendo donaciones"
         },

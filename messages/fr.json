@@ -146,6 +146,13 @@
             "thankYou": "Merci pour votre soutien !"
         },
         "form": {
+            "page": {
+                "title": "Créer une nouvelle pétition",
+                "back": "Retour",
+                "previous": "Précédent",
+                "next": "Suivant",
+                "publishPetition": "Publier la pétition"
+            },
             "steps": {
                 "title": "Titre",
                 "objective": "Objectif",
@@ -301,6 +308,11 @@
         }
     },
     "support": {
+        "page": {
+            "title": "Nous soutenir",
+            "subtitle": "Rejoignez le changement, soutenez la plateforme.",
+            "description": "Croyez-vous au pouvoir des pétitions pour faire bouger les choses ? Nous aussi. En donnant, vous contribuez à renforcer une plateforme indépendante qui donne la parole à chacun. Ensemble, faisons entendre les causes qui comptent. Chaque don est un acte d'engagement."
+        },
         "illustration": {
             "alt": "Illustration de soutien montrant des personnes faisant des dons"
         },

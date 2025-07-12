@@ -140,6 +140,13 @@
             "thankYou": "Thank you for your support!"
         },
         "form": {
+            "page": {
+                "title": "Create New Petition",
+                "back": "Back",
+                "previous": "Previous",
+                "next": "Next",
+                "publishPetition": "Publish Petition"
+            },
             "steps": {
                 "title": "Title",
                 "objective": "Objective",
@@ -298,9 +305,21 @@
         },
         "hero": {
             "placeholderImage": "/placeholder-petition.jpg"
+        },
+        "page": {
+            "notFound": {
+                "title": "Petition Not Found",
+                "description": "The petition you're looking for doesn't exist or has been removed."
+            },
+            "back": "Back"
         }
     },
     "support": {
+        "page": {
+            "title": "Support Us",
+            "subtitle": "Join the change, support the platform.",
+            "description": "Do you believe in the power of petitions to move things? We do too. By donating, you contribute to strengthening an independent platform that gives a voice to everyone. Together, let's make the causes that matter heard. Each donation is an act of commitment."
+        },
         "illustration": {
             "alt": "Support illustration showing people making donations"
         },
