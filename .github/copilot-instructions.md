@@ -43,3 +43,4 @@
 - Support multiple locales from the start (fr, en as minimum)
 - Configure locale detection and routing in next.config.js
 - Use translation keys that are descriptive and hierarchical (e.g., `petition.form.title`)
+- It is not necessary to put a "use client" directive in the file when using `useTranslations`.

@@ -13,5 +13,14 @@
             "french": "Français",
             "spanish": "Español"
         }
+    },
+    "hero": {
+        "badge": "Millions of voices united",
+        "heading": {
+            "makeYourVoice": "Make your voice",
+            "heard": "heard"
+        },
+        "subheading": "We are millions. Together, let's create change.",
+        "cta": "Create a petition"
     }
 }
