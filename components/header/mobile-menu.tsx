@@ -2,8 +2,11 @@ import { Menu } from "lucide-react";
 import { Button } from "../ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "../ui/sheet";
 import { MobileNavigation } from "./mobile-navigation";
+import { useTranslations } from 'next-intl';
 
 export function MobileMenu() {
+  const t = useTranslations('header');
+  
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -13,7 +16,7 @@ export function MobileMenu() {
       </SheetTrigger>
       <SheetContent side="right" className="w-80">
         <SheetHeader>
-          <SheetTitle>Navigation</SheetTitle>
+          <SheetTitle>{t('menuTitle')}</SheetTitle>
         </SheetHeader>
         <MobileNavigation />
       </SheetContent>

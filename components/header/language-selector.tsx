@@ -9,10 +9,12 @@ import {
 } from '../ui/select';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 export function LanguageSelector() {
 	const [locale, setLocale] = useState('fr');
 	const router = useRouter();
+	const t = useTranslations('header.languages');
 
 	const changeLocale = useCallback(
 		(value: string) => {
@@ -53,13 +55,13 @@ export function LanguageSelector() {
 			</SelectTrigger>
 			<SelectContent>
 				<SelectItem value="en">
-					<span>English</span>
+					<span>{t('english')}</span>
 				</SelectItem>
 				<SelectItem value="fr">
-					<span>Français</span>
+					<span>{t('french')}</span>
 				</SelectItem>
 				<SelectItem value="es">
-					<span>Español</span>
+					<span>{t('spanish')}</span>
 				</SelectItem>
 			</SelectContent>
 		</Select>

@@ -3,5 +3,15 @@
         "createPetition": "Create a petition",
         "supportUs": "Support Us",
         "login": "Login"
+    },
+    "header": {
+        "logoAlt": "My convictions logo",
+        "logoText": "My convictions",
+        "menuTitle": "Navigation",
+        "languages": {
+            "english": "English",
+            "french": "Français",
+            "spanish": "Español"
+        }
     }
 }

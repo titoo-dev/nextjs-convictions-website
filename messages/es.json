@@ -3,5 +3,15 @@
         "createPetition": "Crear una petición",
         "supportUs": "Apóyanos",
         "login": "Iniciar sesión"
+    },
+    "header": {
+        "logoAlt": "Logo de Mis convicciones",
+        "logoText": "Mis convicciones",
+        "menuTitle": "Navegación",
+        "languages": {
+            "english": "English",
+            "french": "Français",
+            "spanish": "Español"
+        }
     }
 }

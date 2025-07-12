@@ -4,7 +4,14 @@
         "supportUs": "Nous soutenir",
         "login": "Connexion"
     },
-    "home": {
-        "title": "Hello world!"
+    "header": {
+        "logoAlt": "Logo de Mes convictions",
+        "logoText": "Mes convictions",
+        "menuTitle": "Navigation",
+        "languages": {
+            "english": "Anglais",
+            "french": "Français",
+            "spanish": "Espagnol"
+        }
     }
 }
