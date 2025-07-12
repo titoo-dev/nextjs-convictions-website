@@ -33,7 +33,6 @@ type PetitionData = {
 };
 
 export default function NewPetitionPage() {
-    const t = useTranslations('petition.form');
     const tPage = useTranslations('petition.form.page');
     const tSteps = useTranslations('petition.form.steps');
 
