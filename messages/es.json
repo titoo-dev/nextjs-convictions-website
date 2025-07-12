@@ -204,7 +204,7 @@
                 "description": "Expresa tu causa claramente, la IA te ayuda a formular.",
                 "subDescription": "Describe por qué esta petición es importante, cuáles son los hechos, las consecuencias, y las soluciones que propones.",
                 "language": "Español",
-                "defaultContent": "Expresa tu causa claramente, la IA te ayuda a formular.<br>Describe por qué esta petición es importante, cuáles son los hechos, las consecuencias, y las soluciones que propones.",
+                "defaultContent": "Expresa tu causa claramente, la IA te ayuda a formular.<br/>Describe por qué esta petición es importante, cuáles son los hechos, las consecuencias, y las soluciones que propones.",
                 "toolbar": {
                     "undo": "Deshacer",
                     "redo": "Rehacer",

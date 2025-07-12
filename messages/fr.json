@@ -204,7 +204,7 @@
                 "description": "Exprimez votre cause clairement, l'IA vous aide à formuler.",
                 "subDescription": "Décrivez pourquoi cette pétition est importante, quels sont les faits, les conséquences, et les solutions que vous proposez.",
                 "language": "Français",
-                "defaultContent": "Exprimez votre cause clairement, l'IA vous aide à formuler.<br>Décrivez pourquoi cette pétition est importante, quels sont les faits, les conséquences, et les solutions que vous proposez.",
+                "defaultContent": "Exprimez votre cause clairement, l'IA vous aide à formuler.<br/>Décrivez pourquoi cette pétition est importante, quels sont les faits, les conséquences, et les solutions que vous proposez.",
                 "toolbar": {
                     "undo": "Annuler",
                     "redo": "Rétablir",
@@ -305,6 +305,13 @@
                     "description": "Une fois publiée, vous pouvez la partager sur les réseaux sociaux et commencer à collecter des signatures."
                 }
             }
+        },
+        "page": {
+            "notFound": {
+                "title": "Pétition introuvable",
+                "description": "La pétition que vous cherchez n'existe pas ou a été supprimée."
+            },
+            "back": "Retour"
         }
     },
     "support": {
