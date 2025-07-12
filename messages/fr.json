@@ -22,5 +22,25 @@
         },
         "subheading": "Nous sommes des millions. Ensemble, produisons le changement.",
         "cta": "Créer une pétition"
+    },
+    "footer": {
+        "quickLinks": {
+            "title": "Liens rapides",
+            "home": "Accueil",
+            "createPetition": "Créer une pétition",
+            "supportUs": "Nous soutenir"
+        },
+        "community": {
+            "title": "Communauté",
+            "facebook": "Facebook",
+            "instagram": "Instagram",
+            "twitter": "X.com"
+        },
+        "security": {
+            "title": "Sécurité",
+            "dataPolicy": "Politique de données",
+            "termsOfUse": "Conditions d'utilisation"
+        },
+        "copyright": "© 2025 Mes convictions. Tous droits réservés"
     }
 }

@@ -22,5 +22,25 @@
         },
         "subheading": "We are millions. Together, let's create change.",
         "cta": "Create a petition"
+    },
+    "footer": {
+        "quickLinks": {
+            "title": "Quick links",
+            "home": "Home",
+            "createPetition": "Create a petition",
+            "supportUs": "Support Us"
+        },
+        "community": {
+            "title": "Community",
+            "facebook": "Facebook",
+            "instagram": "Instagram",
+            "twitter": "X.com"
+        },
+        "security": {
+            "title": "Security",
+            "dataPolicy": "Data policy",
+            "termsOfUse": "Terms of use"
+        },
+        "copyright": "© 2025 My convictions. All rights reserved"
     }
 }
