@@ -10,14 +10,21 @@ import { getUniquePublicPetition } from '@/actions/get-unique-public-petition';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import RenderWhen from '@/components/render-when';
+import { getLocale } from 'next-intl/server';
 
-export default async function PetitionPage(props: { params: Promise<{ id: string }> }) {
-    const params = await props.params;
+export default async function PetitionPage(props: {
+	params: Promise<{ id: string }>;
+}) {
+	const params = await props.params;
+	const locale = await getLocale();
 
-    const { petition } = await getUniquePublicPetition({ id: params.id });
+	const { petition } = await getUniquePublicPetition({
+		id: params.id,
+		language: locale.toUpperCase() as 'FR' | 'EN' | 'ES',
+	});
 
-    if (!petition) {
-        return (
+	if (!petition) {
+		return (
 			<div className="min-h-screen bg-gray-50 flex items-center justify-center">
 				<div className="text-center">
 					<h1 className="text-2xl font-bold text-gray-900 mb-2">
@@ -30,42 +37,42 @@ export default async function PetitionPage(props: { params: Promise<{ id: string
 				</div>
 			</div>
 		);
-    }
+	}
 
-    return (
-        <div className="min-h-screen bg-gray-50">
-            <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-8 max-w-7xl">
-                {/* Back Navigation */}
-                <div className="mb-4 sm:mb-6">
-                    <Link 
-                        href="/"
-                        className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 group"
-                    >
-                        <ArrowLeft className="w-4 h-4" />
-                        <span className="text-sm font-medium">Back</span>
-                    </Link>
-                </div>
+	return (
+		<div className="min-h-screen bg-gray-50">
+			<div className="container mx-auto px-3 sm:px-4 py-4 sm:py-8 max-w-7xl">
+				{/* Back Navigation */}
+				<div className="mb-4 sm:mb-6">
+					<Link
+						href="/"
+						className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 group"
+					>
+						<ArrowLeft className="w-4 h-4" />
+						<span className="text-sm font-medium">Back</span>
+					</Link>
+				</div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
-                    {/* Main Content */}
-                    <div className="lg:col-span-2 space-y-3 sm:space-y-4">
-                        <PetitionHero petition={petition} />
-                        <PetitionAuthor petition={petition} />
-                        <PetitionDetails petition={petition} />
-                        <PetitionContent petition={petition} />
-                        <PetitionComments petition={petition} />
-                    </div>
+				<div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+					{/* Main Content */}
+					<div className="lg:col-span-2 space-y-3 sm:space-y-4">
+						<PetitionHero petition={petition} />
+						<PetitionAuthor petition={petition} />
+						<PetitionDetails petition={petition} />
+						<PetitionContent petition={petition} />
+						<PetitionComments petition={petition} />
+					</div>
 
-                    {/* Sidebar */}
-                    <div className="space-y-4 sm:space-y-6">
-                        <RenderWhen condition={petition.usersSignedNumber > 0}>
-                            <SignatureCounter petition={petition} />
-                        </RenderWhen>
-                        <SignForm petition={petition} />
-                        <ShareSection />
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
+					{/* Sidebar */}
+					<div className="space-y-4 sm:space-y-6">
+						<RenderWhen condition={petition.usersSignedNumber > 0}>
+							<SignatureCounter petition={petition} />
+						</RenderWhen>
+						<SignForm petition={petition} />
+						<ShareSection />
+					</div>
+				</div>
+			</div>
+		</div>
+	);
 }
