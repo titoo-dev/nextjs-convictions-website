@@ -5,12 +5,15 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Flag, Calendar } from 'lucide-react';
 import { PublicPetition } from '@/schemas/public-petition';
+import { useTranslations } from 'next-intl';
 
 type PetitionAuthorProps = {
 	petition: PublicPetition;
 };
 
 export function PetitionAuthor({ petition }: PetitionAuthorProps) {
+	const t = useTranslations('petition.author');
+
 	return (
 		<Card className="shadow-none">
 			<CardContent className="flex flex-col gap-6">
@@ -45,7 +48,7 @@ export function PetitionAuthor({ petition }: PetitionAuthorProps) {
 					className="w-full md:w-max md:ml-auto self-end sm:self-auto text-xs sm:text-sm whitespace-nowrap"
 				>
 					<Flag className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
-					Report policy
+					{t('reportPolicy')}
 				</Button>
 			</CardContent>
 		</Card>

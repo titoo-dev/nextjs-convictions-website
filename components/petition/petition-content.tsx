@@ -2,6 +2,7 @@
 
 import { Card, CardContent } from '@/components/ui/card';
 import { PublicPetition } from '@/schemas/public-petition';
+import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 
 type PetitionContentProps = {
@@ -13,6 +14,8 @@ type ContentItem = {
 };
 
 export function PetitionContent({ petition }: PetitionContentProps) {
+	const t = useTranslations('petition.content');
+
 	const parseContent = (content: string) => {
 		try {
 			return JSON.parse(content);
@@ -43,7 +46,7 @@ export function PetitionContent({ petition }: PetitionContentProps) {
 								<div key={index} className="mb-3 sm:mb-4">
 									<Image
 										src={item.insert.image}
-										alt="Petition content image"
+										alt={t('imageAlt')}
 										width={800}
 										height={400}
 										className="w-full h-auto rounded-md"

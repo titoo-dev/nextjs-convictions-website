@@ -9,6 +9,7 @@ import { signPublicPetition } from '@/actions/sign-public-petition';
 import { SuccessDialog } from './success-dialog';
 import { PetitionFormInputs } from './petition-form-inputs';
 import { NotificationOptions } from './notification-options';
+import { useTranslations } from 'next-intl';
 import { getLocale } from 'next-intl/server';
 
 type SignFormProps = {
@@ -16,6 +17,7 @@ type SignFormProps = {
 };
 
 export function SignForm({ petition }: SignFormProps) {
+    const t = useTranslations('petition.signForm');
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState(false);
@@ -26,12 +28,12 @@ export function SignForm({ petition }: SignFormProps) {
     // Show toast if already signed on component mount
     useEffect(() => {
         if (petition.isISign) {
-            toast.success('You have already signed this petition!', {
-                description: 'Thank you for your support.',
+            toast.success(t('successMessages.alreadySigned'), {
+                description: t('successMessages.alreadySignedDescription'),
                 duration: 4000,
             });
         }
-    }, [petition.isISign]);
+    }, [petition.isISign, t]);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -64,24 +66,24 @@ export function SignForm({ petition }: SignFormProps) {
                     setSuccess(true);
                     setShowSuccessDialog(true);
                     // Show success toast
-                    toast.success('Petition signed successfully!', {
-                        description: 'Thank you for making your voice heard.',
+                    toast.success(t('successMessages.signedSuccessfully'), {
+                        description: t('successMessages.signedDescription'),
                         duration: 5000,
                     });
                     // Reset form
                     formRef.current?.reset();
                 } else {
-                    setError(result.error || 'Failed to sign petition');
-                    toast.error('Failed to sign petition', {
-                        description: result.error || 'Please try again.',
+                    setError(result.error || t('errors.failedToSign'));
+                    toast.error(t('errors.failedToSign'), {
+                        description: result.error || t('errors.tryAgain'),
                         duration: 4000,
                     });
                 }
             } catch (err) {
                 console.error('Error signing petition:', err);
-                setError('An unexpected error occurred');
-                toast.error('An unexpected error occurred', {
-                    description: 'Please try again later.',
+                setError(t('errors.unexpectedError'));
+                toast.error(t('errors.unexpectedError'), {
+                    description: t('errors.tryAgainLater'),
                     duration: 4000,
                 });
             } finally {
@@ -99,8 +101,8 @@ export function SignForm({ petition }: SignFormProps) {
                 <CardHeader>
                     <CardTitle className="text-lg sm:text-xl">
                         {isAlreadySigned
-                            ? 'You already signed'
-                            : 'Sign this petition'}
+                            ? t('alreadySigned')
+                            : t('title')}
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -124,12 +126,12 @@ export function SignForm({ petition }: SignFormProps) {
                                 {isSubmitting ? (
                                     <div className="flex items-center justify-center">
                                         <div className="animate-spin rounded-full h-3 w-3 sm:h-4 sm:w-4 border-2 border-white border-t-transparent mr-2"></div>
-                                        <span className="text-sm sm:text-base">Signing...</span>
+                                        <span className="text-sm sm:text-base">{t('signing')}</span>
                                     </div>
                                 ) : isAlreadySigned ? (
-                                    'Already signed'
+                                    t('alreadySignedButton')
                                 ) : (
-                                    'I sign'
+                                    t('signButton')
                                 )}
                             </Button>
 

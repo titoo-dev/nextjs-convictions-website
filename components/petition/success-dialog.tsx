@@ -6,6 +6,7 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from '@/components/ui/dialog';
+import { useTranslations } from 'next-intl';
 
 type SuccessDialogProps = {
 	open: boolean;
@@ -13,6 +14,8 @@ type SuccessDialogProps = {
 };
 
 export function SuccessDialog({ open, onOpenChange }: SuccessDialogProps) {
+	const t = useTranslations('petition.success');
+
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
 			<DialogContent className="max-w-md text-center">
@@ -33,28 +36,22 @@ export function SuccessDialog({ open, onOpenChange }: SuccessDialogProps) {
 						</div>
 					</div>
 					<DialogTitle className="text-xl font-semibold text-center">
-						Your commitment doesn&apos;t stop here!
+						{t('title')}
 					</DialogTitle>
 					<DialogDescription className="text-base text-muted-foreground text-center">
-						The true engine of change, it&apos;s our collective
-						action. Help this petition reach more people committed
-						to a better world.
+						{t('description')}
 					</DialogDescription>
 				</DialogHeader>
 
 				<div className="space-y-4">
-					<p className="text-sm font-medium">
-						Do you want to contribute 7€ to strengthen its
-						visibility in the media?
-					</p>
+					<p className="text-sm font-medium">{t('donateQuestion')}</p>
 
 					<div className="space-y-3">
 						<Button
 							className="w-full bg-orange-500 hover:bg-orange-600 text-white font-medium py-3"
 							onClick={() => onOpenChange(false)}
 						>
-							Yes, I want to donate 7€ to help the petition reach
-							its goal
+							{t('donateButton')}
 						</Button>
 
 						<Button
@@ -62,7 +59,7 @@ export function SuccessDialog({ open, onOpenChange }: SuccessDialogProps) {
 							className="w-full text-gray-600 hover:text-gray-800"
 							onClick={() => onOpenChange(false)}
 						>
-							No, I prefer to share it
+							{t('shareButton')}
 						</Button>
 					</div>
 				</div>

@@ -74,5 +74,203 @@
             "description": "There are currently no petitions available for this category."
         },
         "viewAll": "View all petitions"
+    },
+    "petition": {
+        "details": {
+            "title": "Petition details",
+            "objective": "Objective",
+            "destination": "Destination"
+        },
+        "comments": {
+            "title": "Comments",
+            "titleWithCount": "Comments ({count})",
+            "empty": "No comments yet. Be the first to share your thoughts!",
+            "description": "Read what others are saying about this petition",
+            "yourComment": "Your comment"
+        },
+        "author": {
+            "reportPolicy": "Report policy"
+        },
+        "signForm": {
+            "title": "Sign this petition",
+            "alreadySigned": "You already signed",
+            "emailPlaceholder": "Your email",
+            "namePlaceholder": "Your name (optional)",
+            "commentPlaceholder": "Leave a comment (optional)",
+            "signButton": "I sign",
+            "alreadySignedButton": "Already signed",
+            "signing": "Signing...",
+            "notifications": {
+                "yes": "Yes, keep me informed if this petition succeeds, and tell me how I can contribute",
+                "no": "No, I do not want to be informed of this petition or future initiatives"
+            },
+            "successMessages": {
+                "alreadySigned": "You have already signed this petition!",
+                "alreadySignedDescription": "Thank you for your support.",
+                "signedSuccessfully": "Petition signed successfully!",
+                "signedDescription": "Thank you for making your voice heard."
+            },
+            "errors": {
+                "failedToSign": "Failed to sign petition",
+                "tryAgain": "Please try again.",
+                "unexpectedError": "An unexpected error occurred",
+                "tryAgainLater": "Please try again later."
+            }
+        },
+        "signatures": {
+            "verified": "Verified signatures",
+            "needed": "{count} signatures needed to reach {goal}",
+            "goalReached": "Goal of {goal} signatures reached!"
+        },
+        "share": {
+            "title": "Share to your friends",
+            "facebook": "Facebook",
+            "twitter": "Twitter",
+            "whatsapp": "WhatsApp"
+        },
+        "success": {
+            "title": "Your commitment doesn't stop here!",
+            "description": "The true engine of change, it's our collective action. Help this petition reach more people committed to a better world.",
+            "donateQuestion": "Do you want to contribute 7€ to strengthen its visibility in the media?",
+            "donateButton": "Yes, I want to donate 7€ to help the petition reach its goal",
+            "shareButton": "No, I prefer to share it"
+        },
+        "signed": {
+            "badge": "✓ Signed",
+            "thankYou": "Thank you for your support!"
+        },
+        "form": {
+            "steps": {
+                "title": "Title",
+                "objective": "Objective",
+                "writing": "Writing",
+                "media": "Media",
+                "signatures": "Signatures",
+                "publish": "Publish"
+            },
+            "titleStep": {
+                "selectTheme": "Select theme",
+                "titleLabel": "Title",
+                "titlePlaceholder": "What change do you want?",
+                "suggestions": "🔥 Suggestions",
+                "suggestionsEmpty": "Please write a title first",
+                "advice": "💡 Advice",
+                "adviceText": "Use action verbs. For example: \"Ban plastic bags in our city\" or \"Protect the forest of X\". Avoid vague formulations."
+            },
+            "objectiveStep": {
+                "title": "Objective",
+                "destination": "Destination",
+                "destinationPlaceholder": "To whom do you want to address your petition?",
+                "description": "Describe the goal you want to achieve: a law change, a concrete action, a position, etc. Be concise, convincing, and inspire others to join your cause.",
+                "objectivePlaceholder": "Why are you launching this petition?",
+                "suggestions": "🔥 Suggestions",
+                "suggestionsEmpty": "Please write a objective first",
+                "advice": "⚠️ Advice",
+                "adviceText": "A clear and motivating objective gives meaning to your petition and increases your chances of mobilization.",
+                "aiUsage": "You have reached {percentage}% of your planned AI assistance usage"
+            },
+            "writingStep": {
+                "title": "Writing",
+                "description": "Express your cause clearly, the AI helps you formulate.",
+                "subDescription": "Describe why this petition is important, what are the facts, the consequences, and the solutions you propose.",
+                "language": "English",
+                "toolbar": {
+                    "undo": "Undo",
+                    "redo": "Redo",
+                    "bold": "Bold",
+                    "italic": "Italic",
+                    "underline": "Underline",
+                    "strikethrough": "Strikethrough",
+                    "addImage": "Add Image",
+                    "addLink": "Add Link",
+                    "bulletList": "Bullet List",
+                    "numberedList": "Numbered List",
+                    "quote": "Quote",
+                    "aiAssistance": "AI Assistance",
+                    "headings": {
+                        "normal": "Normal",
+                        "heading1": "Heading 1",
+                        "heading2": "Heading 2",
+                        "heading3": "Heading 3"
+                    }
+                },
+                "aiAdvice": "⚠️ Advice",
+                "aiAdviceText": "If you are not comfortable with writing, use our assistance tool to get a clear, persuasive, and well-structured version.",
+                "aiUsage": "You have reached {percentage}% of your planned AI assistance usage"
+            },
+            "mediaStep": {
+                "title": "Add an image or video",
+                "description": "Make your petition more visual and impactful. Add a strong image or a short explanatory video to illustrate your cause.",
+                "mediaType": "I will use",
+                "image": "An image",
+                "videoYoutube": "A video YouTube",
+                "imageUrl": "Image URL",
+                "imageUrlPlaceholder": "https://example.com/image.jpg",
+                "or": "or",
+                "selectFile": "Select a file",
+                "dragAndDrop": "or drag and drop it here",
+                "fileFormats": "JPG, PNG, GIF, WebP, SVG (max 10MB)",
+                "youtubeUrl": "YouTube URL",
+                "youtubeUrlPlaceholder": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+                "validYoutubeUrl": "Valid YouTube URL detected",
+                "viewOnYoutube": "View on YouTube",
+                "advice": "Advice",
+                "adviceText": "Use a free image or personal image. Avoid blurry or generic visuals. High-quality images get more engagement.",
+                "errors": {
+                    "invalidUrl": "Please enter a valid URL",
+                    "invalidImageUrl": "Please enter a valid image URL",
+                    "invalidYoutubeUrl": "Please enter a valid YouTube URL",
+                    "fileTooLarge": "File size must be less than 10MB",
+                    "invalidFileType": "Only image files are allowed",
+                    "loadFailed": "Image failed to load. Please check the URL.",
+                    "processFailed": "Failed to process the selected file."
+                }
+            },
+            "signaturesStep": {
+                "title": "Desired number of signatures",
+                "description": "Set a realistic but mobilizing goal. Determine the number of signatures you want to reach to give weight to your message.",
+                "placeholder": "1000",
+                "advice": "💡 Advice",
+                "adviceText": "Start with an accessible goal (ex: 500, 1000), you can increase it if your petition gains popularity."
+            },
+            "publishStep": {
+                "title": "Publication scheduling",
+                "description": "Choose when to publish your petition.",
+                "subDescription": "You can publish it immediately or schedule an ideal launch date and time (ex. upcoming event, global day, etc.).",
+                "publishNow": "Publish now",
+                "publishLater": "Publish later",
+                "date": "Date",
+                "time": "Time",
+                "pickDate": "Pick a date",
+                "advice": "💡 Advice",
+                "adviceText": "A good timing can maximize the visibility of your petition. Plan if possible around an event related to your cause.",
+                "summary": {
+                    "title": "Petition Summary",
+                    "untitled": "Untitled Petition",
+                    "category": "Category",
+                    "notSpecified": "Not specified",
+                    "destination": "Destination",
+                    "signatureGoal": "Signature Goal",
+                    "signatures": "signatures",
+                    "notSet": "Not set",
+                    "objective": "Objective",
+                    "video": "Video"
+                },
+                "publishing": {
+                    "title": "Ready to publish?",
+                    "publishNowText": "Your petition will be published immediately and become visible to the public.",
+                    "publishLaterText": "Your petition will be published{date}{time}.",
+                    "onDate": " on {date}",
+                    "atTime": " at {time}",
+                    "description": "Once published, you can share it on social media and start collecting signatures."
+                }
+            }
+        },
+        "content": {
+            "imageAlt": "Petition content image"
+        },
+        "hero": {
+            "placeholderImage": "/placeholder-petition.jpg"
+        }
     }
 }

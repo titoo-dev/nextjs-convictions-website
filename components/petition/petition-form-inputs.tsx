@@ -1,5 +1,6 @@
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { useTranslations } from 'next-intl';
 
 type PetitionFormInputsProps = {
 	disabled?: boolean;
@@ -8,13 +9,15 @@ type PetitionFormInputsProps = {
 export function PetitionFormInputs({
     disabled = false,
 }: PetitionFormInputsProps) {
+    const t = useTranslations('petition.signForm');
+
     return (
         <>
             <div>
                 <Input
                     type="email"
                     name="email"
-                    placeholder="Your email"
+                    placeholder={t('emailPlaceholder')}
                     required
                     disabled={disabled}
                     className="w-full"
@@ -25,7 +28,7 @@ export function PetitionFormInputs({
                 <Input
                     type="text"
                     name="name"
-                    placeholder="Your name (optional)"
+                    placeholder={t('namePlaceholder')}
                     disabled={disabled}
                     className="w-full"
                 />
@@ -34,7 +37,7 @@ export function PetitionFormInputs({
             <div>
                 <Textarea
                     name="comment"
-                    placeholder="Leave a comment (optional)"
+                    placeholder={t('commentPlaceholder')}
                     disabled={disabled}
                     className="w-full min-h-[100px] resize-none"
                 />

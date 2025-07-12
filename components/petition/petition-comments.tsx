@@ -2,22 +2,25 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { PublicPetition } from '@/schemas/public-petition';
 import { MessageCircle, Heart, User } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useTranslations } from 'next-intl';
 
 type PetitionCommentsProps = {
     petition: PublicPetition;
 };
 
 export function PetitionComments({ petition }: PetitionCommentsProps) {
+    const t = useTranslations('petition.comments');
+
     if (!petition.comments || petition.comments.length === 0) {
         return (
             <Card>
                 <CardHeader>
                     <div className="flex items-center gap-2">
                         <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
-                        <CardTitle className="text-lg sm:text-xl">Comments</CardTitle>
+                        <CardTitle className="text-lg sm:text-xl">{t('title')}</CardTitle>
                     </div>
                     <CardDescription className="text-sm">
-                        No comments yet. Be the first to share your thoughts!
+                        {t('empty')}
                     </CardDescription>
                 </CardHeader>
             </Card>
@@ -29,10 +32,12 @@ export function PetitionComments({ petition }: PetitionCommentsProps) {
             <CardHeader>
                 <div className="flex items-center gap-2">
                     <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
-                    <CardTitle className="text-lg sm:text-xl">Comments ({petition.comments.length})</CardTitle>
+                    <CardTitle className="text-lg sm:text-xl">
+                        {t('titleWithCount', { count: petition.comments.length })}
+                    </CardTitle>
                 </div>
                 <CardDescription className="text-sm">
-                    Read what others are saying about this petition
+                    {t('description')}
                 </CardDescription>
             </CardHeader>
             <CardContent className="p-4 sm:p-6 pt-0 sm:pt-0">
@@ -68,7 +73,7 @@ export function PetitionComments({ petition }: PetitionCommentsProps) {
                                 </div>
                                 {comment.isMine && (
                                     <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded whitespace-nowrap">
-                                        Your comment
+                                        {t('yourComment')}
                                     </span>
                                 )}
                             </div>
