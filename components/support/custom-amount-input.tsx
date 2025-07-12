@@ -1,4 +1,5 @@
 import { Input } from "@/components/ui/input";
+import { useTranslations } from "next-intl";
 
 type CustomAmountInputProps = {
     value: string;
@@ -6,6 +7,8 @@ type CustomAmountInputProps = {
 };
 
 export function CustomAmountInput({ value, onChange }: CustomAmountInputProps) {
+    const t = useTranslations("support.form");
+    
     const handleInputChange = (inputValue: string) => {
         // Remove any non-numeric characters except decimal point
         const cleanValue = inputValue.replace(/[^0-9.]/g, "");
@@ -33,12 +36,12 @@ export function CustomAmountInput({ value, onChange }: CustomAmountInputProps) {
     return (
         <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Other amount
+                {t('otherAmount')}
             </label>
             <div className="relative">
                 <Input
                     type="text"
-                    placeholder="Enter amount"
+                    placeholder={t('otherAmountPlaceholder')}
                     value={value}
                     onChange={(e) => handleInputChange(e.target.value)}
                     className="pr-8"

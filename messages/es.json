@@ -299,5 +299,29 @@
                 }
             }
         }
+    },
+    "support": {
+        "illustration": {
+            "alt": "Ilustración de apoyo mostrando personas haciendo donaciones"
+        },
+        "form": {
+            "title": "Elige tu contribución",
+            "otherAmount": "Otra cantidad",
+            "otherAmountPlaceholder": "Ingresa la cantidad",
+            "payButton": "Pagar {amount} €",
+            "processing": "Procesando...",
+            "errors": {
+                "validAmount": "Por favor ingresa una cantidad válida",
+                "amountGreaterThanZero": "La cantidad debe ser mayor que 0",
+                "processingFailed": "Error al procesar la donación",
+                "tryAgain": "Por favor inténtalo de nuevo.",
+                "unexpectedError": "Ocurrió un error inesperado",
+                "tryAgainLater": "Por favor inténtalo más tarde."
+            },
+            "success": {
+                "initiated": "¡Donación iniciada exitosamente!",
+                "redirecting": "Redirigiendo al pago..."
+            }
+        }
     }
 }

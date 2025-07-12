@@ -299,5 +299,29 @@
         "hero": {
             "placeholderImage": "/placeholder-petition.jpg"
         }
+    },
+    "support": {
+        "illustration": {
+            "alt": "Support illustration showing people making donations"
+        },
+        "form": {
+            "title": "Choose your contribution",
+            "otherAmount": "Other amount",
+            "otherAmountPlaceholder": "Enter amount",
+            "payButton": "Pay {amount} €",
+            "processing": "Processing...",
+            "errors": {
+                "validAmount": "Please enter a valid amount",
+                "amountGreaterThanZero": "Amount must be greater than 0",
+                "processingFailed": "Failed to process donation",
+                "tryAgain": "Please try again.",
+                "unexpectedError": "An unexpected error occurred",
+                "tryAgainLater": "Please try again later."
+            },
+            "success": {
+                "initiated": "Donation initiated successfully!",
+                "redirecting": "Redirecting to payment..."
+            }
+        }
     }
 }

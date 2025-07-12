@@ -299,5 +299,29 @@
                 }
             }
         }
+    },
+    "support": {
+        "illustration": {
+            "alt": "Illustration de soutien montrant des personnes faisant des dons"
+        },
+        "form": {
+            "title": "Choisissez votre contribution",
+            "otherAmount": "Autre montant",
+            "otherAmountPlaceholder": "Entrez le montant",
+            "payButton": "Payer {amount} €",
+            "processing": "Traitement en cours...",
+            "errors": {
+                "validAmount": "Veuillez entrer un montant valide",
+                "amountGreaterThanZero": "Le montant doit être supérieur à 0",
+                "processingFailed": "Échec du traitement du don",
+                "tryAgain": "Veuillez réessayer.",
+                "unexpectedError": "Une erreur inattendue s'est produite",
+                "tryAgainLater": "Veuillez réessayer plus tard."
+            },
+            "success": {
+                "initiated": "Don initié avec succès !",
+                "redirecting": "Redirection vers le paiement..."
+            }
+        }
     }
 }
