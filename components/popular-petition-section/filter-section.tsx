@@ -3,38 +3,39 @@
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 
 type CategoryFilter = {
 	id: string;
-	label: string;
+	labelKey: string;
 	value: string;
 };
 
 const categories: CategoryFilter[] = [
-	{ id: 'all', label: 'Toutes', value: 'ALL' },
-	{ id: 'culture', label: 'Culture', value: 'CULTURE' },
-	{ id: 'religion', label: 'Religion', value: 'RELIGION' },
-	{ id: 'women-rights', label: 'Droits des femmes', value: 'WOMEN_RIGHTS' },
-	{ id: 'men-rights', label: 'Droits des hommes', value: 'MEN_RIGHTS' },
-	{ id: 'education', label: 'Éducation', value: 'EDUCATION' },
-	{ id: 'environment', label: 'Environnement', value: 'ENVIRONMENT' },
-	{ id: 'racism', label: 'Racisme', value: 'RACISM' },
-	{ id: 'politics', label: 'Politique', value: 'POLITICS' },
-	{ id: 'handicap', label: 'Handicap', value: 'HANDICAP' },
-	{ id: 'health', label: 'Santé', value: 'HEALTH' },
-	{ id: 'transport', label: 'Transport', value: 'TRANSPORT' },
-	{ id: 'immigration', label: 'Immigration', value: 'IMMIGRATION' },
-	{ id: 'justice', label: 'Justice', value: 'JUSTICE' },
-	{ id: 'animals', label: 'Animaux', value: 'ANIMALS' },
+	{ id: 'all', labelKey: 'all', value: 'ALL' },
+	{ id: 'culture', labelKey: 'culture', value: 'CULTURE' },
+	{ id: 'religion', labelKey: 'religion', value: 'RELIGION' },
+	{ id: 'women-rights', labelKey: 'womenRights', value: 'WOMEN_RIGHTS' },
+	{ id: 'men-rights', labelKey: 'menRights', value: 'MEN_RIGHTS' },
+	{ id: 'education', labelKey: 'education', value: 'EDUCATION' },
+	{ id: 'environment', labelKey: 'environment', value: 'ENVIRONMENT' },
+	{ id: 'racism', labelKey: 'racism', value: 'RACISM' },
+	{ id: 'politics', labelKey: 'politics', value: 'POLITICS' },
+	{ id: 'handicap', labelKey: 'handicap', value: 'HANDICAP' },
+	{ id: 'health', labelKey: 'health', value: 'HEALTH' },
+	{ id: 'transport', labelKey: 'transport', value: 'TRANSPORT' },
+	{ id: 'immigration', labelKey: 'immigration', value: 'IMMIGRATION' },
+	{ id: 'justice', labelKey: 'justice', value: 'JUSTICE' },
+	{ id: 'animals', labelKey: 'animals', value: 'ANIMALS' },
 ];
 
 type FilterChipProps = {
-	category: CategoryFilter;
 	isActive: boolean;
 	href: string;
+	label: string;
 };
 
-function FilterChip({ category, isActive, href }: FilterChipProps) {
+function FilterChip({ isActive, href, label }: FilterChipProps) {
 	return (
 		<Link
             href={href}
@@ -48,7 +49,7 @@ function FilterChip({ category, isActive, href }: FilterChipProps) {
 					: 'bg-background text-muted-foreground hover:bg-accent hover:text-accent-foreground hover:border-accent'
 			)}
 		>
-			{category.label}
+			{label}
 		</Link>
 	);
 }
@@ -57,6 +58,7 @@ export function FilterSection() {
 	const pathname = usePathname();
 	const searchParams = useSearchParams();
 	const activeCategory = searchParams.get('category') || 'ALL';
+	const t = useTranslations('petitions.categories');
 
 	const createPageUrl = (value: string) => {
 		const params = new URLSearchParams(searchParams);
@@ -77,9 +79,9 @@ export function FilterSection() {
 					{categories.map((category) => (
 						<FilterChip
 							key={category.id}
-							category={category}
 							isActive={activeCategory === category.value}
 							href={createPageUrl(category.value)}
+							label={t(category.labelKey)}
 						/>
 					))}
 				</div>

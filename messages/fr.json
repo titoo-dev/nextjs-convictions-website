@@ -42,5 +42,37 @@
             "termsOfUse": "Conditions d'utilisation"
         },
         "copyright": "© 2025 Mes convictions. Tous droits réservés"
+    },
+    "petitions": {
+        "popularSection": {
+            "title": "Pétitions populaires",
+            "description": "Découvrez les causes qui mobilisent notre communauté et rejoignez le mouvement"
+        },
+        "categories": {
+            "all": "Toutes",
+            "culture": "Culture",
+            "religion": "Religion",
+            "womenRights": "Droits des femmes",
+            "menRights": "Droits des hommes",
+            "education": "Éducation",
+            "environment": "Environnement",
+            "racism": "Racisme",
+            "politics": "Politique",
+            "handicap": "Handicap",
+            "health": "Santé",
+            "transport": "Transport",
+            "immigration": "Immigration",
+            "justice": "Justice",
+            "animals": "Animaux"
+        },
+        "card": {
+            "signatures": "Signatures",
+            "signButton": "Je signe"
+        },
+        "emptyState": {
+            "title": "Aucune pétition trouvée",
+            "description": "Il n'y a actuellement aucune pétition disponible pour cette catégorie."
+        },
+        "viewAll": "Voir toutes les pétitions"
     }
 }
