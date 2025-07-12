@@ -9,6 +9,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Calendar as CalendarIcon, Clock, Info } from 'lucide-react';
 import { useState } from 'react';
 import { format } from 'date-fns';
+import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 
@@ -33,6 +34,7 @@ type PublishStepProps = {
 };
 
 export function PublishStep({ formData, updateFormData }: PublishStepProps) {
+    const t = useTranslations('petition.form.publishStep');
     const [publishNow, setPublishNow] = useState(formData.publishNow ?? true);
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
@@ -55,12 +57,12 @@ export function PublishStep({ formData, updateFormData }: PublishStepProps) {
     return (
         <div className="space-y-6">
             <div>
-                <h2 className="text-2xl font-bold mb-2">Publication scheduling</h2>
+                <h2 className="text-2xl font-bold mb-2">{t('title')}</h2>
                 <p className="text-gray-600 mb-4">
-                    Choose when to publish your petition.
+                    {t('description')}
                 </p>
                 <p className="text-gray-600">
-                    You can publish it immediately or schedule an ideal launch date and time (ex. upcoming event, global day, etc.).
+                    {t('subDescription')}
                 </p>
             </div>
 
@@ -76,7 +78,7 @@ export function PublishStep({ formData, updateFormData }: PublishStepProps) {
                             className="h-4 w-4 text-orange-500 border-gray-300 focus:ring-orange-500"
                         />
                         <span className="text-gray-900 group-hover:text-gray-700 transition-colors font-medium">
-                            Publish now
+                            {t('publishNow')}
                         </span>
                     </label>
 
@@ -89,7 +91,7 @@ export function PublishStep({ formData, updateFormData }: PublishStepProps) {
                             className="h-4 w-4 text-orange-500 border-gray-300 focus:ring-orange-500"
                         />
                         <span className="text-gray-900 group-hover:text-gray-700 transition-colors font-medium">
-                            Publish later
+                            {t('publishLater')}
                         </span>
                     </label>
                 </div>
@@ -101,7 +103,7 @@ export function PublishStep({ formData, updateFormData }: PublishStepProps) {
                             <div className="space-y-2">
                                 <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
                                     <CalendarIcon className="w-4 h-4" />
-                                    Date
+                                    {t('date')}
                                 </label>
                                 <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
                                     <PopoverTrigger asChild>
@@ -116,7 +118,7 @@ export function PublishStep({ formData, updateFormData }: PublishStepProps) {
                                             {selectedDate ? (
                                                 format(selectedDate, "PPP")
                                             ) : (
-                                                <span>Pick a date</span>
+                                                <span>{t('pickDate')}</span>
                                             )}
                                         </Button>
                                     </PopoverTrigger>
@@ -134,7 +136,7 @@ export function PublishStep({ formData, updateFormData }: PublishStepProps) {
                             <div className="space-y-2">
                                 <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
                                     <Clock className="w-4 h-4" />
-                                    Time
+                                    {t('time')}
                                 </label>
                                 <Input
                                     type="time"
@@ -152,23 +154,22 @@ export function PublishStep({ formData, updateFormData }: PublishStepProps) {
             <Alert className="bg-orange-50 border-orange-200">
                 <Info className="h-4 w-4 text-orange-600" />
                 <AlertDescription className="text-orange-700">
-                    <strong>💡 Advice</strong>
-                    A good timing can maximize the visibility of your petition. Plan if possible around an event related to your cause.
+                    <strong>{t('advice')}</strong> {t('adviceText')}
                 </AlertDescription>
             </Alert>
 
             {/* Petition Preview Summary */}
             <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-gray-900">Petition Summary</h3>
+                <h3 className="text-lg font-semibold text-gray-900">{t('summary.title')}</h3>
                 <Card className="border-gray-200 shadow-sm">
                     <CardHeader className="pb-3">
                         <div className="flex items-start justify-between">
                             <div className="space-y-1">
                                 <CardTitle className="text-lg leading-tight">
-                                    {formData.title || 'Untitled Petition'}
+                                    {formData.title || t('summary.untitled')}
                                 </CardTitle>
                                 <CardDescription className="text-sm">
-                                    Category: {formData.category || 'Not specified'}
+                                    {t('summary.category')}: {formData.category || t('summary.notSpecified')}
                                 </CardDescription>
                             </div>
                             {formData.pictureUrl && (
@@ -187,21 +188,21 @@ export function PublishStep({ formData, updateFormData }: PublishStepProps) {
                     <CardContent className="space-y-3 pt-0">
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                             <div>
-                                <span className="font-medium text-gray-900">Destination:</span>
+                                <span className="font-medium text-gray-900">{t('summary.destination')}:</span>
                                 <p className="text-gray-600 mt-1">
-                                    {formData.destination || 'Not specified'}
+                                    {formData.destination || t('summary.notSpecified')}
                                 </p>
                             </div>
                             <div>
-                                <span className="font-medium text-gray-900">Signature Goal:</span>
+                                <span className="font-medium text-gray-900">{t('summary.signatureGoal')}:</span>
                                 <p className="text-gray-600 mt-1">
-                                    {formData.signatureGoal?.toLocaleString() || 'Not set'} signatures
+                                    {formData.signatureGoal?.toLocaleString() || t('summary.notSet')} {t('summary.signatures')}
                                 </p>
                             </div>
                         </div>
                         {formData.objective && (
                             <div className="text-sm">
-                                <span className="font-medium text-gray-900">Objective:</span>
+                                <span className="font-medium text-gray-900">{t('summary.objective')}:</span>
                                 <p className="text-gray-600 mt-1 line-clamp-3">
                                     {formData.objective}
                                 </p>
@@ -209,7 +210,7 @@ export function PublishStep({ formData, updateFormData }: PublishStepProps) {
                         )}
                         {formData.videoYoutubeUrl && (
                             <div className="text-sm">
-                                <span className="font-medium text-gray-900">Video:</span>
+                                <span className="font-medium text-gray-900">{t('summary.video')}:</span>
                                 <p className="text-blue-600 mt-1 truncate">
                                     {formData.videoYoutubeUrl}
                                 </p>
@@ -224,15 +225,18 @@ export function PublishStep({ formData, updateFormData }: PublishStepProps) {
                 <div className="flex items-start gap-3">
                     <Info className="w-5 h-5 text-gray-500 mt-0.5 flex-shrink-0" />
                     <div className="text-sm text-gray-600">
-                        <p className="font-medium text-gray-900 mb-1">Ready to publish?</p>
+                        <p className="font-medium text-gray-900 mb-1">{t('publishing.title')}</p>
                         <p>
                             {publishNow 
-                                ? "Your petition will be published immediately and become visible to the public."
-                                : `Your petition will be published${selectedDate ? ` on ${format(selectedDate, "PPP")}` : ' on the selected date'}${formData.scheduledTime ? ` at ${formData.scheduledTime}` : ''}.`
+                                ? t('publishing.publishNowText')
+                                : t('publishing.publishLaterText', {
+                                    date: selectedDate ? t('publishing.onDate', { date: format(selectedDate, "PPP") }) : '',
+                                    time: formData.scheduledTime ? t('publishing.atTime', { time: formData.scheduledTime }) : ''
+                                })
                             }
                         </p>
                         <p className="mt-2">
-                            Once published, you can share it on social media and start collecting signatures.
+                            {t('publishing.description')}
                         </p>
                     </div>
                 </div>

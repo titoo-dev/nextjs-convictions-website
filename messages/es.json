@@ -161,7 +161,24 @@
                 "suggestions": "🔥 Sugerencias",
                 "suggestionsEmpty": "Por favor escribe un título primero",
                 "advice": "💡 Consejo",
-                "adviceText": "Usa verbos de acción. Por ejemplo: \"Prohibir bolsas de plástico en nuestra ciudad\" o \"Proteger el bosque de X\". Evita formulaciones vagas."
+                "adviceText": "Usa verbos de acción. Por ejemplo: \"Prohibir bolsas de plástico en nuestra ciudad\" o \"Proteger el bosque de X\". Evita formulaciones vagas.",
+                "categories": {
+                    "culture": "Cultura",
+                    "religion": "Religión",
+                    "womenRights": "Derechos de las mujeres",
+                    "menRights": "Derechos de los hombres",
+                    "education": "Educación",
+                    "environment": "Medio ambiente",
+                    "racism": "Racismo",
+                    "politics": "Política",
+                    "handicap": "Discapacidad",
+                    "health": "Salud",
+                    "transport": "Transporte",
+                    "immigration": "Inmigración",
+                    "justice": "Justicia",
+                    "animals": "Animales",
+                    "other": "Otro"
+                }
             },
             "objectiveStep": {
                 "title": "Objetivo",
@@ -180,6 +197,7 @@
                 "description": "Expresa tu causa claramente, la IA te ayuda a formular.",
                 "subDescription": "Describe por qué esta petición es importante, cuáles son los hechos, las consecuencias, y las soluciones que propones.",
                 "language": "Español",
+                "defaultContent": "Expresa tu causa claramente, la IA te ayuda a formular.<br>Describe por qué esta petición es importante, cuáles son los hechos, las consecuencias, y las soluciones que propones.",
                 "toolbar": {
                     "undo": "Deshacer",
                     "redo": "Rehacer",
@@ -199,6 +217,10 @@
                         "heading2": "Encabezado 2",
                         "heading3": "Encabezado 3"
                     }
+                },
+                "prompts": {
+                    "enterUrl": "Introduce la URL",
+                    "enterImageUrl": "Introduce la URL de la imagen"
                 },
                 "aiAdvice": "⚠️ Consejo",
                 "aiAdviceText": "Si no te sientes cómodo escribiendo, usa nuestra herramienta de asistencia para obtener una versión clara, persuasiva y bien estructurada.",
@@ -222,6 +244,10 @@
                 "viewOnYoutube": "Ver en YouTube",
                 "advice": "Consejo",
                 "adviceText": "Usa una imagen gratuita o personal. Evita visuales borrosos o genéricos. Las imágenes de alta calidad obtienen más participación.",
+                "fileInfo": {
+                    "file": "Archivo",
+                    "size": "Tamaño"
+                },
                 "errors": {
                     "invalidUrl": "Por favor ingresa una URL válida",
                     "invalidImageUrl": "Por favor ingresa una URL de imagen válida",
@@ -229,7 +255,8 @@
                     "fileTooLarge": "El tamaño del archivo debe ser menor a 10MB",
                     "invalidFileType": "Solo se permiten archivos de imagen",
                     "loadFailed": "Error al cargar la imagen. Por favor verifica la URL.",
-                    "processFailed": "Error al procesar el archivo seleccionado."
+                    "processFailed": "Error al procesar el archivo seleccionado.",
+                    "thumbnailLoadFailed": "Error al cargar la vista previa de la imagen"
                 }
             },
             "signaturesStep": {

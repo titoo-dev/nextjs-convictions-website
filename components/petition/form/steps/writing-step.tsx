@@ -5,11 +5,11 @@ import Link from '@tiptap/extension-link';
 import TextStyle from '@tiptap/extension-text-style';
 import Color from '@tiptap/extension-color';
 import Image from '@tiptap/extension-image';
-// import TextAlign from '@tiptap/extension-text-align';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { useCallback, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 import { 
     Bold, 
     Italic, 
@@ -35,6 +35,8 @@ type WritingStepProps = {
 };
 
 export function WritingStep({ formData, updateFormData }: WritingStepProps) {
+    const t = useTranslations('petition.form.writingStep');
+
     const editor = useEditor({
         extensions: [
             StarterKit,
@@ -53,7 +55,7 @@ export function WritingStep({ formData, updateFormData }: WritingStepProps) {
                 },
             }),
         ],
-        content: formData.content || '<p>Express your cause clearly, the AI helps you formulate.<br>Describe why this petition is important, what are the facts, the consequences, and the solutions you propose.</p>',
+        content: formData.content || `<p>${t('defaultContent')}</p>`,
         onUpdate: ({ editor }) => {
             updateFormData({ content: editor.getHTML() });
         },
@@ -69,18 +71,18 @@ export function WritingStep({ formData, updateFormData }: WritingStepProps) {
     });
 
     const addLink = useCallback(() => {
-        const url = window.prompt('Enter URL');
+        const url = window.prompt(t('prompts.enterUrl'));
         if (url && editor) {
             editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run();
         }
-    }, [editor]);
+    }, [editor, t]);
 
     const addImage = useCallback(() => {
-        const url = window.prompt('Enter image URL');
+        const url = window.prompt(t('prompts.enterImageUrl'));
         if (url && editor) {
             editor.chain().focus().setImage({ src: url }).run();
         }
-    }, [editor]);
+    }, [editor, t]);
 
     const handleHeadingChange = useCallback((value: string) => {
         if (!editor) return;
@@ -120,13 +122,13 @@ export function WritingStep({ formData, updateFormData }: WritingStepProps) {
     return (
         <div className="space-y-6">
             <div>
-                <h2 className="text-2xl font-bold mb-2">Writing</h2>
+                <h2 className="text-2xl font-bold mb-2">{t('title')}</h2>
                 <p className="text-gray-600 mb-4">
-                    Express your cause clearly, the AI helps you formulate.
+                    {t('description')}
                     <br />
-                    Describe why this petition is important, what are the facts, the consequences, and the solutions you propose.
+                    {t('subDescription')}
                 </p>
-                <p className="text-sm text-gray-500 mb-6">English</p>
+                <p className="text-sm text-gray-500 mb-6">{t('language')}</p>
             </div>
 
             {/* Toolbar */}
@@ -140,7 +142,7 @@ export function WritingStep({ formData, updateFormData }: WritingStepProps) {
                             onClick={() => editor.chain().focus().undo().run()}
                             disabled={!editor.can().undo()}
                             className="h-8 w-8 p-0 hover:bg-gray-200"
-                            title="Undo"
+                            title={t('toolbar.undo')}
                         >
                             <Undo className="h-4 w-4" />
                         </Button>
@@ -150,7 +152,7 @@ export function WritingStep({ formData, updateFormData }: WritingStepProps) {
                             onClick={() => editor.chain().focus().redo().run()}
                             disabled={!editor.can().redo()}
                             className="h-8 w-8 p-0 hover:bg-gray-200"
-                            title="Redo"
+                            title={t('toolbar.redo')}
                         >
                             <Redo className="h-4 w-4" />
                         </Button>
@@ -169,10 +171,10 @@ export function WritingStep({ formData, updateFormData }: WritingStepProps) {
                             'paragraph'
                         }
                     >
-                        <option value="paragraph">Normal</option>
-                        <option value="heading1">Heading 1</option>
-                        <option value="heading2">Heading 2</option>
-                        <option value="heading3">Heading 3</option>
+                        <option value="paragraph">{t('toolbar.headings.normal')}</option>
+                        <option value="heading1">{t('toolbar.headings.heading1')}</option>
+                        <option value="heading2">{t('toolbar.headings.heading2')}</option>
+                        <option value="heading3">{t('toolbar.headings.heading3')}</option>
                     </select>
 
                     <Separator orientation="vertical" className="h-6 mx-1" />
@@ -184,7 +186,7 @@ export function WritingStep({ formData, updateFormData }: WritingStepProps) {
                             size="sm"
                             onClick={() => editor.chain().focus().toggleBold().run()}
                             className={`h-8 w-8 p-0 hover:bg-gray-200 ${editor.isActive('bold') ? 'bg-gray-200' : ''}`}
-                            title="Bold"
+                            title={t('toolbar.bold')}
                         >
                             <Bold className="h-4 w-4" />
                         </Button>
@@ -193,7 +195,7 @@ export function WritingStep({ formData, updateFormData }: WritingStepProps) {
                             size="sm"
                             onClick={() => editor.chain().focus().toggleItalic().run()}
                             className={`h-8 w-8 p-0 hover:bg-gray-200 ${editor.isActive('italic') ? 'bg-gray-200' : ''}`}
-                            title="Italic"
+                            title={t('toolbar.italic')}
                         >
                             <Italic className="h-4 w-4" />
                         </Button>
@@ -202,7 +204,7 @@ export function WritingStep({ formData, updateFormData }: WritingStepProps) {
                             size="sm"
                             onClick={() => editor.chain().focus().toggleUnderline().run()}
                             className={`h-8 w-8 p-0 hover:bg-gray-200 ${editor.isActive('underline') ? 'bg-gray-200' : ''}`}
-                            title="Underline"
+                            title={t('toolbar.underline')}
                         >
                             <UnderlineIcon className="h-4 w-4" />
                         </Button>
@@ -211,7 +213,7 @@ export function WritingStep({ formData, updateFormData }: WritingStepProps) {
                             size="sm"
                             onClick={() => editor.chain().focus().toggleStrike().run()}
                             className={`h-8 w-8 p-0 hover:bg-gray-200 ${editor.isActive('strike') ? 'bg-gray-200' : ''}`}
-                            title="Strikethrough"
+                            title={t('toolbar.strikethrough')}
                         >
                             <Strikethrough className="h-4 w-4" />
                         </Button>
@@ -226,7 +228,7 @@ export function WritingStep({ formData, updateFormData }: WritingStepProps) {
                             size="sm"
                             onClick={addImage}
                             className="h-8 w-8 p-0 hover:bg-gray-200"
-                            title="Add Image"
+                            title={t('toolbar.addImage')}
                         >
                             <ImageIcon className="h-4 w-4" />
                         </Button>
@@ -235,15 +237,13 @@ export function WritingStep({ formData, updateFormData }: WritingStepProps) {
                             size="sm"
                             onClick={addLink}
                             className={`h-8 w-8 p-0 hover:bg-gray-200 ${editor.isActive('link') ? 'bg-gray-200' : ''}`}
-                            title="Add Link"
+                            title={t('toolbar.addLink')}
                         >
                             <LinkIcon className="h-4 w-4" />
                         </Button>
                     </div>
 
                     <Separator orientation="vertical" className="h-6 mx-1" />
-
-                   
 
                     <Separator orientation="vertical" className="h-6 mx-1 hidden sm:block" />
 
@@ -254,7 +254,7 @@ export function WritingStep({ formData, updateFormData }: WritingStepProps) {
                             size="sm"
                             onClick={() => editor.chain().focus().toggleBulletList().run()}
                             className={`h-8 w-8 p-0 hover:bg-gray-200 ${editor.isActive('bulletList') ? 'bg-gray-200' : ''}`}
-                            title="Bullet List"
+                            title={t('toolbar.bulletList')}
                         >
                             <List className="h-4 w-4" />
                         </Button>
@@ -263,7 +263,7 @@ export function WritingStep({ formData, updateFormData }: WritingStepProps) {
                             size="sm"
                             onClick={() => editor.chain().focus().toggleOrderedList().run()}
                             className={`h-8 w-8 p-0 hover:bg-gray-200 ${editor.isActive('orderedList') ? 'bg-gray-200' : ''}`}
-                            title="Numbered List"
+                            title={t('toolbar.numberedList')}
                         >
                             <ListOrdered className="h-4 w-4" />
                         </Button>
@@ -272,7 +272,7 @@ export function WritingStep({ formData, updateFormData }: WritingStepProps) {
                             size="sm"
                             onClick={() => editor.chain().focus().toggleBlockquote().run()}
                             className={`h-8 w-8 p-0 hover:bg-gray-200 ${editor.isActive('blockquote') ? 'bg-gray-200' : ''}`}
-                            title="Quote"
+                            title={t('toolbar.quote')}
                         >
                             <Quote className="h-4 w-4" />
                         </Button>
@@ -292,7 +292,7 @@ export function WritingStep({ formData, updateFormData }: WritingStepProps) {
                         className="flex items-center gap-2 text-blue-600 border-blue-200 hover:bg-blue-50 transition-colors"
                     >
                         <Sparkles className="h-4 w-4" />
-                        Assistance IA
+                        {t('toolbar.aiAssistance')}
                     </Button>
                 </div>
             </div>
@@ -300,11 +300,11 @@ export function WritingStep({ formData, updateFormData }: WritingStepProps) {
             {/* AI Usage Warning */}
             <Alert className="bg-orange-50 border-orange-200">
                 <AlertDescription className="text-orange-700">
-                    ⚠️ Advice
+                    {t('aiAdvice')}
                     <br />
-                    If you are not comfortable with writing, use our assistance tool to get a clear, persuasive, and well-structured version.{' '}
+                    {t('aiAdviceText')}{' '}
                     <span className="text-red-500 font-medium">
-                        You have reached 21% of your planned AI assistance usage
+                        {t('aiUsage', { percentage: 21 })}
                     </span>
                 </AlertDescription>
             </Alert>

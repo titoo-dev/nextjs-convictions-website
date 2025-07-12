@@ -155,7 +155,24 @@
                 "suggestions": "🔥 Suggestions",
                 "suggestionsEmpty": "Please write a title first",
                 "advice": "💡 Advice",
-                "adviceText": "Use action verbs. For example: \"Ban plastic bags in our city\" or \"Protect the forest of X\". Avoid vague formulations."
+                "adviceText": "Use action verbs. For example: \"Ban plastic bags in our city\" or \"Protect the forest of X\". Avoid vague formulations.",
+                "categories": {
+                    "culture": "Culture",
+                    "religion": "Religion",
+                    "womenRights": "Women rights",
+                    "menRights": "Men rights",
+                    "education": "Education",
+                    "environment": "Environment",
+                    "racism": "Racism",
+                    "politics": "Politics",
+                    "handicap": "Handicap",
+                    "health": "Health",
+                    "transport": "Transport",
+                    "immigration": "Immigration",
+                    "justice": "Justice",
+                    "animals": "Animals",
+                    "other": "Other"
+                }
             },
             "objectiveStep": {
                 "title": "Objective",
@@ -174,6 +191,7 @@
                 "description": "Express your cause clearly, the AI helps you formulate.",
                 "subDescription": "Describe why this petition is important, what are the facts, the consequences, and the solutions you propose.",
                 "language": "English",
+                "defaultContent": "Express your cause clearly, the AI helps you formulate.<br>Describe why this petition is important, what are the facts, the consequences, and the solutions you propose.",
                 "toolbar": {
                     "undo": "Undo",
                     "redo": "Redo",
@@ -193,6 +211,10 @@
                         "heading2": "Heading 2",
                         "heading3": "Heading 3"
                     }
+                },
+                "prompts": {
+                    "enterUrl": "Enter URL",
+                    "enterImageUrl": "Enter image URL"
                 },
                 "aiAdvice": "⚠️ Advice",
                 "aiAdviceText": "If you are not comfortable with writing, use our assistance tool to get a clear, persuasive, and well-structured version.",
@@ -216,6 +238,10 @@
                 "viewOnYoutube": "View on YouTube",
                 "advice": "Advice",
                 "adviceText": "Use a free image or personal image. Avoid blurry or generic visuals. High-quality images get more engagement.",
+                "fileInfo": {
+                    "file": "File",
+                    "size": "Size"
+                },
                 "errors": {
                     "invalidUrl": "Please enter a valid URL",
                     "invalidImageUrl": "Please enter a valid image URL",
@@ -223,7 +249,8 @@
                     "fileTooLarge": "File size must be less than 10MB",
                     "invalidFileType": "Only image files are allowed",
                     "loadFailed": "Image failed to load. Please check the URL.",
-                    "processFailed": "Failed to process the selected file."
+                    "processFailed": "Failed to process the selected file.",
+                    "thumbnailLoadFailed": "Failed to load image preview"
                 }
             },
             "signaturesStep": {
