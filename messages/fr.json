@@ -1,4 +1,9 @@
 {
+    "navigation": {
+        "createPetition": "Créer une pétition",
+        "supportUs": "Nous soutenir",
+        "login": "Connexion"
+    },
     "home": {
         "title": "Hello world!"
     }

@@ -31,3 +31,15 @@
 - Example: `my-component.tsx`, `user-profile.ts`, `api-client.js`
 - Keep file names descriptive and lowercase
 - Use appropriate file extensions (.tsx for React components, .ts for TypeScript files, .js for JavaScript files)
+
+### Internationalization
+- Use next-intl for all translations and internationalization
+- Create translation files in JSON format under `/messages/` directory
+- Structure translations with clear namespaces (e.g., `common`, `navigation`, `petition`, `auth`)
+- Use the `useTranslations` hook in components for client-side translations
+- Use `getTranslations` in server components and API routes
+- Always provide default fallback text for missing translations
+- Use interpolation for dynamic content in translations
+- Support multiple locales from the start (fr, en as minimum)
+- Configure locale detection and routing in next.config.js
+- Use translation keys that are descriptive and hierarchical (e.g., `petition.form.title`)

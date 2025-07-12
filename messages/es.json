@@ -1,5 +1,7 @@
 {
-    "home": {
-        "title": "Hello world!"
+    "navigation": {
+        "createPetition": "Crear una petición",
+        "supportUs": "Apóyanos",
+        "login": "Iniciar sesión"
     }
 }

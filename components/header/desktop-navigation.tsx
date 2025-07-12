@@ -1,14 +1,21 @@
 import { LanguageSelector } from './language-selector';
 import { NavigationButton } from './navigation-button';
+import { useTranslations } from 'next-intl';
 
 export function DesktopNavigation() {
+	const t = useTranslations('navigation');
+	
 	return (
 		<nav className="hidden md:flex items-center space-x-4">
 			<NavigationButton href="/petition/new">
-				Create a petition
+				{t('createPetition')}
 			</NavigationButton>
-			<NavigationButton href="/support-us">Support Us</NavigationButton>
-			<NavigationButton href="/login">Login</NavigationButton>
+			<NavigationButton href="/support-us">
+				{t('supportUs')}
+			</NavigationButton>
+			<NavigationButton href="/login">
+				{t('login')}
+			</NavigationButton>
 			<LanguageSelector />
 		</nav>
 	);
