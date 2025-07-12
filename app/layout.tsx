@@ -6,6 +6,8 @@ import NextTopLoader from 'nextjs-toploader';
 import { Header } from '@/components/header/header';
 import { Footer } from '@/components/footer/footer';
 import { Toaster } from 'sonner';
+import { NextIntlClientProvider } from 'next-intl';
+import { getLocale, getMessages } from 'next-intl/server';
 
 const inter = Inter({
 	variable: '--font-inter',
@@ -23,26 +25,33 @@ export const metadata: Metadata = {
 	title: 'Mes convictions',
 };
 
-export default function RootLayout({
+export default async function RootLayout({
 	children,
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
+	const locale = await getLocale();
+	const messages = await getMessages();
+
 	return (
-		<html lang="en">
+		<html lang={locale}>
 			<body
 				className={`${inter.variable} ${playfair.variable} antialiased`}
 			>
-				<NextTopLoader
-					showSpinner={false}
-					shadow={false}
-					color="var(--primary)"
-				/>
-				<Header />
-				<div className="bg-background text-foreground">{children}</div>
+				<NextIntlClientProvider messages={messages}>
+					<NextTopLoader
+						showSpinner={false}
+						shadow={false}
+						color="var(--primary)"
+					/>
+					<Header />
+					<div className="bg-background text-foreground">
+						{children}
+					</div>
 
-				<Footer />
-				<Toaster />
+					<Footer />
+					<Toaster />
+				</NextIntlClientProvider>
 			</body>
 		</html>
 	);
