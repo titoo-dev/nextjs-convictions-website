@@ -197,8 +197,7 @@
                 "title": "Writing",
                 "description": "Express your cause clearly, the AI helps you formulate.",
                 "subDescription": "Describe why this petition is important, what are the facts, the consequences, and the solutions you propose.",
-                "language": "English",
-                "defaultContent": "Express your cause clearly, the AI helps you formulate.<br/>Describe why this petition is important, what are the facts, the consequences, and the solutions you propose.",
+                "defaultContent": "Express your cause clearly, the AI helps you formulate. Describe why this petition is important, what are the facts, the consequences, and the solutions you propose.",
                 "toolbar": {
                     "undo": "Undo",
                     "redo": "Redo",

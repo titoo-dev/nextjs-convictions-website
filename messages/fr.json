@@ -203,8 +203,7 @@
                 "title": "Rédaction",
                 "description": "Exprimez votre cause clairement, l'IA vous aide à formuler.",
                 "subDescription": "Décrivez pourquoi cette pétition est importante, quels sont les faits, les conséquences, et les solutions que vous proposez.",
-                "language": "Français",
-                "defaultContent": "Exprimez votre cause clairement, l'IA vous aide à formuler.<br/>Décrivez pourquoi cette pétition est importante, quels sont les faits, les conséquences, et les solutions que vous proposez.",
+                "defaultContent": "Exprimez votre cause clairement, l'IA vous aide à formuler. Décrivez pourquoi cette pétition est importante, quels sont les faits, les conséquences, et les solutions que vous proposez.",
                 "toolbar": {
                     "undo": "Annuler",
                     "redo": "Rétablir",

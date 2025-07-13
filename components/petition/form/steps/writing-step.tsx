@@ -1,313 +1,269 @@
-import { useEditor, EditorContent } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
-import Underline from '@tiptap/extension-underline';
-import Link from '@tiptap/extension-link';
-import TextStyle from '@tiptap/extension-text-style';
-import Color from '@tiptap/extension-color';
-import Image from '@tiptap/extension-image';
-import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { useCallback, useEffect } from 'react';
+'use client';
+
+import { useState, useEffect, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
-import { 
-    Bold, 
-    Italic, 
-    Underline as UnderlineIcon, 
-    Strikethrough, 
-    List, 
-    ListOrdered, 
-    Quote, 
-    Link as LinkIcon, 
-    Image as ImageIcon,
-    Undo,
-    Redo,
-    Sparkles
-} from 'lucide-react';
+import dynamic from 'next/dynamic';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Button } from '@/components/ui/button';
+import { Sparkles } from 'lucide-react';
+import 'react-quill-new/dist/quill.snow.css';
+
+// Dynamically import ReactQuill to avoid SSR issues
+const ReactQuill = dynamic(() => import('react-quill-new'), {
+	ssr: false,
+	loading: () => (
+		<div className="border rounded-lg bg-white">
+			<div className="h-12 bg-gray-50 border-b animate-pulse"></div>
+			<div className="h-64 p-4">
+				<div className="h-4 bg-gray-200 rounded w-3/4 mb-2 animate-pulse"></div>
+				<div className="h-4 bg-gray-200 rounded w-1/2 mb-2 animate-pulse"></div>
+				<div className="h-4 bg-gray-200 rounded w-5/6 animate-pulse"></div>
+			</div>
+		</div>
+	),
+});
 
 type PetitionData = {
-    content: string;
+	content: string;
 };
 
 type WritingStepProps = {
-    formData: PetitionData;
-    updateFormData: (updates: Partial<PetitionData>) => void;
+	formData: PetitionData;
+	updateFormData: (updates: Partial<PetitionData>) => void;
 };
 
 export function WritingStep({ formData, updateFormData }: WritingStepProps) {
-    const t = useTranslations('petition.form.writingStep');
+	const t = useTranslations('petition.form.writingStep');
+	const [editorContent, setEditorContent] = useState('');
 
-    const editor = useEditor({
-        extensions: [
-            StarterKit,
-            Underline,
-            TextStyle,
-            Color,
-            Link.configure({
-                openOnClick: false,
-                HTMLAttributes: {
-                    class: 'text-blue-600 hover:text-blue-800 underline',
-                },
-            }),
-            Image.configure({
-                HTMLAttributes: {
-                    class: 'max-w-full h-auto rounded-lg',
-                },
-            }),
-        ],
-        content: formData.content || `<p>${t('defaultContent')}</p>`,
-        onUpdate: ({ editor }) => {
-            updateFormData({ content: editor.getHTML() });
-        },
-        editorProps: {
-            attributes: {
-                class: 'prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none min-h-[300px] p-4',
-            },
-        },
-        enableContentCheck: true,
-        onContentError: ({ error }) => {
-            console.error('Editor content error:', error);
-        },
-    });
+	console.log('WritingStep rendered with content:', editorContent);
 
-    const addLink = useCallback(() => {
-        const url = window.prompt(t('prompts.enterUrl'));
-        if (url && editor) {
-            editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run();
-        }
-    }, [editor, t]);
+	// Custom toolbar configuration
+	const modules = useMemo(
+		() => ({
+			toolbar: {
+				container: [
+					[{ header: [] }],
+					['bold', 'italic', 'underline', 'strike'],
+					['image', 'video'],
+					[
+						{ align: '' },
+						{ align: 'center' },
+						{ align: 'right' },
+						{ align: 'justify' },
+					],
+					[{ size: [] }],
+					[{ list: 'ordered' }, { list: 'bullet' }],
+					['blockquote', 'link'],
+				],
+			},
+			clipboard: {
+				matchVisual: false,
+			},
+		}),
+		[]
+	);
 
-    const addImage = useCallback(() => {
-        const url = window.prompt(t('prompts.enterImageUrl'));
-        if (url && editor) {
-            editor.chain().focus().setImage({ src: url }).run();
-        }
-    }, [editor, t]);
+	const formats = [
+		'header',
+		'font',
+		'size',
+		'bold',
+		'italic',
+		'underline',
+		'strike',
+		'blockquote',
+		'list',
+		'link',
+		'image',
+		'video',
+		'align',
+	];
 
-    const handleHeadingChange = useCallback((value: string) => {
-        if (!editor) return;
-        
-        if (value === 'paragraph') {
-            editor.chain().focus().setParagraph().run();
-        } else if (value.startsWith('heading')) {
-            const level = parseInt(value.replace('heading', '')) as 1 | 2 | 3 | 4 | 5 | 6;
-            if (level >= 1 && level <= 6) {
-                editor.chain().focus().toggleHeading({ level }).run();
-            }
-        }
-    }, [editor]);
+	// Handle content changes
+	const handleChange = (content: string) => {
+		setEditorContent(content);
+		updateFormData({ content });
+	};
 
-    // Cleanup on unmount
-    useEffect(() => {
-        return () => {
-            if (editor) {
-                editor.destroy();
-            }
-        };
-    }, [editor]);
+	// Initialize content on mount
+	useEffect(() => {
+		if (formData.content && formData.content !== editorContent) {
+			setEditorContent(formData.content);
+		}
+	}, [formData.content]);
 
-    if (!editor) {
-        return (
-            <div className="space-y-6">
-                <div className="animate-pulse">
-                    <div className="h-8 bg-gray-200 rounded w-1/4 mb-4"></div>
-                    <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
-                    <div className="h-4 bg-gray-200 rounded w-1/2 mb-6"></div>
-                    <div className="h-64 bg-gray-200 rounded"></div>
-                </div>
-            </div>
-        );
-    }
+	return (
+		<div className="space-y-6">
+			<div>
+				<h2 className="text-2xl font-bold mb-2">{t('title')}</h2>
+				<p className="text-gray-600 mb-4">
+					{t('description')}
+					<br />
+					{t('subDescription')}
+				</p>
+			</div>
 
-    return (
-        <div className="space-y-6">
-            <div>
-                <h2 className="text-2xl font-bold mb-2">{t('title')}</h2>
-                <p className="text-gray-600 mb-4">
-                    {t('description')}
-                    <br />
-                    {t('subDescription')}
-                </p>
-                <p className="text-sm text-gray-500 mb-6">{t('language')}</p>
-            </div>
+			{/* React Quill Editor */}
+			<div className="border rounded-lg bg-white overflow-hidden">
+				<style jsx global>{`
+					.ql-toolbar {
+						border-bottom: 1px solid #e5e7eb !important;
+						border-top: none !important;
+						border-left: none !important;
+						border-right: none !important;
+						background-color: #f9fafb !important;
+						padding: 20px !important;
+					}
 
-            {/* Toolbar */}
-            <div className="border rounded-lg bg-white">
-                <div className="flex flex-wrap items-center gap-1 p-2 border-b bg-gray-50/50">
-                    {/* Undo/Redo */}
-                    <div className="flex items-center gap-1">
-                        <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => editor.chain().focus().undo().run()}
-                            disabled={!editor.can().undo()}
-                            className="h-8 w-8 p-0 hover:bg-gray-200"
-                            title={t('toolbar.undo')}
-                        >
-                            <Undo className="h-4 w-4" />
-                        </Button>
-                        <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => editor.chain().focus().redo().run()}
-                            disabled={!editor.can().redo()}
-                            className="h-8 w-8 p-0 hover:bg-gray-200"
-                            title={t('toolbar.redo')}
-                        >
-                            <Redo className="h-4 w-4" />
-                        </Button>
-                    </div>
+					.ql-container {
+						border: none !important;
+						font-size: 16px !important;
+						min-height: 300px !important;
+					}
 
-                    <Separator orientation="vertical" className="h-6 mx-1" />
+					.ql-editor {
+						min-height: 300px !important;
+						max-height: 500px !important;
+						overflow-y: auto !important;
+						padding: 16px !important;
+						line-height: 1.6 !important;
+					}
 
-                    {/* Text Formatting */}
-                    <select 
-                        className="text-sm border rounded px-2 py-1 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        onChange={(e) => handleHeadingChange(e.target.value)}
-                        value={
-                            editor.isActive('heading', { level: 1 }) ? 'heading1' :
-                            editor.isActive('heading', { level: 2 }) ? 'heading2' :
-                            editor.isActive('heading', { level: 3 }) ? 'heading3' :
-                            'paragraph'
-                        }
-                    >
-                        <option value="paragraph">{t('toolbar.headings.normal')}</option>
-                        <option value="heading1">{t('toolbar.headings.heading1')}</option>
-                        <option value="heading2">{t('toolbar.headings.heading2')}</option>
-                        <option value="heading3">{t('toolbar.headings.heading3')}</option>
-                    </select>
+					.ql-editor.ql-blank::before {
+						color: #9ca3af !important;
+						font-style: italic !important;
+					}
 
-                    <Separator orientation="vertical" className="h-6 mx-1" />
+					.ql-toolbar .ql-formats {
+						margin-right: 8px !important;
+					}
 
-                    {/* Basic Formatting */}
-                    <div className="flex items-center gap-1">
-                        <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => editor.chain().focus().toggleBold().run()}
-                            className={`h-8 w-8 p-0 hover:bg-gray-200 ${editor.isActive('bold') ? 'bg-gray-200' : ''}`}
-                            title={t('toolbar.bold')}
-                        >
-                            <Bold className="h-4 w-4" />
-                        </Button>
-                        <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => editor.chain().focus().toggleItalic().run()}
-                            className={`h-8 w-8 p-0 hover:bg-gray-200 ${editor.isActive('italic') ? 'bg-gray-200' : ''}`}
-                            title={t('toolbar.italic')}
-                        >
-                            <Italic className="h-4 w-4" />
-                        </Button>
-                        <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => editor.chain().focus().toggleUnderline().run()}
-                            className={`h-8 w-8 p-0 hover:bg-gray-200 ${editor.isActive('underline') ? 'bg-gray-200' : ''}`}
-                            title={t('toolbar.underline')}
-                        >
-                            <UnderlineIcon className="h-4 w-4" />
-                        </Button>
-                        <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => editor.chain().focus().toggleStrike().run()}
-                            className={`h-8 w-8 p-0 hover:bg-gray-200 ${editor.isActive('strike') ? 'bg-gray-200' : ''}`}
-                            title={t('toolbar.strikethrough')}
-                        >
-                            <Strikethrough className="h-4 w-4" />
-                        </Button>
-                    </div>
+					.ql-toolbar button {
+						margin: 0 1px !important;
+						border-radius: 4px !important;
+						transition: background-color 0.2s ease !important;
+					}
 
-                    <Separator orientation="vertical" className="h-6 mx-1" />
+					.ql-toolbar button:hover {
+						background-color: #e5e7eb !important;
+					}
 
-                    {/* Media */}
-                    <div className="flex items-center gap-1">
-                        <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={addImage}
-                            className="h-8 w-8 p-0 hover:bg-gray-200"
-                            title={t('toolbar.addImage')}
-                        >
-                            <ImageIcon className="h-4 w-4" />
-                        </Button>
-                        <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={addLink}
-                            className={`h-8 w-8 p-0 hover:bg-gray-200 ${editor.isActive('link') ? 'bg-gray-200' : ''}`}
-                            title={t('toolbar.addLink')}
-                        >
-                            <LinkIcon className="h-4 w-4" />
-                        </Button>
-                    </div>
+					.ql-toolbar button.ql-active {
+						background-color: #e5e7eb !important;
+					}
 
-                    <Separator orientation="vertical" className="h-6 mx-1" />
+					.ql-toolbar .ql-picker {
+						margin: 0 2px !important;
+					}
 
-                    <Separator orientation="vertical" className="h-6 mx-1 hidden sm:block" />
+					.ql-toolbar .ql-picker-label {
+						padding: 0px 8px !important;
+						border-radius: 4px !important;
+						transition: background-color 0.2s ease !important;
+					}
 
-                    {/* Lists */}
-                    <div className="flex items-center gap-1">
-                        <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => editor.chain().focus().toggleBulletList().run()}
-                            className={`h-8 w-8 p-0 hover:bg-gray-200 ${editor.isActive('bulletList') ? 'bg-gray-200' : ''}`}
-                            title={t('toolbar.bulletList')}
-                        >
-                            <List className="h-4 w-4" />
-                        </Button>
-                        <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => editor.chain().focus().toggleOrderedList().run()}
-                            className={`h-8 w-8 p-0 hover:bg-gray-200 ${editor.isActive('orderedList') ? 'bg-gray-200' : ''}`}
-                            title={t('toolbar.numberedList')}
-                        >
-                            <ListOrdered className="h-4 w-4" />
-                        </Button>
-                        <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => editor.chain().focus().toggleBlockquote().run()}
-                            className={`h-8 w-8 p-0 hover:bg-gray-200 ${editor.isActive('blockquote') ? 'bg-gray-200' : ''}`}
-                            title={t('toolbar.quote')}
-                        >
-                            <Quote className="h-4 w-4" />
-                        </Button>
-                    </div>
-                </div>
+					.ql-editor h1 {
+						font-size: 2em !important;
+						font-weight: bold !important;
+						margin-bottom: 0.5em !important;
+					}
 
-                {/* Editor Content */}
-                <div className="min-h-[300px] max-h-[500px] overflow-y-auto">
-                    <EditorContent editor={editor} />
-                </div>
+					.ql-editor h2 {
+						font-size: 1.5em !important;
+						font-weight: bold !important;
+						margin-bottom: 0.5em !important;
+					}
 
-                {/* AI Assistance Button */}
-                <div className="p-3 border-t bg-gray-50/50">
-                    <Button 
-                        variant="outline" 
-                        size="sm" 
-                        className="flex items-center gap-2 text-blue-600 border-blue-200 hover:bg-blue-50 transition-colors"
-                    >
-                        <Sparkles className="h-4 w-4" />
-                        {t('toolbar.aiAssistance')}
-                    </Button>
-                </div>
-            </div>
+					.ql-editor h3 {
+						font-size: 1.25em !important;
+						font-weight: bold !important;
+						margin-bottom: 0.5em !important;
+					}
 
-            {/* AI Usage Warning */}
-            <Alert className="bg-orange-50 border-orange-200">
-                <AlertDescription className="text-orange-700">
-                    {t('aiAdvice')}
-                    <br />
-                    {t('aiAdviceText')}{' '}
-                    <span className="text-red-500 font-medium">
-                        {t('aiUsage', { percentage: 21 })}
-                    </span>
-                </AlertDescription>
-            </Alert>
-        </div>
-    );
+					.ql-editor blockquote {
+						border-left: 4px solid #e5e7eb !important;
+						padding-left: 16px !important;
+						margin: 16px 0 !important;
+						color: #6b7280 !important;
+						font-style: italic !important;
+					}
+
+					.ql-editor ul,
+					.ql-editor ol {
+						margin: 16px 0 !important;
+						padding-left: 24px !important;
+					}
+
+					.ql-editor a {
+						color: #2563eb !important;
+						text-decoration: underline !important;
+					}
+
+					.ql-editor a:hover {
+						color: #1d4ed8 !important;
+					}
+
+					.ql-editor img {
+						max-width: 100% !important;
+						height: auto !important;
+						border-radius: 8px !important;
+						margin: 16px 0 !important;
+					}
+
+					@media (max-width: 640px) {
+						.ql-toolbar {
+							padding: 8px !important;
+						}
+
+						.ql-toolbar .ql-formats {
+							margin-right: 4px !important;
+						}
+
+						.ql-toolbar button {
+							padding: 3px !important;
+						}
+
+						.ql-editor {
+							padding: 12px !important;
+							font-size: 14px !important;
+						}
+					}
+				`}</style>
+
+				<ReactQuill
+					theme="snow"
+					value={editorContent}
+					onChange={handleChange}
+					modules={modules}
+					formats={formats}
+					placeholder={t('defaultContent')}
+				/>
+			</div>
+
+			{/* AI Assistance Section */}
+			<div className="bg-gray-50 rounded-lg p-4 border">
+				<Button
+					variant="outline"
+					size="sm"
+					className="flex items-center gap-2 text-blue-600 border-blue-200 hover:bg-blue-50 transition-colors"
+				>
+					<Sparkles className="h-4 w-4" />
+					{t('toolbar.aiAssistance')}
+				</Button>
+			</div>
+
+			{/* AI Usage Warning */}
+			<Alert className="bg-orange-50 border-orange-200">
+				<AlertDescription className="text-orange-700">
+					{t('aiAdvice')}
+					<br />
+					{t('aiAdviceText')}{' '}
+					<span className="text-red-500 font-medium">
+						{t('aiUsage', { percentage: 21 })}
+					</span>
+				</AlertDescription>
+			</Alert>
+		</div>
+	);
 }
