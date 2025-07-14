@@ -151,7 +151,9 @@
                 "back": "Retour",
                 "previous": "Précédent",
                 "next": "Suivant",
-                "publishPetition": "Publier la pétition"
+                "publishPetition": "Publier la pétition",
+                "draftRestored": "Votre brouillon a été restauré d'une session précédente.",
+                "startFresh": "Recommencer"
             },
             "steps": {
                 "title": "Titre",

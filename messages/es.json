@@ -151,7 +151,9 @@
                 "back": "Atrás",
                 "previous": "Anterior",
                 "next": "Siguiente",
-                "publishPetition": "Publicar Petición"
+                "publishPetition": "Publicar Petición",
+                "draftRestored": "Tu borrador ha sido restaurado de una sesión anterior.",
+                "startFresh": "Empezar de Nuevo"
             },
             "steps": {
                 "title": "Título",
