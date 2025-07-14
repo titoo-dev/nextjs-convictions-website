@@ -3,12 +3,14 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { PublicPetition } from '@/schemas/public-petition';
+import { useTranslations } from 'next-intl';
 
 type SignatureCounterProps = {
     petition: PublicPetition;
 };
 
 export function SignatureCounter({ petition }: SignatureCounterProps) {
+    const t = useTranslations('petition.signatures');
     const progressPercentage = Math.min((petition.usersSignedNumber / petition.signatureGoal) * 100, 100);
     const signaturesNeeded = petition.signatureGoal - petition.usersSignedNumber;
 
@@ -20,7 +22,7 @@ export function SignatureCounter({ petition }: SignatureCounterProps) {
                         {petition.usersSignedNumber.toLocaleString()}
                     </div>
                     <Badge variant="secondary" className="mb-3 sm:mb-4 text-xs">
-                        Verified signatures
+                        {t('verified')}
                     </Badge>
                     <div className="w-full bg-gray-200 rounded-full h-2 mb-3 sm:mb-4">
                         <div
@@ -32,8 +34,13 @@ export function SignatureCounter({ petition }: SignatureCounterProps) {
                     </div>
                     <p className="text-xs sm:text-sm text-gray-500 leading-relaxed px-2">
                         {signaturesNeeded > 0 
-                            ? `${signaturesNeeded.toLocaleString()} signatures needed to reach ${petition.signatureGoal.toLocaleString()}`
-                            : `Goal of ${petition.signatureGoal.toLocaleString()} signatures reached!`
+                            ? t('needed', { 
+                                count: signaturesNeeded.toLocaleString(), 
+                                goal: petition.signatureGoal.toLocaleString() 
+                              })
+                            : t('goalReached', { 
+                                goal: petition.signatureGoal.toLocaleString() 
+                              })
                         }
                     </p>
                 </div>

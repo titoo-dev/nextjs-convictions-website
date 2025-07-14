@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 import {
 	validateImageUrl,
 	validateYouTubeUrl,
@@ -30,6 +31,7 @@ type MediaStepProps = {
 };
 
 export function MediaStep({ formData, updateFormData }: MediaStepProps) {
+	const t = useTranslations('petition.form.mediaStep');
 	const [dragActive, setDragActive] = useState(false);
 	const [imageValidation, setImageValidation] = useState<{
 		isValid: boolean;
@@ -148,7 +150,7 @@ export function MediaStep({ formData, updateFormData }: MediaStepProps) {
 				setIsLoadingImage(false);
 				setImageValidation({
 					isValid: false,
-					error: 'Failed to process the selected file.',
+					error: t('errors.thumbnailLoadFailed'),
 				});
 				URL.revokeObjectURL(localUrl);
 			};
@@ -158,7 +160,7 @@ export function MediaStep({ formData, updateFormData }: MediaStepProps) {
 			setIsLoadingImage(false);
 			setImageValidation({
 				isValid: false,
-				error: 'Failed to process the selected file.',
+				error: t('errors.processFailed'),
 			});
 		}
 	};
@@ -204,17 +206,16 @@ export function MediaStep({ formData, updateFormData }: MediaStepProps) {
 		<div className="space-y-6">
 			<div>
 				<h2 className="text-2xl font-bold mb-2">
-					Add an image or video
+					{t('title')}
 				</h2>
 				<p className="text-gray-600 mb-6">
-					Make your petition more visual and impactful. Add a strong
-					image or a short explanatory video to illustrate your cause.
+					{t('description')}
 				</p>
 			</div>
 
 			{/* Media Type Selection */}
 			<div className="space-y-4">
-				<p className="text-sm font-medium text-gray-700">I will use</p>
+				<p className="text-sm font-medium text-gray-700">{t('mediaType')}</p>
 
 				<div className="space-y-3">
 					<label className="flex items-center space-x-3 cursor-pointer group">
@@ -229,7 +230,7 @@ export function MediaStep({ formData, updateFormData }: MediaStepProps) {
 							className="h-4 w-4 text-orange-500 border-gray-300 focus:ring-orange-500"
 						/>
 						<span className="text-gray-900 group-hover:text-gray-700 transition-colors">
-							An image
+							{t('image')}
 						</span>
 					</label>
 
@@ -245,7 +246,7 @@ export function MediaStep({ formData, updateFormData }: MediaStepProps) {
 							className="h-4 w-4 text-orange-500 border-gray-300 focus:ring-orange-500"
 						/>
 						<span className="text-gray-900 group-hover:text-gray-700 transition-colors">
-							A video YouTube
+							{t('videoYoutube')}
 						</span>
 					</label>
 				</div>
@@ -257,11 +258,11 @@ export function MediaStep({ formData, updateFormData }: MediaStepProps) {
 					{/* URL Input */}
 					<div className="space-y-2">
 						<label className="text-sm font-medium text-gray-700">
-							Image URL
+							{t('imageUrl')}
 						</label>
 						<div className="relative">
 							<Input
-								placeholder="https://example.com/image.jpg"
+								placeholder={t('imageUrlPlaceholder')}
 								value={formData.pictureUrl || ''}
 								onChange={(e) =>
 									updateFormData({
@@ -299,7 +300,7 @@ export function MediaStep({ formData, updateFormData }: MediaStepProps) {
 						</div>
 						<div className="relative flex justify-center text-sm">
 							<span className="px-2 bg-white text-gray-500">
-								or
+								{t('or')}
 							</span>
 						</div>
 					</div>
@@ -328,13 +329,13 @@ export function MediaStep({ formData, updateFormData }: MediaStepProps) {
 									onClick={handleFileSelect}
 								>
 									<Upload className="w-4 h-4" />
-									Select a file
+									{t('selectFile')}
 								</Button>
 								<p className="text-sm text-gray-500">
-									or drag and drop it here
+									{t('dragAndDrop')}
 								</p>
 								<p className="text-xs text-gray-400">
-									JPG, PNG, GIF, WebP, SVG (max 10MB)
+									{t('fileFormats')}
 								</p>
 							</div>
 						</div>
@@ -353,7 +354,7 @@ export function MediaStep({ formData, updateFormData }: MediaStepProps) {
 									onError={() => {
 										setImageValidation({
 											isValid: false,
-											error: 'Failed to load image preview',
+											error: t('errors.thumbnailLoadFailed'),
 										});
 										if (
 											formData.pictureUrl &&
@@ -378,9 +379,9 @@ export function MediaStep({ formData, updateFormData }: MediaStepProps) {
 							</div>
 							{uploadedFile && (
 								<div className="text-xs text-gray-500 flex items-center justify-between">
-									<span>File: {uploadedFile.name}</span>
+									<span>{t('fileInfo.file')}: {uploadedFile.name}</span>
 									<span>
-										Size:{' '}
+										{t('fileInfo.size')}:{' '}
 										{(
 											uploadedFile.size /
 											1024 /
@@ -400,11 +401,11 @@ export function MediaStep({ formData, updateFormData }: MediaStepProps) {
 				<div className="space-y-4">
 					<div className="space-y-2">
 						<label className="text-sm font-medium text-gray-700">
-							YouTube URL
+							{t('youtubeUrl')}
 						</label>
 						<div className="relative">
 							<Input
-								placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+								placeholder={t('youtubeUrlPlaceholder')}
 								value={formData.videoYoutubeUrl || ''}
 								onChange={(e) =>
 									updateFormData({
@@ -434,7 +435,7 @@ export function MediaStep({ formData, updateFormData }: MediaStepProps) {
 						{youtubeValidation && youtubeValidation.isValid && (
 							<p className="text-sm text-green-600 flex items-center gap-1">
 								<CheckCircle className="w-3 h-3" />
-								Valid YouTube URL detected
+								{t('validYoutubeUrl')}
 							</p>
 						)}
 					</div>
@@ -454,7 +455,6 @@ export function MediaStep({ formData, updateFormData }: MediaStepProps) {
 										className="object-cover"
 										sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
 										onError={() => {
-											// Handle thumbnail load error - could show fallback UI
 											console.warn('YouTube thumbnail failed to load');
 										}}
 									/>
@@ -466,7 +466,7 @@ export function MediaStep({ formData, updateFormData }: MediaStepProps) {
 									className="inline-flex items-center gap-1 text-sm text-blue-600 hover:text-blue-800"
 								>
 									<ExternalLink className="w-3 h-3" />
-									View on YouTube
+									{t('viewOnYoutube')}
 								</a>
 							</div>
 						)}
@@ -477,9 +477,7 @@ export function MediaStep({ formData, updateFormData }: MediaStepProps) {
 			<Alert className="bg-orange-50 border-orange-200">
 				<AlertTriangle className="h-4 w-4 text-orange-600" />
 				<AlertDescription className="text-orange-700">
-					<strong>Advice</strong>
-					Use a free image or personal image. Avoid blurry or generic
-					visuals. High-quality images get more engagement.
+					<strong>{t('advice')}</strong> {t('adviceText')}
 				</AlertDescription>
 			</Alert>
 		</div>

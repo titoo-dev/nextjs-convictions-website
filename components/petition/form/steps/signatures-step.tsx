@@ -1,5 +1,6 @@
 import { Input } from '@/components/ui/input';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { useTranslations } from 'next-intl';
 
 type PetitionData = {
     signatureGoal: number;
@@ -11,20 +12,20 @@ type SignaturesStepProps = {
 };
 
 export function SignaturesStep({ formData, updateFormData }: SignaturesStepProps) {
+    const t = useTranslations('petition.form.signaturesStep');
+
     return (
         <div className="space-y-6">
             <div>
-                <h2 className="text-2xl font-bold mb-2">Desired number of signatures</h2>
-                <p className="text-gray-600 mb-6">
-                    Set a realistic but mobilizing goal. Determine the number of signatures you want to reach to give weight to your message.
-                </p>
+                <h2 className="text-2xl font-bold mb-2">{t('title')}</h2>
+                <p className="text-gray-600 mb-6">{t('description')}</p>
             </div>
 
             <div>
                 <Input
                     type="number"
                     min="1"
-                    placeholder="1000"
+                    placeholder={t('placeholder')}
                     value={formData.signatureGoal || ''}
                     onChange={(e) => updateFormData({ signatureGoal: Number(e.target.value) || 0 })}
                     className="text-lg py-3 px-4"
@@ -33,8 +34,7 @@ export function SignaturesStep({ formData, updateFormData }: SignaturesStepProps
 
             <Alert className="bg-orange-50 border-orange-200">
                 <AlertDescription className="text-orange-700">
-                    <strong>💡 Advice</strong>
-                    Start with an accessible goal (ex: 500, 1000), you can increase it if your petition gains popularity.
+                    <strong>{t('advice')}</strong> {t('adviceText')}
                 </AlertDescription>
             </Alert>
         </div>

@@ -4,17 +4,20 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Target, MapPin } from 'lucide-react';
 import { PublicPetition } from '@/schemas/public-petition';
+import { useTranslations } from 'next-intl';
 
 type PetitionDetailsProps = {
     petition: PublicPetition;
 };
 
 export function PetitionDetails({ petition }: PetitionDetailsProps) {
+    const t = useTranslations('petition.details');
+
     return (
         <Card className="shadow-none">
             <CardHeader>
                 <CardTitle className="text-lg sm:text-xl">
-                    Détails de la pétition
+                    {t('title')}
                 </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -23,7 +26,7 @@ export function PetitionDetails({ petition }: PetitionDetailsProps) {
                         <Target className="h-4 w-4 sm:h-5 sm:w-5 mt-0.5 shrink-0" />
                         <div className="min-w-0 flex-1">
                             <p className="font-medium text-xs sm:text-sm text-gray-500">
-                                Objectif
+                                {t('objective')}
                             </p>
                             <p className="text-sm break-words">
                                 {petition.objective}
@@ -34,7 +37,7 @@ export function PetitionDetails({ petition }: PetitionDetailsProps) {
                         <MapPin className="h-4 w-4 sm:h-5 sm:w-5 mt-0.5 shrink-0" />
                         <div className="min-w-0 flex-1">
                             <p className="font-medium text-xs sm:text-sm text-gray-500">
-                                Destination
+                                {t('destination')}
                             </p>
                             <p className="text-sm break-words">
                                 {petition.destination}

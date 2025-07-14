@@ -5,15 +5,17 @@ import { Suspense } from "react";
 import { PetitionGridSkeleton } from "./petition-grid-skeleton";
 import { FilterSection } from "./filter-section";
 import { EmptyState } from "./empty-state";
+import { getLocale } from "next-intl/server";
 
 type PetitionContentProps = {
     category?: string;
 };
 
 async function PetitionContent({ category }: PetitionContentProps) {
+    const locale = await getLocale();
     const { petitions: popularPetitions } = await getPublicPetitions({
         category: category || 'ALL',
-        language: 'FR',
+        language: locale.toUpperCase() as 'FR' | 'EN' | 'ES',
     });
 
     if (popularPetitions.length === 0) {

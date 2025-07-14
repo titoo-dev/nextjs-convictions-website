@@ -1,0 +1,345 @@
+{
+    "navigation": {
+        "createPetition": "Crear una petición",
+        "supportUs": "Apóyanos",
+        "login": "Iniciar sesión"
+    },
+    "header": {
+        "logoAlt": "Logo de Mis convicciones",
+        "logoText": "Mis convicciones",
+        "menuTitle": "Navegación",
+        "languages": {
+            "english": "English",
+            "french": "Français",
+            "spanish": "Español"
+        }
+    },
+    "hero": {
+        "badge": "Millones de voces unidas",
+        "heading": {
+            "makeYourVoice": "Haz oír tu",
+            "heard": "voz"
+        },
+        "subheading": "Somos millones. Juntos, creemos el cambio.",
+        "cta": "Crear una petición"
+    },
+    "footer": {
+        "quickLinks": {
+            "title": "Enlaces rápidos",
+            "home": "Inicio",
+            "createPetition": "Crear una petición",
+            "supportUs": "Apóyanos"
+        },
+        "community": {
+            "title": "Comunidad",
+            "facebook": "Facebook",
+            "instagram": "Instagram",
+            "twitter": "X.com"
+        },
+        "security": {
+            "title": "Seguridad",
+            "dataPolicy": "Política de datos",
+            "termsOfUse": "Términos de uso"
+        },
+        "copyright": "© 2025 Mis convicciones. Todos los derechos reservados"
+    },
+    "petitions": {
+        "popularSection": {
+            "title": "Peticiones Populares",
+            "description": "Descubre las causas que movilizan a nuestra comunidad y únete al movimiento"
+        },
+        "categories": {
+            "all": "Todas",
+            "culture": "Cultura",
+            "religion": "Religión",
+            "womenRights": "Derechos de las Mujeres",
+            "menRights": "Derechos de los Hombres",
+            "education": "Educación",
+            "environment": "Medio Ambiente",
+            "racism": "Racismo",
+            "politics": "Política",
+            "handicap": "Discapacidad",
+            "health": "Salud",
+            "transport": "Transporte",
+            "immigration": "Inmigración",
+            "justice": "Justicia",
+            "animals": "Animales"
+        },
+        "card": {
+            "signatures": "Firmas",
+            "signButton": "Firmar"
+        },
+        "emptyState": {
+            "title": "No se encontraron peticiones",
+            "description": "Actualmente no hay peticiones disponibles para esta categoría."
+        },
+        "viewAll": "Ver todas las peticiones"
+    },
+    "petition": {
+        "details": {
+            "title": "Detalles de la petición",
+            "objective": "Objetivo",
+            "destination": "Destinatario"
+        },
+        "comments": {
+            "title": "Comentarios",
+            "titleWithCount": "Comentarios ({count})",
+            "empty": "Aún no hay comentarios. ¡Sé el primero en compartir tus pensamientos!",
+            "description": "Lee lo que otros dicen sobre esta petición",
+            "yourComment": "Tu comentario"
+        },
+        "author": {
+            "reportPolicy": "Reportar política"
+        },
+        "content": {
+            "imageAlt": "Imagen del contenido de la petición"
+        },
+        "hero": {
+            "placeholderImage": "/placeholder-petition.jpg"
+        },
+        "signForm": {
+            "title": "Firmar esta petición",
+            "alreadySigned": "Ya has firmado",
+            "emailPlaceholder": "Tu email",
+            "namePlaceholder": "Tu nombre (opcional)",
+            "commentPlaceholder": "Deja un comentario (opcional)",
+            "signButton": "Firmar",
+            "alreadySignedButton": "Ya firmado",
+            "signing": "Firmando...",
+            "notifications": {
+                "yes": "Sí, manténganme informado si esta petición tiene éxito, y díganme cómo puedo contribuir",
+                "no": "No, no quiero ser informado de esta petición o iniciativas futuras"
+            },
+            "successMessages": {
+                "alreadySigned": "¡Ya has firmado esta petición!",
+                "alreadySignedDescription": "Gracias por tu apoyo.",
+                "signedSuccessfully": "¡Petición firmada con éxito!",
+                "signedDescription": "Gracias por hacer oír tu voz."
+            },
+            "errors": {
+                "failedToSign": "Error al firmar la petición",
+                "tryAgain": "Por favor, inténtalo de nuevo.",
+                "unexpectedError": "Ocurrió un error inesperado",
+                "tryAgainLater": "Por favor, inténtalo más tarde."
+            }
+        },
+        "signatures": {
+            "verified": "Firmas verificadas",
+            "needed": "{count} firmas necesarias para alcanzar {goal}",
+            "goalReached": "¡Objetivo de {goal} firmas alcanzado!"
+        },
+        "share": {
+            "title": "Comparte con tus amigos",
+            "facebook": "Facebook",
+            "twitter": "Twitter",
+            "whatsapp": "WhatsApp"
+        },
+        "success": {
+            "title": "¡Tu compromiso no termina aquí!",
+            "description": "El verdadero motor del cambio es nuestra acción colectiva. Ayuda a que esta petición llegue a más personas comprometidas con un mundo mejor.",
+            "donateQuestion": "¿Quieres contribuir con 7€ para fortalecer su visibilidad en los medios?",
+            "donateButton": "Sí, quiero donar 7€ para ayudar a que la petición alcance su objetivo",
+            "shareButton": "No, prefiero compartirla"
+        },
+        "signed": {
+            "badge": "✓ Firmado",
+            "thankYou": "¡Gracias por tu apoyo!"
+        },
+        "form": {
+            "page": {
+                "title": "Crear Nueva Petición",
+                "back": "Atrás",
+                "previous": "Anterior",
+                "next": "Siguiente",
+                "publishPetition": "Publicar Petición"
+            },
+            "steps": {
+                "title": "Título",
+                "objective": "Objetivo",
+                "writing": "Redacción",
+                "media": "Medios",
+                "signatures": "Firmas",
+                "publish": "Publicar"
+            },
+            "titleStep": {
+                "selectTheme": "Seleccionar tema",
+                "titleLabel": "Título",
+                "titlePlaceholder": "¿Qué cambio quieres?",
+                "suggestions": "🔥 Sugerencias",
+                "suggestionsEmpty": "Por favor escribe un título primero",
+                "advice": "💡 Consejo",
+                "adviceText": "Usa verbos de acción. Por ejemplo: \"Prohibir bolsas de plástico en nuestra ciudad\" o \"Proteger el bosque de X\". Evita formulaciones vagas.",
+                "categories": {
+                    "culture": "Cultura",
+                    "religion": "Religión",
+                    "womenRights": "Derechos de las mujeres",
+                    "menRights": "Derechos de los hombres",
+                    "education": "Educación",
+                    "environment": "Medio ambiente",
+                    "racism": "Racismo",
+                    "politics": "Política",
+                    "handicap": "Discapacidad",
+                    "health": "Salud",
+                    "transport": "Transporte",
+                    "immigration": "Inmigración",
+                    "justice": "Justicia",
+                    "animals": "Animales",
+                    "other": "Otro"
+                }
+            },
+            "objectiveStep": {
+                "title": "Objetivo",
+                "destination": "Destinatario",
+                "destinationPlaceholder": "¿A quién quieres dirigir tu petición?",
+                "description": "Describe el objetivo que quieres lograr: un cambio de ley, una acción concreta, una posición, etc. Sé conciso, convincente, e inspira a otros a unirse a tu causa.",
+                "objectivePlaceholder": "¿Por qué estás lanzando esta petición?",
+                "suggestions": "🔥 Sugerencias",
+                "suggestionsEmpty": "Por favor escribe un objetivo primero",
+                "advice": "⚠️ Consejo",
+                "adviceText": "Un objetivo claro y motivador da sentido a tu petición y aumenta tus posibilidades de movilización.",
+                "aiUsage": "Has alcanzado el {percentage}% de tu uso planificado de asistencia de IA"
+            },
+            "writingStep": {
+                "title": "Redacción",
+                "description": "Expresa tu causa claramente, la IA te ayuda a formular.",
+                "subDescription": "Describe por qué esta petición es importante, cuáles son los hechos, las consecuencias, y las soluciones que propones.",
+                "defaultContent": "Expresa tu causa claramente, la IA te ayuda a formular. Describe por qué esta petición es importante, cuáles son los hechos, las consecuencias, y las soluciones que propones.",
+                "toolbar": {
+                    "undo": "Deshacer",
+                    "redo": "Rehacer",
+                    "bold": "Negrita",
+                    "italic": "Cursiva",
+                    "underline": "Subrayado",
+                    "strikethrough": "Tachado",
+                    "addImage": "Agregar imagen",
+                    "addLink": "Agregar enlace",
+                    "bulletList": "Lista con viñetas",
+                    "numberedList": "Lista numerada",
+                    "quote": "Cita",
+                    "aiAssistance": "Asistencia IA",
+                    "headings": {
+                        "normal": "Normal",
+                        "heading1": "Encabezado 1",
+                        "heading2": "Encabezado 2",
+                        "heading3": "Encabezado 3"
+                    }
+                },
+                "prompts": {
+                    "enterUrl": "Introduce la URL",
+                    "enterImageUrl": "Introduce la URL de la imagen"
+                },
+                "aiAdvice": "⚠️ Consejo",
+                "aiAdviceText": "Si no te sientes cómodo escribiendo, usa nuestra herramienta de asistencia para obtener una versión clara, persuasiva y bien estructurada.",
+                "aiUsage": "Has alcanzado el {percentage}% de tu uso planificado de asistencia de IA"
+            },
+            "mediaStep": {
+                "title": "Agregar una imagen o video",
+                "description": "Haz que tu petición sea más visual e impactante. Agrega una imagen fuerte o un video explicativo corto para ilustrar tu causa.",
+                "mediaType": "Voy a usar",
+                "image": "Una imagen",
+                "videoYoutube": "Un video de YouTube",
+                "imageUrl": "URL de la imagen",
+                "imageUrlPlaceholder": "https://example.com/image.jpg",
+                "or": "o",
+                "selectFile": "Seleccionar un archivo",
+                "dragAndDrop": "o arrastra y suelta aquí",
+                "fileFormats": "JPG, PNG, GIF, WebP, SVG (máx 10MB)",
+                "youtubeUrl": "URL de YouTube",
+                "youtubeUrlPlaceholder": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+                "validYoutubeUrl": "URL de YouTube válida detectada",
+                "viewOnYoutube": "Ver en YouTube",
+                "advice": "Consejo",
+                "adviceText": "Usa una imagen gratuita o personal. Evita visuales borrosos o genéricos. Las imágenes de alta calidad obtienen más participación.",
+                "fileInfo": {
+                    "file": "Archivo",
+                    "size": "Tamaño"
+                },
+                "errors": {
+                    "invalidUrl": "Por favor ingresa una URL válida",
+                    "invalidImageUrl": "Por favor ingresa una URL de imagen válida",
+                    "invalidYoutubeUrl": "Por favor ingresa una URL de YouTube válida",
+                    "fileTooLarge": "El tamaño del archivo debe ser menor a 10MB",
+                    "invalidFileType": "Solo se permiten archivos de imagen",
+                    "loadFailed": "Error al cargar la imagen. Por favor verifica la URL.",
+                    "processFailed": "Error al procesar el archivo seleccionado.",
+                    "thumbnailLoadFailed": "Error al cargar la vista previa de la imagen"
+                }
+            },
+            "signaturesStep": {
+                "title": "Número deseado de firmas",
+                "description": "Establece un objetivo realista pero movilizador. Determina el número de firmas que quieres alcanzar para dar peso a tu mensaje.",
+                "placeholder": "1000",
+                "advice": "💡 Consejo",
+                "adviceText": "Comienza con un objetivo accesible (ej: 500, 1000), puedes aumentarlo si tu petición gana popularidad."
+            },
+            "publishStep": {
+                "title": "Programación de publicación",
+                "description": "Elige cuándo publicar tu petición.",
+                "subDescription": "Puedes publicarla inmediatamente o programar una fecha y hora de lanzamiento ideales (ej. evento próximo, día mundial, etc.).",
+                "publishNow": "Publicar ahora",
+                "publishLater": "Publicar más tarde",
+                "date": "Fecha",
+                "time": "Hora",
+                "pickDate": "Elegir una fecha",
+                "advice": "💡 Consejo",
+                "adviceText": "Un buen momento puede maximizar la visibilidad de tu petición. Planifica si es posible alrededor de un evento relacionado con tu causa.",
+                "summary": {
+                    "title": "Resumen de la petición",
+                    "untitled": "Petición sin título",
+                    "category": "Categoría",
+                    "notSpecified": "No especificada",
+                    "destination": "Destinatario",
+                    "signatureGoal": "Objetivo de firmas",
+                    "signatures": "firmas",
+                    "notSet": "No establecido",
+                    "objective": "Objetivo",
+                    "video": "Video"
+                },
+                "publishing": {
+                    "title": "¿Listo para publicar?",
+                    "publishNowText": "Tu petición será publicada inmediatamente y se volverá visible al público.",
+                    "publishLaterText": "Tu petición será publicada{date}{time}.",
+                    "onDate": " el {date}",
+                    "atTime": " a las {time}",
+                    "description": "Una vez publicada, puedes compartirla en redes sociales y comenzar a recopilar firmas."
+                }
+            }
+        },
+        "page": {
+            "notFound": {
+                "title": "Petición No Encontrada",
+                "description": "La petición que buscas no existe o ha sido eliminada."
+            },
+            "back": "Atrás"
+        }
+    },
+    "support": {
+        "page": {
+            "title": "Apóyanos",
+            "subtitle": "Únete al cambio, apoya la plataforma.",
+            "description": "¿Crees en el poder de las peticiones para mover las cosas? Nosotros también. Al donar, contribuyes a fortalecer una plataforma independiente que da voz a todos. Juntos, hagamos oír las causas que importan. Cada donación es un acto de compromiso."
+        },
+        "illustration": {
+            "alt": "Ilustración de apoyo mostrando personas haciendo donaciones"
+        },
+        "form": {
+            "title": "Elige tu contribución",
+            "otherAmount": "Otra cantidad",
+            "otherAmountPlaceholder": "Ingresa la cantidad",
+            "payButton": "Pagar {amount} €",
+            "processing": "Procesando...",
+            "errors": {
+                "validAmount": "Por favor ingresa una cantidad válida",
+                "amountGreaterThanZero": "La cantidad debe ser mayor que 0",
+                "processingFailed": "Error al procesar la donación",
+                "tryAgain": "Por favor inténtalo de nuevo.",
+                "unexpectedError": "Ocurrió un error inesperado",
+                "tryAgainLater": "Por favor inténtalo más tarde."
+            },
+            "success": {
+                "initiated": "¡Donación iniciada exitosamente!",
+                "redirecting": "Redirigiendo al pago..."
+            }
+        }
+    }
+}

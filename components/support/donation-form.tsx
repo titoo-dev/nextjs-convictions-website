@@ -8,10 +8,12 @@ import { DonationAmountSelector } from './donation-amount-selector';
 import { CustomAmountInput } from './custom-amount-input';
 import { createPublicDonation } from '@/actions/create-public-donation';
 import { toast } from 'sonner';
+import { useTranslations } from 'next-intl';
 
 type DonationAmount = 5 | 10 | 20 | 50;
 
 export function DonationForm() {
+	const t = useTranslations("support.form");
 	const [selectedAmount, setSelectedAmount] = useState<DonationAmount | null>(
 		null
 	);
@@ -41,8 +43,8 @@ export function DonationForm() {
 	const handleSubmit = async () => {
 		const amount = getFinalAmount();
 		if (!amount || amount <= 0) {
-			toast.error('Please enter a valid amount', {
-				description: 'Amount must be greater than 0',
+			toast.error(t('errors.validAmount'), {
+				description: t('errors.amountGreaterThanZero'),
 				duration: 3000,
 			});
 			return;
@@ -57,21 +59,21 @@ export function DonationForm() {
 			const result = await createPublicDonation(formData);
 
 			if (result.success && result.data) {
-				toast.success('Donation initiated successfully!', {
-					description: 'Redirecting to payment...',
+				toast.success(t('success.initiated'), {
+					description: t('success.redirecting'),
 					duration: 3000,
 				});
 				window.location.href = result.data.url;
 			} else {
-				toast.error('Failed to process donation', {
-					description: result.error || 'Please try again.',
+				toast.error(t('errors.processingFailed'), {
+					description: result.error || t('errors.tryAgain'),
 					duration: 4000,
 				});
 			}
 		} catch (error) {
 			console.error('Unexpected error:', error);
-			toast.error('An unexpected error occurred', {
-				description: 'Please try again later.',
+			toast.error(t('errors.unexpectedError'), {
+				description: t('errors.tryAgainLater'),
 				duration: 4000,
 			});
 		} finally {
@@ -82,7 +84,7 @@ export function DonationForm() {
 	return (
 		<Card className="shadow-none">
 			<CardHeader>
-				<CardTitle>Choose your contribution</CardTitle>
+				<CardTitle>{t('title')}</CardTitle>
 			</CardHeader>
 			<CardContent className="space-y-6">
 				<DonationAmountSelector
@@ -106,10 +108,9 @@ export function DonationForm() {
 				>
 					<Heart className="w-5 h-5 mr-2" />
 					{isLoading
-						? 'Processing...'
-						: `Pay ${
-								getFinalAmount() ? `${getFinalAmount()} €` : ''
-						  }`}
+						? t('processing')
+						: t('payButton', { amount: getFinalAmount() || '' })
+					}
 				</Button>
 			</CardContent>
 		</Card>

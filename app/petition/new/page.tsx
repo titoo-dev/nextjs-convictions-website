@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { PenTool, Target, FileText, Image as ImageIcon, Users, Globe, ArrowLeft } from 'lucide-react';
@@ -31,24 +32,10 @@ type PetitionData = {
     scheduledTime?: string;
 };
 
-const steps: { id: Step; title: string; icon: React.ReactNode }[] = [
-	{ id: 'title', title: 'Title', icon: <PenTool className="w-4 h-4" /> },
-	{
-		id: 'objective',
-		title: 'Objective',
-		icon: <Target className="w-4 h-4" />,
-	},
-	{ id: 'writing', title: 'Writing', icon: <FileText className="w-4 h-4" /> },
-	{ id: 'media', title: 'Media', icon: <ImageIcon className="w-4 h-4" /> },
-	{
-		id: 'signatures',
-		title: 'Signatures',
-		icon: <Users className="w-4 h-4" />,
-	},
-	{ id: 'publish', title: 'Publish', icon: <Globe className="w-4 h-4" /> },
-];
-
 export default function NewPetitionPage() {
+    const tPage = useTranslations('petition.form.page');
+    const tSteps = useTranslations('petition.form.steps');
+
     const [currentStep, setCurrentStep] = useState<Step>('title');
     const [formData, setFormData] = useState<PetitionData>({
         category: 'Culture',
@@ -59,6 +46,15 @@ export default function NewPetitionPage() {
         mediaType: 'PICTURE',
         signatureGoal: 1000,
     });
+
+    const steps: { id: Step; title: string; icon: React.ReactNode }[] = [
+        { id: 'title', title: tSteps('title'), icon: <PenTool className="w-4 h-4" /> },
+        { id: 'objective', title: tSteps('objective'), icon: <Target className="w-4 h-4" /> },
+        { id: 'writing', title: tSteps('writing'), icon: <FileText className="w-4 h-4" /> },
+        { id: 'media', title: tSteps('media'), icon: <ImageIcon className="w-4 h-4" /> },
+        { id: 'signatures', title: tSteps('signatures'), icon: <Users className="w-4 h-4" /> },
+        { id: 'publish', title: tSteps('publish'), icon: <Globe className="w-4 h-4" /> },
+    ];
 
     const currentStepIndex = steps.findIndex((step) => step.id === currentStep);
 
@@ -109,14 +105,14 @@ export default function NewPetitionPage() {
                         className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 group"
                     >
                         <ArrowLeft className="w-4 h-4" />
-                        <span className="text-sm font-medium">Back</span>
+                        <span className="text-sm font-medium">{tPage('back')}</span>
                     </Link>
                 </div>
 
                 {/* Progress Header */}
                 <div className="mb-4">
                     <div className="flex items-center justify-between mb-4">
-                        <h1 className="text-3xl font-bold">Create New Petition</h1>
+                        <h1 className="text-3xl font-bold">{tPage('title')}</h1>
                     </div>
 
                     <StepIndicator steps={steps} currentStepIndex={currentStepIndex} />
@@ -137,7 +133,7 @@ export default function NewPetitionPage() {
                         disabled={currentStepIndex === 0}
                         className="flex items-center gap-2"
                     >
-                        Previous
+                        {tPage('previous')}
                     </Button>
 
                     <Button
@@ -148,7 +144,7 @@ export default function NewPetitionPage() {
                         }
                         className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600"
                     >
-                        {currentStep === 'publish' ? 'Publish Petition' : 'Next'}
+                        {currentStep === 'publish' ? tPage('publishPetition') : tPage('next')}
                     </Button>
                 </div>
             </div>

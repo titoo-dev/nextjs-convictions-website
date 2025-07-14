@@ -1,5 +1,6 @@
 import { getYouTubeVideoId } from '@/lib/utils';
 import { PublicPetition } from '@/schemas/public-petition';
+import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 
 type PetitionHeroProps = {
@@ -7,6 +8,8 @@ type PetitionHeroProps = {
 };
 
 export function PetitionHero({ petition }: PetitionHeroProps) {
+    const t = useTranslations('petition.hero');
+    
     return (
         <div className="space-y-4 md:space-y-6">
             <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 leading-tight">
@@ -27,7 +30,7 @@ export function PetitionHero({ petition }: PetitionHeroProps) {
                         />
                     ) : (
                         <Image
-                            src={petition.pictureUrl || '/placeholder-petition.jpg'}
+                            src={petition.pictureUrl || t('placeholderImage')}
                             alt={petition.title}
                             width={400}
                             height={320}

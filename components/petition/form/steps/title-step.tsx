@@ -2,6 +2,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { cn } from '@/lib/utils';
+import { useTranslations } from 'next-intl';
 
 type PetitionData = {
     category: string;
@@ -13,29 +14,31 @@ type TitleStepProps = {
     updateFormData: (updates: Partial<PetitionData>) => void;
 };
 
-const categories = [
-    'Culture',
-    'Religion',
-    'Women rights',
-    'Men rights',
-    'Education',
-    'Environment',
-    'Racism',
-    'Politics',
-    'Handicap',
-    'Health',
-    'Transport',
-    'Immigration',
-    'Justice',
-    'Animals',
-    'Other',
-];
-
 export function TitleStep({ formData, updateFormData }: TitleStepProps) {
+    const t = useTranslations('petition.form.titleStep');
+
+    const categories = [
+        'culture',
+        'religion',
+        'womenRights',
+        'menRights',
+        'education',
+        'environment',
+        'racism',
+        'politics',
+        'handicap',
+        'health',
+        'transport',
+        'immigration',
+        'justice',
+        'animals',
+        'other',
+    ];
+
 	return (
 		<div className="space-y-6">
 			<div>
-				<h2 className="text-2xl font-bold mb-4">Select theme</h2>
+				<h2 className="text-2xl font-bold mb-4">{t('selectTheme')}</h2>
 				<div className="flex flex-wrap gap-2 sm:gap-3 justify-start mb-6">
 					{categories.map((category) => (
 						<button
@@ -51,16 +54,16 @@ export function TitleStep({ formData, updateFormData }: TitleStepProps) {
 							)}
 							onClick={() => updateFormData({ category })}
 						>
-							{category}
+							{t(`categories.${category}`)}
 						</button>
 					))}
 				</div>
 			</div>
 
 			<div>
-				<h3 className="text-xl font-semibold mb-4">Title</h3>
+				<h3 className="text-xl font-semibold mb-4">{t('titleLabel')}</h3>
 				<Input
-					placeholder="What change do you want?"
+					placeholder={t('titlePlaceholder')}
 					value={formData.title}
 					onChange={(e) => updateFormData({ title: e.target.value })}
 					className="mb-4"
@@ -70,22 +73,20 @@ export function TitleStep({ formData, updateFormData }: TitleStepProps) {
 					<Card className="bg-orange-50 border-orange-200 shadow-none">
 						<CardHeader>
 							<CardTitle className="text-orange-700 text-sm flex items-center gap-2">
-								🔥 Suggestions
+								{t('suggestions')}
 							</CardTitle>
 							<CardDescription className="text-sm text-gray-600">
-								Please write a title first
+								{t('suggestionsEmpty')}
 							</CardDescription>
 						</CardHeader>
 					</Card>
 
 					<Alert className="bg-orange-50 border-orange-200">
 						<AlertTitle className="text-orange-700">
-							💡 Advice
+							{t('advice')}
 						</AlertTitle>
 						<AlertDescription className="text-gray-600">
-							Use action verbs. For example: &quot;Ban plastic
-							bags in our city&quot; or &quot;Protect the forest
-							of X&quot;. Avoid vague formulations.
+							{t('adviceText')}
 						</AlertDescription>
 					</Alert>
 				</div>

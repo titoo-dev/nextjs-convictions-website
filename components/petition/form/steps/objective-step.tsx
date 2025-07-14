@@ -2,6 +2,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { useTranslations } from 'next-intl';
 
 type PetitionData = {
     objective: string;
@@ -14,16 +15,18 @@ type ObjectiveStepProps = {
 };
 
 export function ObjectiveStep({ formData, updateFormData }: ObjectiveStepProps) {
+    const t = useTranslations('petition.form.objectiveStep');
+
     return (
 		<div className="space-y-6">
-			<h2 className="text-2xl font-bold">Objective</h2>
+			<h2 className="text-2xl font-bold">{t('title')}</h2>
 
 			<div>
-				<h3 className="text-lg text-gray-600  font-semibold mb-2">
-					Destination
+				<h3 className="text-lg text-gray-600 font-semibold mb-2">
+					{t('destination')}
 				</h3>
 				<Input
-					placeholder="To whom do you want to address your petition ?"
+					placeholder={t('destinationPlaceholder')}
 					value={formData.destination}
 					onChange={(e) =>
 						updateFormData({ destination: e.target.value })
@@ -34,12 +37,10 @@ export function ObjectiveStep({ formData, updateFormData }: ObjectiveStepProps) 
 
 			<div>
 				<h3 className="text-md text-gray-600 font-semibold mb-4">
-					Describe the goal you want to achieve: a law change, a
-					concrete action, a position, etc. Be concise, convincing,
-					and inspire others to join your cause.
+					{t('description')}
 				</h3>
 				<Textarea
-					placeholder="Why are you launching this petition ?"
+					placeholder={t('objectivePlaceholder')}
 					value={formData.objective}
 					onChange={(e) =>
 						updateFormData({ objective: e.target.value })
@@ -52,24 +53,22 @@ export function ObjectiveStep({ formData, updateFormData }: ObjectiveStepProps) 
 				<Card className="bg-orange-50 border-orange-200 shadow-none">
 					<CardHeader>
 						<CardTitle className="text-orange-700 text-sm flex items-center gap-2">
-							🔥 Suggestions
+							{t('suggestions')}
 						</CardTitle>
 						<CardDescription className="text-sm text-gray-600">
-							Please write a objective first
+							{t('suggestionsEmpty')}
 						</CardDescription>
 					</CardHeader>
 				</Card>
 
 				<Alert className="bg-orange-50 border-orange-200">
 					<AlertTitle className="text-orange-700">
-						⚠️ Advise
+						{t('advice')}
 					</AlertTitle>
 					<AlertDescription className="text-gray-600">
-						A clear and motivating objective gives meaning to your
-						petition and increases your chances of mobilization.{' '}
+						{t('adviceText')}{' '}
 						<span className="text-red-500 font-medium">
-							You have reached 7 % of your planned AI assistance
-							usage
+							{t('aiUsage', { percentage: 7 })}
 						</span>
 					</AlertDescription>
 				</Alert>

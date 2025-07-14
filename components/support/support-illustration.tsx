@@ -1,7 +1,10 @@
 import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 export function SupportIllustration() {
+    const t = useTranslations("support.illustration");
+    
     return (
         <div className="hidden lg:flex items-center justify-center lg:justify-end">
             <div className="relative w-full max-w-md">
@@ -13,7 +16,7 @@ export function SupportIllustration() {
                     <CardContent className="flex items-center justify-center p-6">
                         <Image 
                             src="/donation.svg" 
-                            alt="Support illustration showing people making donations"
+                            alt={t("alt")}
                             width={300}
                             height={200}
                             className="w-full h-auto max-w-xs"
