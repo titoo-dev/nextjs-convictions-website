@@ -1,5 +1,6 @@
 'use server'
 
+import { generateToken } from '@/lib/token';
 import { revalidatePath } from 'next/cache';
 
 type SignInResponse = {
@@ -22,6 +23,9 @@ export async function signInWithGoogle(params: SignInWithGoogleParams) {
 
         console.log('Processing sign-in for user:', email);
         
+        // Generate bearer token
+        const token = await generateToken();
+        
         // Create request body from parameters
         const requestBody = {
             email,
@@ -35,6 +39,7 @@ export async function signInWithGoogle(params: SignInWithGoogleParams) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
             },
             body: JSON.stringify(requestBody),
         });

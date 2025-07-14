@@ -49,17 +49,15 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
 					<span className="w-full border-t border-gray-300" />
 				</div>
 				<div className="relative flex justify-center text-xs uppercase">
-					<span className="bg-white px-2 text-gray-500">
-						or
-					</span>
+					<span className="bg-white px-2 text-gray-500">or</span>
 				</div>
 			</div>
 
 			<GoogleLoginButton />
 
 			<p className="text-center text-sm text-gray-600">
-				You don't have an account yet ?{' '}
-				<button 
+				You don&apos;t have an account yet ?{' '}
+				<button
 					type="button"
 					className="text-orange-500 hover:text-orange-600 font-medium"
 				>
