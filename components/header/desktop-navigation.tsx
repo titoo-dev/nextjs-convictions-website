@@ -1,5 +1,3 @@
-'use client'
-
 import { LanguageSelector } from './language-selector';
 import { LoginDialog } from './login-dialog';
 import { NavigationButton } from './navigation-button';

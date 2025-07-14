@@ -6,7 +6,7 @@ import { signInWithPopup } from 'firebase/auth';
 import { auth, provider } from '@/lib/firebase';
 import { signInWithGoogle } from '@/actions/sign-in-with-google';
 import { authLocalStorage } from '@/lib/local-storage';
-import { getLocale } from 'next-intl/server';
+import { useLocale } from 'next-intl';
 
 type GoogleLoginButtonProps = {
 	onSuccess?: () => void;
@@ -14,11 +14,12 @@ type GoogleLoginButtonProps = {
 
 export function GoogleLoginButton({ onSuccess }: GoogleLoginButtonProps) {
     const [isPending, startTransition] = useTransition();
+    const locale = useLocale();
 
     const handleGoogleLogin = async () => {
         startTransition(async () => {
             try {
-                const lang = await getLocale() || 'en';
+                const lang = locale || 'en';
                 const result = await signInWithPopup(auth, provider);
                 const user = result.user;
                 
