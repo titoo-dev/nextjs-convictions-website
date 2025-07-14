@@ -247,12 +247,12 @@
                 "youtubeUrl": "URL de YouTube",
                 "youtubeUrlPlaceholder": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
                 "validYoutubeUrl": "URL de YouTube válida detectada",
-                "viewOnYoutube": "Ver en YouTube",
                 "advice": "Consejo",
                 "adviceText": "Usa una imagen gratuita o personal. Evita visuales borrosos o genéricos. Las imágenes de alta calidad obtienen más participación.",
                 "fileInfo": {
                     "file": "Archivo",
-                    "size": "Tamaño"
+                    "size": "Tamaño",
+                    "videoId": "ID del video"
                 },
                 "errors": {
                     "invalidUrl": "Por favor ingresa una URL válida",

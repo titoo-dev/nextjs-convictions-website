@@ -32,61 +32,6 @@ export const validateImageUrl = (url: string): { isValid: boolean; error?: strin
 	return { isValid: true };
 };
 
-// YouTube URL validation
-export const validateYouTubeUrl = (url: string): { isValid: boolean; error?: string; videoId?: string } => {
-	if (!url.trim()) {
-		return { isValid: false, error: "YouTube URL is required" };
-	}
-
-	try {
-		new URL(url);
-	} catch {
-		return { isValid: false, error: "Invalid URL format" };
-	}
-
-	const videoId = getYouTubeVideoId(url);
-	
-	if (!videoId) {
-		return { 
-			isValid: false, 
-			error: "Invalid YouTube URL. Use formats like: youtube.com/watch?v=ID or youtu.be/ID" 
-		};
-	}
-
-	if (videoId.length !== 11) {
-		return { isValid: false, error: "Invalid YouTube video ID format" };
-	}
-
-	return { isValid: true, videoId };
-};
-
-// File validation for uploads
-export const validateImageFile = (file: File): { isValid: boolean; error?: string } => {
-	const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml'];
-	if (!allowedTypes.includes(file.type)) {
-		return { 
-			isValid: false, 
-			error: "Invalid file type. Please upload JPG, PNG, GIF, WebP, or SVG images only" 
-		};
-	}
-
-	const maxSize = 10 * 1024 * 1024; // 10MB
-	if (file.size > maxSize) {
-		return { 
-			isValid: false, 
-			error: "File too large. Please upload images smaller than 10MB" 
-		};
-	}
-
-	return { isValid: true };
-};
-
-// Get YouTube thumbnail
-export const getYouTubeThumbnail = (videoId: string, quality: 'default' | 'medium' | 'high' | 'maxres' = 'medium'): string => {
-	return `https://img.youtube.com/vi/${videoId}/${quality}default.jpg`;
-};
-
-
 /**
  * Validates a YouTube URL
  * @param url The URL to validate
@@ -109,3 +54,87 @@ export const extractVideoId = (url: string): string | null => {
 	const match = url.match(regExp);
 	return match ? match[1] : null;
 };
+
+// YouTube utility functions
+export function validateYouTubeUrl(url: string): {
+	isValid: boolean;
+	error?: string;
+	videoId?: string;
+} {
+	if (!url || typeof url !== 'string') {
+		return {
+			isValid: false,
+			error: 'URL is required',
+		};
+	}
+
+	// YouTube URL patterns
+	const patterns = [
+		/^https?:\/\/(?:www\.)?youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})/,
+		/^https?:\/\/(?:www\.)?youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/,
+		/^https?:\/\/youtu\.be\/([a-zA-Z0-9_-]{11})/,
+		/^https?:\/\/(?:www\.)?youtube\.com\/v\/([a-zA-Z0-9_-]{11})/,
+	];
+
+	for (const pattern of patterns) {
+		const match = url.match(pattern);
+		if (match) {
+			return {
+				isValid: true,
+				videoId: match[1],
+			};
+		}
+	}
+
+	return {
+		isValid: false,
+		error: 'Invalid YouTube URL format',
+	};
+}
+
+export function getYouTubeThumbnail(videoId: string, quality: 'default' | 'medium' | 'high' | 'standard' | 'maxres' = 'medium'): string {
+	const qualityMap = {
+		default: 'default',
+		medium: 'mqdefault',
+		high: 'hqdefault',
+		standard: 'sddefault',
+		maxres: 'maxresdefault',
+	};
+
+	return `https://img.youtube.com/vi/${videoId}/${qualityMap[quality]}.jpg`;
+}
+
+export function validateImageFile(file: File): {
+	isValid: boolean;
+	error?: string;
+} {
+	// Check file type
+	if (!file.type.startsWith('image/')) {
+		return {
+			isValid: false,
+			error: 'File must be an image',
+		};
+	}
+
+	// Check file size (max 10MB)
+	const maxSize = 10 * 1024 * 1024; // 10MB
+	if (file.size > maxSize) {
+		return {
+			isValid: false,
+			error: 'File size must be less than 10MB',
+		};
+	}
+
+	// Check supported formats
+	const supportedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+	if (!supportedTypes.includes(file.type)) {
+		return {
+			isValid: false,
+			error: 'Supported formats: JPEG, PNG, GIF, WebP',
+		};
+	}
+
+	return {
+		isValid: true,
+	};
+}

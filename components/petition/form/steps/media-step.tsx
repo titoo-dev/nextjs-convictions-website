@@ -7,7 +7,6 @@ import {
 	AlertTriangle,
 	CheckCircle,
 	XCircle,
-	ExternalLink,
 	X,
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
@@ -16,7 +15,6 @@ import { useTranslations } from 'next-intl';
 import {
 	validateYouTubeUrl,
 	validateImageFile,
-	getYouTubeThumbnail,
 } from '@/lib/utils';
 
 type PetitionData = {
@@ -61,9 +59,11 @@ export function MediaStep({ formData, updateFormData }: MediaStepProps) {
 	useEffect(() => {
 		if (
 			formData.mediaType === 'VIDEO_YOUTUBE' &&
-			formData.videoYoutubeUrl
+			formData.videoYoutubeUrl?.trim()
 		) {
-			const validation = validateYouTubeUrl(formData.videoYoutubeUrl);
+			const validation = validateYouTubeUrl(
+				formData.videoYoutubeUrl.trim()
+			);
 			setYoutubeValidation(validation);
 		} else {
 			setYoutubeValidation(null);
@@ -127,8 +127,8 @@ export function MediaStep({ formData, updateFormData }: MediaStepProps) {
 				URL.revokeObjectURL(localUrl);
 			};
 			img.src = localUrl;
-        } catch (error) {
-            console.error('Error processing file upload:', error);
+		} catch (error) {
+			console.error('Error processing file upload:', error);
 			setIsLoadingImage(false);
 			setImageValidation({
 				isValid: false,
@@ -142,7 +142,7 @@ export function MediaStep({ formData, updateFormData }: MediaStepProps) {
 		if (formData.pictureUrl && formData.pictureUrl.startsWith('blob:')) {
 			URL.revokeObjectURL(formData.pictureUrl);
 		}
-		
+
 		// Reset all image-related state
 		updateFormData({ pictureUrl: undefined });
 		setUploadedFile(null);
@@ -190,17 +190,15 @@ export function MediaStep({ formData, updateFormData }: MediaStepProps) {
 	return (
 		<div className="space-y-6">
 			<div>
-				<h2 className="text-2xl font-bold mb-2">
-					{t('title')}
-				</h2>
-				<p className="text-gray-600 mb-6">
-					{t('description')}
-				</p>
+				<h2 className="text-2xl font-bold mb-2">{t('title')}</h2>
+				<p className="text-gray-600 mb-6">{t('description')}</p>
 			</div>
 
 			{/* Media Type Selection */}
 			<div className="space-y-4">
-				<p className="text-sm font-medium text-gray-700">{t('mediaType')}</p>
+				<p className="text-sm font-medium text-gray-700">
+					{t('mediaType')}
+				</p>
 
 				<div className="space-y-3">
 					<label className="flex items-center space-x-3 cursor-pointer group">
@@ -266,7 +264,9 @@ export function MediaStep({ formData, updateFormData }: MediaStepProps) {
 										disabled={isLoadingImage}
 									>
 										<Upload className="w-4 h-4" />
-										{isLoadingImage ? t('uploading') : t('selectFile')}
+										{isLoadingImage
+											? t('uploading')
+											: t('selectFile')}
 									</Button>
 									<p className="text-sm text-gray-500">
 										{t('dragAndDrop')}
@@ -293,7 +293,9 @@ export function MediaStep({ formData, updateFormData }: MediaStepProps) {
 					{isLoadingImage && (
 						<div className="rounded-lg border p-8 text-center">
 							<div className="w-8 h-8 border-2 border-orange-500 border-t-transparent rounded-full animate-spin mx-auto mb-2" />
-							<p className="text-sm text-gray-600">{t('processing')}</p>
+							<p className="text-sm text-gray-600">
+								{t('processing')}
+							</p>
 						</div>
 					)}
 
@@ -310,7 +312,9 @@ export function MediaStep({ formData, updateFormData }: MediaStepProps) {
 									onError={() => {
 										setImageValidation({
 											isValid: false,
-											error: t('errors.thumbnailLoadFailed'),
+											error: t(
+												'errors.thumbnailLoadFailed'
+											),
 										});
 										if (
 											formData.pictureUrl &&
@@ -333,14 +337,22 @@ export function MediaStep({ formData, updateFormData }: MediaStepProps) {
 									}}
 								/>
 							</div>
-							
+
 							<div className="flex items-center justify-between">
 								{uploadedFile && (
 									<div className="text-xs text-gray-500">
-										<span>{t('fileInfo.file')}: {uploadedFile.name}</span>
+										<span>
+											{t('fileInfo.file')}:{' '}
+											{uploadedFile.name}
+										</span>
 										<span className="ml-4">
 											{t('fileInfo.size')}:{' '}
-											{(uploadedFile.size / 1024 / 1024).toFixed(2)} MB
+											{(
+												uploadedFile.size /
+												1024 /
+												1024
+											).toFixed(2)}{' '}
+											MB
 										</span>
 									</div>
 								)}
@@ -408,30 +420,23 @@ export function MediaStep({ formData, updateFormData }: MediaStepProps) {
 					{youtubeValidation?.isValid &&
 						youtubeValidation.videoId && (
 							<div className="space-y-3">
-								<div className="rounded-lg border overflow-hidden bg-gray-100 relative w-full h-48">
-									<Image
-										src={getYouTubeThumbnail(
-											youtubeValidation.videoId,
-											'medium'
-										)}
-										alt="YouTube video thumbnail"
-										fill
-										className="object-cover"
-										sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-										onError={() => {
-											console.warn('YouTube thumbnail failed to load');
-										}}
+								<div className="rounded-lg border overflow-hidden bg-gray-100 relative w-full h-48 group">
+									<iframe
+										src={`https://www.youtube.com/embed/${youtubeValidation.videoId}`}
+										title="YouTube video preview"
+										className="w-full h-full"
+										allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+										allowFullScreen
 									/>
 								</div>
-								<a
-									href={formData.videoYoutubeUrl}
-									target="_blank"
-									rel="noopener noreferrer"
-									className="inline-flex items-center gap-1 text-sm text-blue-600 hover:text-blue-800"
-								>
-									<ExternalLink className="w-3 h-3" />
-									{t('viewOnYoutube')}
-								</a>
+								<div className="flex items-center justify-between">
+									<div className="text-xs text-gray-500">
+										<span>
+											{t('fileInfo.videoId')}:{' '}
+											{youtubeValidation.videoId}
+										</span>
+									</div>
+								</div>
 							</div>
 						)}
 				</div>
@@ -449,13 +454,15 @@ export function MediaStep({ formData, updateFormData }: MediaStepProps) {
 }
 
 // Add validation function for media step
-export function validateMediaStep(formData: Pick<PetitionData, 'mediaType' | 'pictureUrl' | 'videoYoutubeUrl'>): boolean {
-    if (formData.mediaType === 'PICTURE') {
-        return !!(formData.pictureUrl && formData.pictureUrl.trim().length > 0);
-    } else if (formData.mediaType === 'VIDEO_YOUTUBE') {
-        if (!formData.videoYoutubeUrl) return false;
-        const validation = validateYouTubeUrl(formData.videoYoutubeUrl);
-        return validation.isValid;
-    }
-    return false;
+export function validateMediaStep(
+	formData: Pick<PetitionData, 'mediaType' | 'pictureUrl' | 'videoYoutubeUrl'>
+): boolean {
+	if (formData.mediaType === 'PICTURE') {
+		return !!(formData.pictureUrl && formData.pictureUrl.trim().length > 0);
+	} else if (formData.mediaType === 'VIDEO_YOUTUBE') {
+		if (!formData.videoYoutubeUrl?.trim()) return false;
+		const validation = validateYouTubeUrl(formData.videoYoutubeUrl.trim());
+		return validation.isValid;
+	}
+	return false;
 }
