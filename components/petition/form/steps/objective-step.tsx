@@ -76,3 +76,13 @@ export function ObjectiveStep({ formData, updateFormData }: ObjectiveStepProps) 
 		</div>
 	);
 }
+
+// Add validation function for objective step
+export function validateObjectiveStep(formData: Pick<PetitionData, 'objective' | 'destination'>): boolean {
+    return !!(
+        formData.destination && 
+        formData.destination.trim().length > 0 &&
+        formData.objective && 
+        formData.objective.trim().length > 0
+    );
+}

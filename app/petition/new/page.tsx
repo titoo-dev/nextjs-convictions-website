@@ -8,12 +8,12 @@ import { PenTool, Target, FileText, Image as ImageIcon, Users, Globe, ArrowLeft 
 import Link from 'next/link';
 
 import { StepIndicator } from '@/components/petition/form/step-indicator';
-import { TitleStep } from '@/components/petition/form/steps/title-step';
-import { ObjectiveStep } from '@/components/petition/form/steps/objective-step';
-import { WritingStep } from '@/components/petition/form/steps/writing-step';
-import { MediaStep } from '@/components/petition/form/steps/media-step';
-import { SignaturesStep } from '@/components/petition/form/steps/signatures-step';
-import { PublishStep } from '@/components/petition/form/steps/publish-step';
+import { TitleStep, validateTitleStep } from '@/components/petition/form/steps/title-step';
+import { ObjectiveStep, validateObjectiveStep } from '@/components/petition/form/steps/objective-step';
+import { WritingStep, validateWritingStep } from '@/components/petition/form/steps/writing-step';
+import { MediaStep, validateMediaStep } from '@/components/petition/form/steps/media-step';
+import { SignaturesStep, validateSignaturesStep } from '@/components/petition/form/steps/signatures-step';
+import { PublishStep, validatePublishStep } from '@/components/petition/form/steps/publish-step';
 
 type Step = 'title' | 'objective' | 'writing' | 'media' | 'signatures' | 'publish';
 
@@ -38,7 +38,7 @@ export default function NewPetitionPage() {
 
     const [currentStep, setCurrentStep] = useState<Step>('title');
     const [formData, setFormData] = useState<PetitionData>({
-        category: 'Culture',
+        category: '',
         title: '',
         objective: '',
         content: '',
@@ -74,6 +74,25 @@ export default function NewPetitionPage() {
 
     const updateFormData = (updates: Partial<PetitionData>) => {
         setFormData((prev) => ({ ...prev, ...updates }));
+    };
+
+    const isCurrentStepValid = (): boolean => {
+        switch (currentStep) {
+            case 'title':
+                return validateTitleStep(formData);
+            case 'objective':
+                return validateObjectiveStep(formData);
+            case 'writing':
+                return validateWritingStep(formData);
+            case 'media':
+                return validateMediaStep(formData);
+            case 'signatures':
+                return validateSignaturesStep(formData);
+            case 'publish':
+                return validatePublishStep(formData);
+            default:
+                return false;
+        }
     };
 
     const renderStepContent = () => {
@@ -142,7 +161,8 @@ export default function NewPetitionPage() {
                                 ? () => console.log('Publish petition', formData)
                                 : handleNext
                         }
-                        className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600"
+                        disabled={!isCurrentStepValid()}
+                        className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         {currentStep === 'publish' ? tPage('publishPetition') : tPage('next')}
                     </Button>

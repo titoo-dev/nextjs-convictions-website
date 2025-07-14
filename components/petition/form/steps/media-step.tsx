@@ -483,3 +483,15 @@ export function MediaStep({ formData, updateFormData }: MediaStepProps) {
 		</div>
 	);
 }
+
+// Add validation function for media step
+export function validateMediaStep(formData: Pick<PetitionData, 'mediaType' | 'pictureUrl' | 'videoYoutubeUrl'>): boolean {
+    if (formData.mediaType === 'PICTURE') {
+        return !!(formData.pictureUrl && formData.pictureUrl.trim().length > 0);
+    } else if (formData.mediaType === 'VIDEO_YOUTUBE') {
+        if (!formData.videoYoutubeUrl) return false;
+        const validation = validateYouTubeUrl(formData.videoYoutubeUrl);
+        return validation.isValid;
+    }
+    return false;
+}

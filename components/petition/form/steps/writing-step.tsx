@@ -267,3 +267,12 @@ export function WritingStep({ formData, updateFormData }: WritingStepProps) {
 		</div>
 	);
 }
+
+// Add validation function for writing step
+export function validateWritingStep(formData: Pick<PetitionData, 'content'>): boolean {
+	if (!formData.content) return false;
+
+	// Remove HTML tags and check actual text content length
+	const textContent = formData.content.replace(/<[^>]*>/g, '').trim();
+	return textContent.length > 0;
+}

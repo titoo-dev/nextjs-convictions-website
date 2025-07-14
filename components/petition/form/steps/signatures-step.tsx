@@ -40,3 +40,8 @@ export function SignaturesStep({ formData, updateFormData }: SignaturesStepProps
         </div>
     );
 }
+
+// Add validation function for signatures step
+export function validateSignaturesStep(formData: Pick<PetitionData, 'signatureGoal'>): boolean {
+    return !!(formData.signatureGoal && formData.signatureGoal >= 1);
+}

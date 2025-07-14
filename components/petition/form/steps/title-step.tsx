@@ -94,3 +94,11 @@ export function TitleStep({ formData, updateFormData }: TitleStepProps) {
 		</div>
 	);
 }
+
+// Add validation function for title step
+export function validateTitleStep(formData: Pick<PetitionData, 'category' | 'title'>): boolean {
+	const hasCategory = Boolean(formData.category !== '');
+	const hasValidTitle = Boolean(formData.title?.trim() && formData.title.trim().length > 0);
+	
+	return hasCategory && hasValidTitle;
+}

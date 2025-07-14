@@ -244,3 +244,13 @@ export function PublishStep({ formData, updateFormData }: PublishStepProps) {
         </div>
     );
 }
+
+// Add validation function for publish step
+export function validatePublishStep(formData: Pick<PetitionData, 'publishNow' | 'scheduledDate' | 'scheduledTime'>): boolean {
+    if (formData.publishNow === false) {
+        // If scheduled, both date and time are required
+        return !!(formData.scheduledDate && formData.scheduledTime);
+    }
+    // If publishing now, no additional validation needed
+    return true;
+}
