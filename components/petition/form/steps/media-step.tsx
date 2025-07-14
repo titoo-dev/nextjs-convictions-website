@@ -8,12 +8,12 @@ import {
 	CheckCircle,
 	XCircle,
 	ExternalLink,
+	X,
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import {
-	validateImageUrl,
 	validateYouTubeUrl,
 	validateImageFile,
 	getYouTubeThumbnail,
@@ -56,34 +56,6 @@ export function MediaStep({ formData, updateFormData }: MediaStepProps) {
 			}
 		};
 	}, [formData.pictureUrl]);
-
-	// Validate image URL when it changes
-	useEffect(() => {
-		if (formData.mediaType === 'PICTURE' && formData.pictureUrl) {
-			const validation = validateImageUrl(formData.pictureUrl);
-			setImageValidation(validation);
-
-			if (validation.isValid) {
-				setIsLoadingImage(true);
-				// Test if image actually loads
-				const img = new window.Image();
-				img.onload = () => {
-					setIsLoadingImage(false);
-					setImageValidation({ isValid: true });
-				};
-				img.onerror = () => {
-					setIsLoadingImage(false);
-					setImageValidation({
-						isValid: false,
-						error: 'Image failed to load. Please check the URL.',
-					});
-				};
-				img.src = formData.pictureUrl;
-			}
-		} else {
-			setImageValidation(null);
-		}
-	}, [formData.pictureUrl, formData.mediaType]);
 
 	// Validate YouTube URL when it changes
 	useEffect(() => {
@@ -163,6 +135,19 @@ export function MediaStep({ formData, updateFormData }: MediaStepProps) {
 				error: t('errors.processFailed'),
 			});
 		}
+	};
+
+	const handleRemoveImage = () => {
+		// Clean up blob URL if it exists
+		if (formData.pictureUrl && formData.pictureUrl.startsWith('blob:')) {
+			URL.revokeObjectURL(formData.pictureUrl);
+		}
+		
+		// Reset all image-related state
+		updateFormData({ pictureUrl: undefined });
+		setUploadedFile(null);
+		setImageValidation(null);
+		setIsLoadingImage(false);
 	};
 
 	const handleFileSelect = () => {
@@ -255,96 +240,67 @@ export function MediaStep({ formData, updateFormData }: MediaStepProps) {
 			{/* Image Upload Section */}
 			{formData.mediaType === 'PICTURE' && (
 				<div className="space-y-4">
-					{/* URL Input */}
-					<div className="space-y-2">
-						<label className="text-sm font-medium text-gray-700">
-							{t('imageUrl')}
-						</label>
-						<div className="relative">
-							<Input
-								placeholder={t('imageUrlPlaceholder')}
-								value={formData.pictureUrl || ''}
-								onChange={(e) =>
-									updateFormData({
-										pictureUrl: e.target.value,
-									})
-								}
-								className={`pr-10 ${
-									imageValidation && !imageValidation.isValid
-										? 'border-red-300 focus:border-red-500 focus:ring-red-500'
-										: imageValidation &&
-										  imageValidation.isValid
-										? 'border-green-300 focus:border-green-500 focus:ring-green-500'
-										: ''
-								}`}
-							/>
-							<div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-								{getValidationIcon(
-									imageValidation,
-									isLoadingImage
-								)}
+					{/* File Upload - Only show if no image is loaded */}
+					{(!formData.pictureUrl || !imageValidation?.isValid) && (
+						<div
+							className={`border-2 border-dashed rounded-lg p-8 text-center transition-all ${
+								dragActive
+									? 'border-orange-400 bg-orange-50 scale-105'
+									: 'border-gray-300 hover:border-gray-400 hover:bg-gray-50'
+							}`}
+							onDragEnter={handleDrag}
+							onDragLeave={handleDrag}
+							onDragOver={handleDrag}
+							onDrop={handleDrop}
+						>
+							<div className="flex flex-col items-center justify-center space-y-4">
+								<div className="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center">
+									<ImageIcon className="w-8 h-8 text-gray-400" />
+								</div>
+								<div className="flex flex-col items-center space-y-2 text-center">
+									<Button
+										type="button"
+										variant="outline"
+										className="flex items-center gap-2 hover:bg-orange-50 hover:border-orange-300"
+										onClick={handleFileSelect}
+										disabled={isLoadingImage}
+									>
+										<Upload className="w-4 h-4" />
+										{isLoadingImage ? t('uploading') : t('selectFile')}
+									</Button>
+									<p className="text-sm text-gray-500">
+										{t('dragAndDrop')}
+									</p>
+									<p className="text-xs text-gray-400">
+										{t('fileFormats')}
+									</p>
+								</div>
 							</div>
 						</div>
-						{imageValidation && imageValidation.error && (
-							<p className="text-sm text-red-600 flex items-center gap-1">
-								<XCircle className="w-3 h-3" />
+					)}
+
+					{/* Image Validation Error */}
+					{imageValidation && imageValidation.error && (
+						<div className="p-3 bg-red-50 border border-red-200 rounded-lg">
+							<p className="text-sm text-red-600 flex items-center gap-2">
+								<XCircle className="w-4 h-4" />
 								{imageValidation.error}
 							</p>
-						)}
-					</div>
+						</div>
+					)}
 
-					{/* OR Divider */}
-					<div className="relative">
-						<div className="absolute inset-0 flex items-center">
-							<span className="w-full border-t border-gray-300" />
+					{/* Loading State */}
+					{isLoadingImage && (
+						<div className="rounded-lg border p-8 text-center">
+							<div className="w-8 h-8 border-2 border-orange-500 border-t-transparent rounded-full animate-spin mx-auto mb-2" />
+							<p className="text-sm text-gray-600">{t('processing')}</p>
 						</div>
-						<div className="relative flex justify-center text-sm">
-							<span className="px-2 bg-white text-gray-500">
-								{t('or')}
-							</span>
-						</div>
-					</div>
-
-					{/* File Upload */}
-					<div
-						className={`border-2 border-dashed rounded-lg p-8 text-center transition-all ${
-							dragActive
-								? 'border-orange-400 bg-orange-50 scale-105'
-								: 'border-gray-300 hover:border-gray-400 hover:bg-gray-50'
-						}`}
-						onDragEnter={handleDrag}
-						onDragLeave={handleDrag}
-						onDragOver={handleDrag}
-						onDrop={handleDrop}
-					>
-						<div className="flex flex-col items-center justify-center space-y-4">
-							<div className="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center">
-								<ImageIcon className="w-8 h-8 text-gray-400" />
-							</div>
-							<div className="flex flex-col items-center space-y-2 text-center">
-								<Button
-									type="button"
-									variant="outline"
-									className="flex items-center gap-2 hover:bg-orange-50 hover:border-orange-300"
-									onClick={handleFileSelect}
-								>
-									<Upload className="w-4 h-4" />
-									{t('selectFile')}
-								</Button>
-								<p className="text-sm text-gray-500">
-									{t('dragAndDrop')}
-								</p>
-								<p className="text-xs text-gray-400">
-									{t('fileFormats')}
-								</p>
-							</div>
-						</div>
-					</div>
+					)}
 
 					{/* Image Preview */}
 					{formData.pictureUrl && imageValidation?.isValid && (
-						<div className="space-y-2">
-							<div className="rounded-lg border overflow-hidden relative w-full h-48">
+						<div className="space-y-3">
+							<div className="rounded-lg border overflow-hidden relative w-full h-48 group">
 								<Image
 									src={formData.pictureUrl}
 									alt="Petition image preview"
@@ -377,20 +333,28 @@ export function MediaStep({ formData, updateFormData }: MediaStepProps) {
 									}}
 								/>
 							</div>
-							{uploadedFile && (
-								<div className="text-xs text-gray-500 flex items-center justify-between">
-									<span>{t('fileInfo.file')}: {uploadedFile.name}</span>
-									<span>
-										{t('fileInfo.size')}:{' '}
-										{(
-											uploadedFile.size /
-											1024 /
-											1024
-										).toFixed(2)}{' '}
-										MB
-									</span>
-								</div>
-							)}
+							
+							<div className="flex items-center justify-between">
+								{uploadedFile && (
+									<div className="text-xs text-gray-500">
+										<span>{t('fileInfo.file')}: {uploadedFile.name}</span>
+										<span className="ml-4">
+											{t('fileInfo.size')}:{' '}
+											{(uploadedFile.size / 1024 / 1024).toFixed(2)} MB
+										</span>
+									</div>
+								)}
+								<Button
+									type="button"
+									variant="outline"
+									size="sm"
+									className="flex items-center gap-2 text-red-600 border-red-200 hover:bg-red-50"
+									onClick={handleRemoveImage}
+								>
+									<X className="w-3 h-3" />
+									{t('removeImage')}
+								</Button>
+							</div>
 						</div>
 					)}
 				</div>

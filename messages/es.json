@@ -263,7 +263,10 @@
                     "loadFailed": "Error al cargar la imagen. Por favor verifica la URL.",
                     "processFailed": "Error al procesar el archivo seleccionado.",
                     "thumbnailLoadFailed": "Error al cargar la vista previa de la imagen"
-                }
+                },
+                "uploading": "Subiendo...",
+                "processing": "Procesando imagen...",
+                "removeImage": "Eliminar imagen"
             },
             "signaturesStep": {
                 "title": "Número deseado de firmas",

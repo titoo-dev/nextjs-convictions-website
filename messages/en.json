@@ -257,7 +257,10 @@
                     "loadFailed": "Image failed to load. Please check the URL.",
                     "processFailed": "Failed to process the selected file.",
                     "thumbnailLoadFailed": "Failed to load image preview"
-                }
+                },
+                "uploading": "Uploading...",
+                "processing": "Processing image...",
+                "removeImage": "Remove image"
             },
             "signaturesStep": {
                 "title": "Desired number of signatures",

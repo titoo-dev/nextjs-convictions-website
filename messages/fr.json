@@ -263,7 +263,10 @@
                     "loadFailed": "Échec du chargement de l'image. Veuillez vérifier l'URL.",
                     "processFailed": "Échec du traitement du fichier sélectionné.",
                     "thumbnailLoadFailed": "Échec du chargement de l'aperçu de l'image"
-                }
+                },
+                "uploading": "Téléchargement...",
+                "processing": "Traitement de l'image...",
+                "removeImage": "Supprimer l'image"
             },
             "signaturesStep": {
                 "title": "Nombre de signatures souhaité",
