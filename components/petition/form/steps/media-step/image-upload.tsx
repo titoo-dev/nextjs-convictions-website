@@ -5,7 +5,6 @@ import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { validateImageFile } from '@/lib/utils';
 import { FileInfo } from './file-info';
-import { base64ToObjectUrl } from '@/lib/local-storage';
 
 type ImageUploadProps = {
 	pictureUrl?: string;
@@ -28,15 +27,7 @@ export function ImageUpload({ pictureUrl, onImageUpdate, onImageRemove, initialF
 	const [displayUrl, setDisplayUrl] = useState<string | undefined>(undefined);
 
 	useEffect(() => {
-		let url: string | undefined = undefined;
-		if (initialFile && initialFile instanceof File) {
-			url = URL.createObjectURL(initialFile);
-		} else if (pictureUrl && (pictureUrl.startsWith('data:image') || /^[A-Za-z0-9+/=]+$/.test(pictureUrl))) {
-			// Accept both data URLs and raw base64
-			url = base64ToObjectUrl(pictureUrl);
-		} else if (pictureUrl && pictureUrl.startsWith('blob:')) {
-			url = pictureUrl;
-		}
+		const url = initialFile ? URL.createObjectURL(initialFile) : undefined;
 		setDisplayUrl(url);
 
 		// Validate preview after setting displayUrl
