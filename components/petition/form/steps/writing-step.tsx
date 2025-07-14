@@ -34,7 +34,7 @@ type WritingStepProps = {
 
 export function WritingStep({ formData, updateFormData }: WritingStepProps) {
 	const t = useTranslations('petition.form.writingStep');
-	const [editorContent, setEditorContent] = useState('');
+	const [editorContent, setEditorContent] = useState(formData.content || '');
 
 	console.log('WritingStep rendered with content:', editorContent);
 
@@ -86,12 +86,11 @@ export function WritingStep({ formData, updateFormData }: WritingStepProps) {
 		updateFormData({ content });
 	};
 
-	// Initialize content on mount
 	useEffect(() => {
-		if (formData.content && formData.content !== editorContent) {
+		if (formData.content && !editorContent) {
 			setEditorContent(formData.content);
 		}
-	}, [formData.content]);
+	}, []);
 
 	return (
 		<div className="space-y-6">
