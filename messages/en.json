@@ -263,7 +263,8 @@
                 "uploading": "Uploading...",
                 "processing": "Processing image...",
                 "removeImage": "Remove image",
-                "removeVideo": "Remove video"
+                "removeVideo": "Remove video",
+                "restoringImage": "Restoring image preview..."
             },
             "signaturesStep": {
                 "title": "Desired number of signatures",

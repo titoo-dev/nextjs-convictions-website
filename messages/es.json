@@ -269,7 +269,8 @@
                 "uploading": "Subiendo...",
                 "processing": "Procesando imagen...",
                 "removeImage": "Eliminar imagen",
-                "removeVideo": "Eliminar video"
+                "removeVideo": "Eliminar video",
+                "restoringImage": "Restaurando la vista previa de la imagen..."
             },
             "signaturesStep": {
                 "title": "Número deseado de firmas",

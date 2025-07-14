@@ -63,6 +63,10 @@ type PetitionData = {
 	destination: string;
 	mediaType: 'PICTURE' | 'VIDEO_YOUTUBE';
 	pictureUrl?: string;
+	pictureFileData?: string;
+	pictureFileName?: string;
+	pictureFileType?: string;
+	pictureFileSize?: number;
 	videoYoutubeUrl?: string;
 	signatureGoal: number;
 	publishNow?: boolean;
@@ -86,12 +90,13 @@ export default function NewPetitionPage() {
 	});
 	const [hasLoadedFromStorage, setHasLoadedFromStorage] = useState(false);
 	const [showDraftRestored, setShowDraftRestored] = useState(false);
+	const [currentFile, setCurrentFile] = useState<File | null>(null);
 
 	// Load form data from localStorage on component mount
 	useEffect(() => {
 		const savedData = petitionLocalStorage.load();
 		if (savedData) {
-			setFormData({
+			const restoredFormData = {
 				category: savedData.category || '',
 				title: savedData.title || '',
 				objective: savedData.objective || '',
@@ -99,12 +104,18 @@ export default function NewPetitionPage() {
 				destination: savedData.destination || '',
 				mediaType: savedData.mediaType || 'PICTURE',
 				pictureUrl: savedData.pictureUrl,
+				pictureFileData: savedData.pictureFileData,
+				pictureFileName: savedData.pictureFileName,
+				pictureFileType: savedData.pictureFileType,
+				pictureFileSize: savedData.pictureFileSize,
 				videoYoutubeUrl: savedData.videoYoutubeUrl,
 				signatureGoal: savedData.signatureGoal || 1000,
 				publishNow: savedData.publishNow,
 				scheduledDate: savedData.scheduledDate,
 				scheduledTime: savedData.scheduledTime,
-			});
+			};
+			
+			setFormData(restoredFormData);
 
 			// Restore current step if available
 			if (
@@ -125,13 +136,22 @@ export default function NewPetitionPage() {
 	// Save form data to localStorage whenever formData changes (but only after initial load)
 	useEffect(() => {
 		if (hasLoadedFromStorage) {
-			const dataToSave: PetitionFormData = {
-				...formData,
-				currentStep,
+			const saveData = async () => {
+				const dataToSave: PetitionFormData = {
+					...formData,
+					currentStep,
+				};
+				
+				if (currentFile) {
+					await petitionLocalStorage.saveWithFile(dataToSave, currentFile);
+				} else {
+					petitionLocalStorage.save(dataToSave);
+				}
 			};
-			petitionLocalStorage.save(dataToSave);
+			
+			saveData();
 		}
-	}, [formData, currentStep, hasLoadedFromStorage]);
+	}, [formData, currentStep, hasLoadedFromStorage, currentFile]);
 
 	const steps: { id: Step; title: string; icon: React.ReactNode }[] = [
 		{
@@ -200,6 +220,11 @@ export default function NewPetitionPage() {
 	};
 
 	const handleClearDraft = () => {
+		// Clean up any blob URLs before clearing
+		if (formData.pictureUrl && formData.pictureUrl.startsWith('blob:')) {
+			URL.revokeObjectURL(formData.pictureUrl);
+		}
+		
 		petitionLocalStorage.clear();
 		setFormData({
 			category: '',
@@ -212,6 +237,7 @@ export default function NewPetitionPage() {
 		});
 		setCurrentStep('title');
 		setShowDraftRestored(false);
+		setCurrentFile(null);
 	};
 
 	const isCurrentStepValid = (): boolean => {
@@ -261,6 +287,7 @@ export default function NewPetitionPage() {
 					<MediaStep
 						formData={formData}
 						updateFormData={updateFormData}
+						onFileUpdate={setCurrentFile}
 					/>
 				);
 			case 'signatures':
