@@ -1,23 +1,49 @@
 'use server'
 
-import { signInWithPopup } from 'firebase/auth';
-import { auth, provider } from '@/lib/firebase';
-import { redirect } from 'next/navigation';
+import { revalidatePath } from 'next/cache';
 
-export async function signInWithGoogle() {
+type SignInResponse = {
+    success: boolean;
+    refresh_token?: string;
+    access_token?: string;
+    message?: string;
+};
+
+type SignInWithGoogleParams = {
+    email: string;
+    picture: string;
+    displayName: string;
+    lang?: string;
+};
+
+export async function signInWithGoogle(params: SignInWithGoogleParams) {
     try {
-        const result = await signInWithPopup(auth, provider);
-        const user = result.user;
+        const { email, picture, displayName, lang = 'en' } = params;
+
+        console.log('Processing sign-in for user:', email);
         
-        // You can add additional logic here such as:
-        // - Save user data to your database
-        // - Create user session
-        // - Log the sign-in event
-        
-        console.log('User signed in:', user.uid);
-        
-        // Redirect to dashboard or home page after successful sign-in
-        redirect('/dashboard');
+        // Create request body from parameters
+        const requestBody = {
+            email,
+            picture,
+            displayName,
+            lang,
+        };
+
+        // Make POST request to /auth/signInWithGoogle
+        const response = await fetch(`${process.env.API_BASE_URL}/auth/signInWithGoogle`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(requestBody),
+        });
+
+        const responseData = await response.json();
+
+        console.log('Sign-in response:', responseData);
+
+        revalidatePath('/');
         
     } catch (error) {
         console.error('Google sign-in failed:', error);

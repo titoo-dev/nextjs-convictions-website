@@ -1,8 +1,10 @@
 "use client";
 
 import { Button } from '@/components/ui/button';
-import { signInWithGoogle } from '@/actions/sign-in-with-google';
 import { useTransition } from 'react';
+import { signInWithPopup } from 'firebase/auth';
+import { auth, provider } from '@/lib/firebase';
+import { signInWithGoogle } from '@/actions/sign-in-with-google';
 
 
 
@@ -12,7 +14,20 @@ export function GoogleLoginButton() {
     const handleGoogleLogin = async () => {
         startTransition(async () => {
             try {
-                await signInWithGoogle();
+                const result = await signInWithPopup(auth, provider);
+                const user = result.user;
+                
+                // Extract user information from Firebase result
+                const userParams = {
+                    email: user.email!,
+                    picture: user.photoURL || '',
+                    displayName: user.displayName || '',
+                    lang: 'fr' // Default to French based on the platform
+                };
+
+                // Call the server action to complete authentication
+                await signInWithGoogle(userParams);
+                
             } catch (error) {
                 console.error('Login failed:', error);
             }
