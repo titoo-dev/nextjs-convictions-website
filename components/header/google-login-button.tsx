@@ -5,15 +5,20 @@ import { useTransition } from 'react';
 import { signInWithPopup } from 'firebase/auth';
 import { auth, provider } from '@/lib/firebase';
 import { signInWithGoogle } from '@/actions/sign-in-with-google';
+import { authLocalStorage } from '@/lib/local-storage';
+import { getLocale } from 'next-intl/server';
 
+type GoogleLoginButtonProps = {
+	onSuccess?: () => void;
+};
 
-
-export function GoogleLoginButton() {
+export function GoogleLoginButton({ onSuccess }: GoogleLoginButtonProps) {
     const [isPending, startTransition] = useTransition();
 
     const handleGoogleLogin = async () => {
         startTransition(async () => {
             try {
+                const lang = await getLocale() || 'en';
                 const result = await signInWithPopup(auth, provider);
                 const user = result.user;
                 
@@ -22,12 +27,23 @@ export function GoogleLoginButton() {
                     email: user.email!,
                     picture: user.photoURL || '',
                     displayName: user.displayName || '',
-                    lang: 'fr' // Default to French based on the platform
+                    lang,
                 };
 
                 // Call the server action to complete authentication
-                await signInWithGoogle(userParams);
+                const response = await signInWithGoogle(userParams);
                 
+                // Store tokens in localStorage on successful sign-in
+                if (response.access_token && response.refresh_token) {
+                    authLocalStorage.saveTokens({
+                        accessToken: response.access_token,
+                        refreshToken: response.refresh_token,
+                    });
+
+                    if (onSuccess) {
+                        onSuccess();
+                    }
+                }
             } catch (error) {
                 console.error('Login failed:', error);
             }

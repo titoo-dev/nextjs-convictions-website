@@ -53,7 +53,7 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
 				</div>
 			</div>
 
-			<GoogleLoginButton />
+			<GoogleLoginButton onSuccess={onSuccess} />
 
 			<p className="text-center text-sm text-gray-600">
 				You don&apos;t have an account yet ?{' '}
