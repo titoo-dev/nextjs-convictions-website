@@ -153,7 +153,7 @@ export const petitionLocalStorage = {
                         : data.pictureFileData.substring(0, 100);
                     atob(testData);
                 } catch (error) {
-                    console.warn('Corrupted base64 data detected, clearing image data');
+                    console.warn('Corrupted base64 data detected, clearing image data', error);
                     data.pictureFileData = undefined;
                     data.pictureFileName = undefined;
                     data.pictureFileType = undefined;
