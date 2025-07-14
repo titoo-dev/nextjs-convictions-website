@@ -266,7 +266,8 @@
                 },
                 "uploading": "Téléchargement...",
                 "processing": "Traitement de l'image...",
-                "removeImage": "Supprimer l'image"
+                "removeImage": "Supprimer l'image",
+                "removeVideo": "Supprimer la vidéo"
             },
             "signaturesStep": {
                 "title": "Nombre de signatures souhaité",

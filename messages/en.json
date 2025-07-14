@@ -260,7 +260,8 @@
                 },
                 "uploading": "Uploading...",
                 "processing": "Processing image...",
-                "removeImage": "Remove image"
+                "removeImage": "Remove image",
+                "removeVideo": "Remove video"
             },
             "signaturesStep": {
                 "title": "Desired number of signatures",
