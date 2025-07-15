@@ -14,7 +14,8 @@ import { LoginForm } from './login-form';
 import { useQueryClient } from '@tanstack/react-query';
 
 export function LoginDialog() {
-	const t = useTranslations('navigation');
+	const tNavigation = useTranslations('navigation');
+	const tDialog = useTranslations('loginDialog');
 	const [isLoginOpen, setIsLoginOpen] = useState(false);
 	const queryClient = useQueryClient();
 
@@ -33,19 +34,21 @@ export function LoginDialog() {
 					size="default"
 					className="border-none shadow-none cursor-pointer"
 				>
-					{t('login')}
+					{tNavigation('login')}
 				</Button>
 			</DialogTrigger>
 			<DialogContent className="sm:max-w-md">
 				<DialogHeader className="space-y-4">
 					<DialogTitle className="text-3xl font-bold bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent mr-auto">
-						Welcome Back
+						{tDialog('title')}
 					</DialogTitle>
 					<div className="space-y-2">
-						<div className="h-1 bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 rounded-full w-20 mr-auto" />
+						<div
+							className="h-1 bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 rounded-full w-20 mr-auto"
+							aria-label={tDialog('dividerAlt')}
+						/>
 						<p className="text-gray-600 text-sm leading-relaxed max-w-sm mr-auto text-left">
-							Sign in to your account to create petitions, support
-							causes, and make your voice heard in the community.
+							{tDialog('description')}
 						</p>
 					</div>
 				</DialogHeader>

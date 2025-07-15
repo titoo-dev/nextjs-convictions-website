@@ -380,5 +380,21 @@
         },
         "lastUpdated": "Last updated June 9, 2025",
         "gdprNotice": "In accordance with the European Regulation on the protection of personal data No. 2016/679"
+    },
+    "loginDialog": {
+        "title": "Welcome Back",
+        "dividerAlt": "Gradient divider",
+        "description": "Sign in to your account to create petitions, support causes, and make your voice heard in the community.",
+        "emailLabel": "Email",
+        "emailPlaceholder": "Enter your email",
+        "loginButton": "Login",
+        "dividerText": "or",
+        "noAccount": "You don't have an account yet ?",
+        "registerButton": "Register"
+    },
+    "googleLogin": {
+        "button": "Continue with Google",
+        "signingIn": "Signing in...",
+        "error": "Login failed"
     }
 }

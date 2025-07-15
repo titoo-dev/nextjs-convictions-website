@@ -380,5 +380,21 @@
         },
         "lastUpdated": "Última actualización 9 de junio de 2025",
         "gdprNotice": "De acuerdo con el Reglamento Europeo sobre la protección de datos personales Nº 2016/679"
+    },
+    "loginDialog": {
+        "title": "Bienvenido de nuevo",
+        "dividerAlt": "Divisor degradado",
+        "description": "Inicia sesión en tu cuenta para crear peticiones, apoyar causas y hacer oír tu voz en la comunidad.",
+        "emailLabel": "Correo electrónico",
+        "emailPlaceholder": "Introduce tu correo electrónico",
+        "loginButton": "Iniciar sesión",
+        "dividerText": "o",
+        "noAccount": "¿Aún no tienes una cuenta?",
+        "registerButton": "Registrarse"
+    },
+    "googleLogin": {
+        "button": "Continuar con Google",
+        "signingIn": "Iniciando sesión...",
+        "error": "Error al iniciar sesión"
     }
 }
