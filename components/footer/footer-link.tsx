@@ -1,3 +1,6 @@
+"use client";
+
+import { usePathname } from "next/dist/client/components/navigation";
 import Link from "next/link";
 
 type FooterLinkProps = {
@@ -7,6 +10,11 @@ type FooterLinkProps = {
 };
 
 export function FooterLink({ href, children, external = false }: FooterLinkProps) {
+	const pathname = usePathname();
+	const isActive = pathname === href || pathname.startsWith(href);
+
+	if (isActive) return null;
+
 	if (external) {
 		return (
 			<a
