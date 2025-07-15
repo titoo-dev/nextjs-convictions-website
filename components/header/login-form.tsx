@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -8,6 +8,7 @@ import { useTranslations } from 'next-intl';
 import { useTransition } from 'react';
 import { signInWithEmail } from '@/actions/sign-in-with-email';
 import { toast } from 'sonner';
+import { authLocalStorage } from '@/lib/local-storage';
 
 type LoginFormProps = {
 	onSuccess?: () => void;
@@ -19,15 +20,21 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		
+
 		const formData = new FormData(e.currentTarget);
-		
+
 		startTransition(async () => {
 			try {
 				const result = await signInWithEmail(formData);
-				
+
 				if (result.success) {
+					authLocalStorage.saveTokens({
+						accessToken: result.data?.access_token!,
+						refreshToken: result.data?.refresh_token!,
+					});
+
 					toast.success(tDialog('loginSuccess'));
+
 					onSuccess?.();
 				} else {
 					toast.error(result.error || tDialog('loginError'));
@@ -66,7 +73,9 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
 				className="w-full bg-orange-500 hover:bg-orange-600 text-white mt-2"
 				disabled={isPending}
 			>
-				{isPending ? tDialog('loginButtonLoading') : tDialog('loginButton')}
+				{isPending
+					? tDialog('loginButtonLoading')
+					: tDialog('loginButton')}
 			</Button>
 
 			<div className="relative">
@@ -74,7 +83,9 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
 					<span className="w-full border-t border-gray-300" />
 				</div>
 				<div className="relative flex justify-center text-xs uppercase">
-					<span className="bg-white px-2 text-gray-500">{tDialog('dividerText')}</span>
+					<span className="bg-white px-2 text-gray-500">
+						{tDialog('dividerText')}
+					</span>
 				</div>
 			</div>
 
