@@ -41,7 +41,7 @@ export async function signInWithEmail(
 			}
 		);
 
-		if (!response.ok) {
+		if (response.status !== 201) {
 			throw new Error(`Sign in failed: ${response.statusText}`);
 		}
 
