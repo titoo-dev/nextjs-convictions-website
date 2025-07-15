@@ -38,11 +38,11 @@ export function LoginDialog() {
 				</Button>
 			</DialogTrigger>
 			<DialogContent className="sm:max-w-md">
-				<DialogHeader className="space-y-4">
+				<DialogHeader>
 					<DialogTitle className="text-3xl font-bold bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent mr-auto">
 						{tDialog('title')}
 					</DialogTitle>
-					<div className="space-y-2">
+					<div className="space-y-4">
 						<div
 							className="h-1 bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 rounded-full w-20 mr-auto"
 							aria-label={tDialog('dividerAlt')}

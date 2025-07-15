@@ -9,6 +9,7 @@ type PasswordInputProps = {
 	placeholder?: string;
 	className?: string;
 	required?: boolean;
+	disabled?: boolean;
 };
 
 export function PasswordInput({ 
@@ -30,6 +31,7 @@ export function PasswordInput({
 			<div className="relative">
 				<Input
 					id={id}
+					name='password'
 					type={showPassword ? 'text' : 'password'}
 					placeholder={placeholder}
 					className={`${className} pr-10`}

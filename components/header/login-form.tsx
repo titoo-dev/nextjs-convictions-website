@@ -5,6 +5,9 @@ import { Input } from '@/components/ui/input';
 import { PasswordInput } from './password-input';
 import { GoogleLoginButton } from './google-login-button';
 import { useTranslations } from 'next-intl';
+import { useTransition } from 'react';
+import { signInWithEmail } from '@/actions/sign-in-with-email';
+import { toast } from 'sonner';
 
 type LoginFormProps = {
 	onSuccess?: () => void;
@@ -12,11 +15,27 @@ type LoginFormProps = {
 
 export function LoginForm({ onSuccess }: LoginFormProps) {
 	const tDialog = useTranslations('loginDialog');
-	
-	const handleSubmit = (e: React.FormEvent) => {
+	const [isPending, startTransition] = useTransition();
+
+	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		// TODO: Implement login logic
-		onSuccess?.();
+		
+		const formData = new FormData(e.currentTarget);
+		
+		startTransition(async () => {
+			try {
+				const result = await signInWithEmail(formData);
+				
+				if (result.success) {
+					toast.success(tDialog('loginSuccess'));
+					onSuccess?.();
+				} else {
+					toast.error(result.error || tDialog('loginError'));
+				}
+			} catch (error) {
+				toast.error(tDialog('loginError'));
+			}
+		});
 	};
 
 	return (
@@ -30,21 +49,24 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
 				</label>
 				<Input
 					id="email"
+					name="email"
 					type="email"
 					placeholder={tDialog('emailPlaceholder')}
 					className="w-full"
 					required
+					disabled={isPending}
 				/>
 			</div>
 
-			<PasswordInput />
+			<PasswordInput disabled={isPending} />
 
 			<Button
 				type="submit"
 				variant="outline"
 				className="w-full bg-orange-500 hover:bg-orange-600 text-white mt-2"
+				disabled={isPending}
 			>
-				{tDialog('loginButton')}
+				{isPending ? tDialog('loginButtonLoading') : tDialog('loginButton')}
 			</Button>
 
 			<div className="relative">
