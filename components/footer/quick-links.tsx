@@ -18,11 +18,13 @@ export function QuickLinks() {
 			</li>
 			<RenderWhen condition={!isNewPage}>
 				<li>
-					<FooterLink href="/create">{t('createPetition')}</FooterLink>
+					<FooterLink href="/petition/new">
+						{t('createPetition')}
+					</FooterLink>
 				</li>
 			</RenderWhen>
 			<li>
-				<FooterLink href="/support">{t('supportUs')}</FooterLink>
+				<FooterLink href="/support-us">{t('supportUs')}</FooterLink>
 			</li>
 		</FooterSection>
 	);
