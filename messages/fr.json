@@ -387,7 +387,12 @@
         "description": "Connectez-vous à votre compte pour créer des pétitions, soutenir des causes et faire entendre votre voix dans la communauté.",
         "emailLabel": "Email",
         "emailPlaceholder": "Entrez votre email",
+        "passwordLabel": "Mot de passe",
+        "passwordPlaceholder": "Entrez votre mot de passe",
         "loginButton": "Connexion",
+        "loginButtonLoading": "Connexion en cours...",
+        "loginSuccess": "Connexion réussie !",
+        "loginError": "Échec de la connexion. Veuillez vérifier vos identifiants.",
         "dividerText": "ou",
         "noAccount": "Vous n'avez pas encore de compte ?",
         "registerButton": "S'inscrire"

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { EyeIcon, EyeOffIcon } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 type PasswordInputProps = {
 	id?: string;
@@ -18,6 +19,7 @@ export function PasswordInput({
 	className = "w-full",
 	required = false
 }: PasswordInputProps) {
+	const tDialog = useTranslations('loginDialog');
 	const [showPassword, setShowPassword] = useState(false);
 
 	return (
@@ -26,7 +28,7 @@ export function PasswordInput({
 				htmlFor={id}
 				className="text-sm font-medium text-gray-700"
 			>
-				Password
+				{tDialog('passwordLabel')}
 			</label>
 			<div className="relative">
 				<Input

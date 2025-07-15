@@ -29,8 +29,8 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
 
 				if (result.success) {
 					authLocalStorage.saveTokens({
-						accessToken: result.data?.access_token!,
-						refreshToken: result.data?.refresh_token!,
+						accessToken: result.data?.access_token ?? '',
+						refreshToken: result.data?.refresh_token ?? '',
 					});
 
 					toast.success(tDialog('loginSuccess'));
@@ -40,6 +40,7 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
 					toast.error(result.error || tDialog('loginError'));
 				}
 			} catch (error) {
+				console.error('Login error:', error);
 				toast.error(tDialog('loginError'));
 			}
 		});

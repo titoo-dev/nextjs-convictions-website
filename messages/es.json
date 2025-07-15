@@ -387,7 +387,12 @@
         "description": "Inicia sesión en tu cuenta para crear peticiones, apoyar causas y hacer oír tu voz en la comunidad.",
         "emailLabel": "Correo electrónico",
         "emailPlaceholder": "Introduce tu correo electrónico",
+        "passwordLabel": "Contraseña",
+        "passwordPlaceholder": "Introduce tu contraseña",
         "loginButton": "Iniciar sesión",
+        "loginButtonLoading": "Iniciando sesión...",
+        "loginSuccess": "¡Sesión iniciada exitosamente!",
+        "loginError": "Error al iniciar sesión. Por favor verifica tus credenciales.",
         "dividerText": "o",
         "noAccount": "¿Aún no tienes una cuenta?",
         "registerButton": "Registrarse"

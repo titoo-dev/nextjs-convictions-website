@@ -387,7 +387,12 @@
         "description": "Sign in to your account to create petitions, support causes, and make your voice heard in the community.",
         "emailLabel": "Email",
         "emailPlaceholder": "Enter your email",
+        "passwordLabel": "Password",
+        "passwordPlaceholder": "Enter your password",
         "loginButton": "Login",
+        "loginButtonLoading": "Signing in...",
+        "loginSuccess": "Successfully logged in!",
+        "loginError": "Login failed. Please check your credentials.",
         "dividerText": "or",
         "noAccount": "You don't have an account yet ?",
         "registerButton": "Register"
