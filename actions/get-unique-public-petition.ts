@@ -52,8 +52,6 @@ export async function getUniquePublicPetition(
 			return { petition: null };
 		}
 
-		console.log('Fetched petition:', data);
-
 		const validatedPetition = PublicPetitionSchema.parse(data);
 
 		return { petition: validatedPetition };

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -73,7 +73,6 @@ export type PetitionFormData = {
 export default function NewPetitionPage() {
 	const tPage = useTranslations('petition.form.page');
 	const tSteps = useTranslations('petition.form.steps');
-	const local = useLocale();
 
 	const [currentStep, setCurrentStep] = useState<Step>('title');
 	const [formData, setFormData] = useState<PetitionFormData>({
@@ -198,32 +197,24 @@ export default function NewPetitionPage() {
 	};
 
 	const handlePublish = () => {
-		console.log('Publish petition', formData);
-		
-		const dataToSend = {
-			category: formData.category,
-			title: formData.title,
-			objective: formData.objective,
-			destination: formData.destination,
-			content: formData.content,
-			languageOrigin: local.toUpperCase(),
-			creationStep: 6,
-			mediaType: formData.mediaType,
-			videoYoutubeUrl: formData.videoYoutubeUrl,
-			pictureId: '',
-			signatureGoal: formData.signatureGoal,
-			publishedAt: new Date().toISOString(),
-			isPublished: true,
-		};
-
-		console.log('Data to send:', dataToSend);
+		// const dataToSend = {
+		// 	category: formData.category,
+		// 	title: formData.title,
+		// 	objective: formData.objective,
+		// 	destination: formData.destination,
+		// 	content: formData.content,
+		// 	languageOrigin: local.toUpperCase(),
+		// 	creationStep: 6,
+		// 	mediaType: formData.mediaType,
+		// 	videoYoutubeUrl: formData.videoYoutubeUrl,
+		// 	pictureId: '',
+		// 	signatureGoal: formData.signatureGoal,
+		// 	publishedAt: new Date().toISOString(),
+		// 	isPublished: true,
+		// };
 
 		// Clear the draft from localStorage after successful publish
 		petitionLocalStorage.clear();
-
-		// Here you would typically redirect to the published petition or success page
-		// For now, we'll just log the action
-		console.log('Draft cleared from localStorage after publish');
 	};
 
 	const handleClearDraft = () => {

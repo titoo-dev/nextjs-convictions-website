@@ -147,18 +147,11 @@ export const authLocalStorage = {
 
     getTokens: (): AuthTokens | null => {
         try {
-
-            console.log('authLocalStorage.getTokens called');
-
             if (typeof window === 'undefined') return null;
             
             const saved = localStorage.getItem(AUTH_TOKENS_KEY);
 
-            console.log('Loaded auth tokens from localStorage:', saved);
-
             if (!saved) return null;
-            
-            console.log('Loaded auth tokens from localStorage:', saved);
             
             const tokensData: AuthTokens = JSON.parse(saved);
             
@@ -168,7 +161,6 @@ export const authLocalStorage = {
                 const now = new Date();
                 
                 if (now >= expiresAt) {
-                    console.log('Auth tokens expired, clearing tokens');
                     // Tokens expired, remove them
                     authLocalStorage.clearTokens();
                     return null;

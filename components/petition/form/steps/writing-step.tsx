@@ -36,8 +36,6 @@ export function WritingStep({ formData, updateFormData }: WritingStepProps) {
 	const t = useTranslations('petition.form.writingStep');
 	const [editorContent, setEditorContent] = useState(formData.content || '');
 
-	console.log('WritingStep rendered with content:', editorContent);
-
 	// Custom toolbar configuration
 	const modules = useMemo(
 		() => ({

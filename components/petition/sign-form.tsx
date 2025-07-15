@@ -9,8 +9,7 @@ import { signPublicPetition } from '@/actions/sign-public-petition';
 import { SuccessDialog } from './success-dialog';
 import { PetitionFormInputs } from './petition-form-inputs';
 import { NotificationOptions } from './notification-options';
-import { useTranslations } from 'next-intl';
-import { getLocale } from 'next-intl/server';
+import { useLocale, useTranslations } from 'next-intl';
 
 type SignFormProps = {
 	petition: PublicPetition;
@@ -24,6 +23,7 @@ export function SignForm({ petition }: SignFormProps) {
     const [showSuccessDialog, setShowSuccessDialog] = useState(false);
     const [isPending, startTransition] = useTransition();
     const formRef = useRef<HTMLFormElement>(null);
+    const locale = useLocale();
 
     // Show toast if already signed on component mount
     useEffect(() => {
@@ -39,7 +39,6 @@ export function SignForm({ petition }: SignFormProps) {
         e.preventDefault();
         if (!petition) return;
 
-        const locale = await getLocale();
         const formData = new FormData(e.currentTarget);
         const email = formData.get('email') as string;
         const name = formData.get('name') as string;
