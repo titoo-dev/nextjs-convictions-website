@@ -1,26 +1,7 @@
+import { PetitionFormData } from "@/app/petition/new/page";
+
 const PETITION_FORM_KEY = 'petition-form-draft';
 const AUTH_TOKENS_KEY = 'auth-tokens';
-
-export type PetitionFormData = {
-    category: string;
-    title: string;
-    objective: string;
-    content: string;
-    destination: string;
-    mediaType: 'PICTURE' | 'VIDEO_YOUTUBE';
-    pictureUrl?: string;
-    pictureFileData?: string; // base64 encoded file data
-    pictureFileName?: string;
-    pictureFileType?: string;
-    pictureFileSize?: number;
-    videoYoutubeUrl?: string;
-    signatureGoal: number;
-    publishNow?: boolean;
-    scheduledDate?: string;
-    scheduledTime?: string;
-    lastUpdated?: string;
-    currentStep?: string;
-};
 
 export type AuthTokens = {
     accessToken: string;
@@ -105,69 +86,15 @@ export const petitionLocalStorage = {
         }
     },
 
-    saveWithFile: async (data: PetitionFormData, file?: File): Promise<void> => {
-        try {
-            if (typeof window === 'undefined') return;
-            
-            let dataToSave = { ...data };
-            
-            if (file && data.mediaType === 'PICTURE') {
-                const base64Data = await fileToBase64(file);
-                dataToSave = {
-                    ...dataToSave,
-                    pictureFileData: base64Data,
-                    pictureFileName: file.name,
-                    pictureFileType: file.type,
-                    pictureFileSize: file.size,
-                };
-            }
-            
-            dataToSave.lastUpdated = new Date().toISOString();
-            localStorage.setItem(PETITION_FORM_KEY, JSON.stringify(dataToSave));
-        } catch (error) {
-            console.warn('Failed to save petition form data with file to localStorage:', error);
-        }
-    },
-
     load: (): PetitionFormData | null => {
         try {
             if (typeof window === 'undefined') return null;
             
             const saved = localStorage.getItem(PETITION_FORM_KEY);
+
             if (!saved) return null;
             
             const data = JSON.parse(saved) as PetitionFormData;
-            
-            // Check if data is not too old (e.g., 7 days)
-            if (data.lastUpdated) {
-                const lastUpdated = new Date(data.lastUpdated);
-                const now = new Date();
-                const daysDiff = (now.getTime() - lastUpdated.getTime()) / (1000 * 60 * 60 * 24);
-                
-                if (daysDiff > 7) {
-                    // Data is too old, remove it
-                    petitionLocalStorage.clear();
-                    return null;
-                }
-            }
-            
-            // Validate base64 data integrity
-            if (data.pictureFileData && data.pictureFileName && data.pictureFileType) {
-                try {
-                    // Test if base64 data is valid by attempting to decode a small portion
-                    const testData = data.pictureFileData.includes(',') 
-                        ? data.pictureFileData.split(',')[1].substring(0, 100)
-                        : data.pictureFileData.substring(0, 100);
-                    atob(testData);
-                } catch (error) {
-                    console.warn('Corrupted base64 data detected, clearing image data', error);
-                    data.pictureFileData = undefined;
-                    data.pictureFileName = undefined;
-                    data.pictureFileType = undefined;
-                    data.pictureFileSize = undefined;
-                    data.pictureUrl = undefined;
-                }
-            }
             
             return data;
         } catch (error) {

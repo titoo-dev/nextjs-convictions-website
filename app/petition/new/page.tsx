@@ -44,7 +44,6 @@ import {
 } from '@/components/petition/form/steps/publish-step';
 import {
 	petitionLocalStorage,
-	type PetitionFormData,
 } from '@/lib/local-storage';
 
 type Step =
@@ -55,18 +54,15 @@ type Step =
 	| 'signatures'
 	| 'publish';
 
-type PetitionData = {
+export type PetitionFormData = {
 	category: string;
 	title: string;
 	objective: string;
 	content: string;
 	destination: string;
 	mediaType: 'PICTURE' | 'VIDEO_YOUTUBE';
-	pictureUrl?: string;
-	pictureFileData?: string;
-	pictureFileName?: string;
-	pictureFileType?: string;
-	pictureFileSize?: number;
+	picture: File | null;
+	currentStep?: Step;
 	videoYoutubeUrl?: string;
 	signatureGoal: number;
 	publishNow?: boolean;
@@ -80,7 +76,7 @@ export default function NewPetitionPage() {
 	const local = useLocale();
 
 	const [currentStep, setCurrentStep] = useState<Step>('title');
-	const [formData, setFormData] = useState<PetitionData>({
+	const [formData, setFormData] = useState<PetitionFormData>({
 		category: '',
 		title: '',
 		objective: '',
@@ -88,32 +84,28 @@ export default function NewPetitionPage() {
 		destination: '',
 		mediaType: 'PICTURE',
 		signatureGoal: 1000,
+		picture: null,
 	});
 	const [hasLoadedFromStorage, setHasLoadedFromStorage] = useState(false);
 	const [showDraftRestored, setShowDraftRestored] = useState(false);
-	const [currentFile, setCurrentFile] = useState<File | null>(null);
 
 	// Load form data from localStorage on component mount
 	useEffect(() => {
 		const savedData = petitionLocalStorage.load();
 		if (savedData) {
-			const restoredFormData = {
+			const restoredFormData: PetitionFormData = {
 				category: savedData.category || '',
 				title: savedData.title || '',
 				objective: savedData.objective || '',
 				content: savedData.content || '',
 				destination: savedData.destination || '',
 				mediaType: savedData.mediaType || 'PICTURE',
-				pictureUrl: savedData.pictureUrl,
-				pictureFileData: savedData.pictureFileData,
-				pictureFileName: savedData.pictureFileName,
-				pictureFileType: savedData.pictureFileType,
-				pictureFileSize: savedData.pictureFileSize,
 				videoYoutubeUrl: savedData.videoYoutubeUrl,
 				signatureGoal: savedData.signatureGoal || 1000,
 				publishNow: savedData.publishNow,
 				scheduledDate: savedData.scheduledDate,
 				scheduledTime: savedData.scheduledTime,
+				picture: savedData.picture || null,
 			};
 			
 			setFormData(restoredFormData);
@@ -142,17 +134,13 @@ export default function NewPetitionPage() {
 					...formData,
 					currentStep,
 				};
-				
-				if (currentFile) {
-					await petitionLocalStorage.saveWithFile(dataToSave, currentFile);
-				} else {
-					petitionLocalStorage.save(dataToSave);
-				}
+
+				petitionLocalStorage.save(dataToSave);
 			};
 			
 			saveData();
 		}
-	}, [formData, currentStep, hasLoadedFromStorage, currentFile]);
+	}, [formData, currentStep, hasLoadedFromStorage]);
 
 	const steps: { id: Step; title: string; icon: React.ReactNode }[] = [
 		{
@@ -205,7 +193,7 @@ export default function NewPetitionPage() {
 		}
 	};
 
-	const updateFormData = (updates: Partial<PetitionData>) => {
+	const updateFormData = (updates: Partial<PetitionFormData>) => {
 		setFormData((prev) => ({ ...prev, ...updates }));
 	};
 
@@ -228,6 +216,8 @@ export default function NewPetitionPage() {
 			isPublished: true,
 		};
 
+		console.log('Data to send:', dataToSend);
+
 		// Clear the draft from localStorage after successful publish
 		petitionLocalStorage.clear();
 
@@ -237,11 +227,6 @@ export default function NewPetitionPage() {
 	};
 
 	const handleClearDraft = () => {
-		// Clean up any blob URLs before clearing
-		if (formData.pictureUrl && formData.pictureUrl.startsWith('blob:')) {
-			URL.revokeObjectURL(formData.pictureUrl);
-		}
-		
 		petitionLocalStorage.clear();
 		setFormData({
 			category: '',
@@ -251,10 +236,10 @@ export default function NewPetitionPage() {
 			destination: '',
 			mediaType: 'PICTURE',
 			signatureGoal: 1000,
+			picture: null,
 		});
 		setCurrentStep('title');
 		setShowDraftRestored(false);
-		setCurrentFile(null);
 	};
 
 	const isCurrentStepValid = (): boolean => {
@@ -304,7 +289,9 @@ export default function NewPetitionPage() {
 					<MediaStep
 						formData={formData}
 						updateFormData={updateFormData}
-						onFileUpdate={setCurrentFile}
+						onFileUpdate={(file: File | null) => {
+							updateFormData({ picture: file });
+						}}
 					/>
 				);
 			case 'signatures':

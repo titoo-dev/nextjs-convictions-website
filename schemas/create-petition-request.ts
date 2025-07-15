@@ -7,7 +7,7 @@ export const createPetitionRequestSchema = z.object({
     destination: z.string().min(1, 'Destination is required'),
     content: z.string().min(1, 'Content is required'),
     languageOrigin: z.string().length(2, 'Language origin must be 2 characters'),
-    creationStep: z.number().int().min(1).max(6),
+    creationStep: z.number().int().min(1).max(6).default(6),
     mediaType: z.string().optional(),
     videoYoutubeUrl: z.url().optional().or(z.literal('')),
     pictureId: z.string().optional(),
