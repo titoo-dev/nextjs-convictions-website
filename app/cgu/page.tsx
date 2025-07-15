@@ -6,7 +6,7 @@ export default async function TermsOfUsePage() {
     return (
         <div className="min-h-screen bg-gray-50">
             <div className="container mx-auto px-4 py-8 max-w-4xl">
-                <div className="bg-white rounded-lg shadow-lg p-8">
+                <div className="bg-white rounded-lg shadow-none p-8 border-2">
                     <header className="mb-8">
                         <h1 className="text-3xl font-bold text-gray-900 mb-4">
                             {t('title')}
@@ -90,7 +90,7 @@ export default async function TermsOfUsePage() {
                     </section>
 
                     <footer className="mt-12 pt-8 border-t border-gray-200">
-                        <div className="bg-gray-50 rounded-lg p-6">
+                        <div className="bg-gray-50 rounded-lg">
                             <h3 className="font-semibold text-gray-900 mb-2">{t('contactTitle')}</h3>
                             <div className="text-sm text-gray-600 space-y-1">
                                 <p>MES CONVICTIONS</p>
