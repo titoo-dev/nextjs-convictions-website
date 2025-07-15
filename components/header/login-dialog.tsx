@@ -1,14 +1,29 @@
-'use client'
+'use client';
 
 import { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import {
+	Dialog,
+	DialogContent,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { useTranslations } from 'next-intl';
 import { LoginForm } from './login-form';
+import { useQueryClient } from '@tanstack/react-query';
 
 export function LoginDialog() {
 	const t = useTranslations('navigation');
 	const [isLoginOpen, setIsLoginOpen] = useState(false);
+	const queryClient = useQueryClient();
+
+	const handleSuccess = () => {
+		setIsLoginOpen(false);
+		queryClient.invalidateQueries({
+			queryKey: ['currentUser'],
+		});
+	};
 
 	return (
 		<Dialog open={isLoginOpen} onOpenChange={setIsLoginOpen}>
@@ -29,13 +44,12 @@ export function LoginDialog() {
 					<div className="space-y-2">
 						<div className="h-1 bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 rounded-full w-20 mr-auto" />
 						<p className="text-gray-600 text-sm leading-relaxed max-w-sm mr-auto text-left">
-							Sign in to your account to create petitions,
-							support causes, and make your voice heard in the
-							community.
+							Sign in to your account to create petitions, support
+							causes, and make your voice heard in the community.
 						</p>
 					</div>
 				</DialogHeader>
-				<LoginForm onSuccess={() => setIsLoginOpen(false)} />
+				<LoginForm onSuccess={handleSuccess} />
 			</DialogContent>
 		</Dialog>
 	);
