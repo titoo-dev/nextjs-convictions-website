@@ -12,8 +12,8 @@ export default async function TermsOfUsePage() {
                             {t('title')}
                         </h1>
                         <div className="text-sm text-gray-600 space-y-1">
-                            <p>Mises à jour le 9 juin 2025</p>
-                            <p>Conformément au Règlement européen relatif à la protection des données à caractère personnel n°2016/679</p>
+                            <p>{t('lastUpdated')}</p>
+                            <p>{t('gdprNotice')}</p>
                         </div>
                     </header>
 
