@@ -348,5 +348,35 @@
                 "redirecting": "Redirection vers le paiement..."
             }
         }
+    },
+    "cgu": {
+        "title": "CONDITIONS GÉNÉRALES D'UTILISATION DE MESCONVICTIONS.COM",
+        "preambleTitle": "PRÉAMBULE",
+        "preambleText1": "Le site internet {websiteLink} est proposé par la Société MES CONVICTIONS, immatriculée au RCS de Paris sous le n° {rcsNumber}, dont le siège social est situé au 141 avenue de Wagram, 75017 Paris, France. Numéro SIRET {siretNumber}. Numéro de TVA intracommunautaire : {vatNumber}. Code NAF ou APE : 5812Z - Edition de revues et périodiques. Forme juridique : Société par actions simplifiée (SAS). Dirigeants : Olivier BONNASSIES et deux autres dirigeants.",
+        "preambleText2": "Toute utilisation du Site implique l'acceptation pleine et entière des présentes Conditions Générales d'Utilisation (ci-après « CGU »). Les CGU applicables sont celles en vigueur à la date d'utilisation du Site.",
+        "preambleText3": "La Société se réserve le droit de modifier les CGU à tout moment et sans préavis. Toute reproduction, même partielle, des CGU est interdite sans autorisation.",
+        "preambleText4": "Pour toute question, l'Utilisateur peut contacter la Société à l'adresse suivante :",
+        "definitionsTitle": "ARTICLE 1 - DÉFINITIONS",
+        "definitionsText": "mesconvictions.com et mise à jour du nom de la Société : MES CONVICTIONS",
+        "articlesTitle": "ARTICLE 2 À 13",
+        "articlesText": "Chaque article est repris intégralement avec remplacement rigoureux de toutes les mentions de \"mesopinions.com\" ou \"Mes Opinions\" par \"mesconvictions.com\" ou \"Mes Convictions\", avec mise à jour de toutes les adresses email, numéros juridiques et coordonnées de la société.",
+        "rightsTitle": "ARTICLE 9.5 - MODALITÉ D'EXERCICE DES DROITS PAR L'UTILISATEUR",
+        "rightsText1": "L'utilisateur peut à tout moment adresser une requête à l'équipe de Mes Convictions en envoyant un e-mail à l'adresse suivante :",
+        "rightsText2": "L'Utilisateur peut également adresser une réclamation auprès de la CNIL.",
+        "rightsText3": "Un Délégué à la Protection des Données (DPO – Data Protection Officer) veille à la conformité de mesconvictions.com aux normes européennes et nationales relatives à la protection des données personnelles. Vous pouvez le contacter pour toute question relative à la protection de vos données ou pour exercer vos droits à l'adresse suivante :",
+        "rightsText4": "Les sous-traitants de la Société Mes Convictions sont également conformes à la réglementation relative à la protection des données personnelles.",
+        "jurisdictionTitle": "ARTICLE 13.2 - COMPÉTENCE JURIDICTIONNELLE",
+        "jurisdictionText1": "En cas d'échec de la procédure de règlement amiable, tout litige résultant de la formation, de l'interprétation, de l'exécution ou de l'extinction des accords conclus entre la Société et un Utilisateur, sera soumis à la compétence exclusive du Tribunal compétent de la ville de Paris (75).",
+        "jurisdictionText2": "Toutes les références à Lille ont été remplacées par Paris, conformément à l'adresse du siège social de la société MES CONVICTIONS.",
+        "contactTitle": "Contact",
+        "contactAddress": "141 avenue de Wagram, 75017 Paris, France",
+        "contactEmail": "Email :",
+        "contactSiret": "SIRET :",
+        "variables": {
+            "websiteLink": "mesconvictions.com",
+            "rcsNumber": "833 401 037",
+            "siretNumber": "833 401 037 00027",
+            "vatNumber": "FR95833401037"
+        }
     }
 }

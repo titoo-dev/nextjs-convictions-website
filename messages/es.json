@@ -348,5 +348,35 @@
                 "redirecting": "Redirigiendo al pago..."
             }
         }
+    },
+    "cgu": {
+        "title": "TÉRMINOS DE USO DE MESCONVICTIONS.COM",
+        "preambleTitle": "PREÁMBULO",
+        "preambleText1": "El sitio web {websiteLink} es ofrecido por la empresa MES CONVICCIONES, registrada en el RCS de París con el número {rcsNumber}, cuyo domicilio social se encuentra en 141 avenue de Wagram, 75017 París, Francia. Número SIRET {siretNumber}. Número de IVA intracomunitario: {vatNumber}. Código NAF o APE: 5812Z - Edición de revistas y publicaciones periódicas. Forma jurídica: Sociedad por acciones simplificada (SAS). Directores: Olivier BONNASSIES y otros dos directores.",
+        "preambleText2": "Cualquier uso del Sitio implica la aceptación plena e incondicional de estos Términos de Uso (en adelante, \"TOU\"). Los TOU aplicables son los vigentes en la fecha de uso del Sitio.",
+        "preambleText3": "La Empresa se reserva el derecho de modificar los TOU en cualquier momento y sin previo aviso. Queda prohibida cualquier reproducción, incluso parcial, de los TOU sin autorización.",
+        "preambleText4": "Para cualquier pregunta, el Usuario puede contactar con la Empresa en la siguiente dirección:",
+        "definitionsTitle": "ARTÍCULO 1 - DEFINICIONES",
+        "definitionsText": "mesconvictions.com y actualización del nombre de la Empresa: MES CONVICCIONES",
+        "articlesTitle": "ARTÍCULO 2 AL 13",
+        "articlesText": "Cada artículo se reproduce íntegramente con la sustitución rigurosa de todas las menciones de \"mesopinions.com\" o \"Mes Opinions\" por \"mesconvictions.com\" o \"Mes Convicciones\", con la actualización de todas las direcciones de correo electrónico, números legales y datos de contacto de la empresa.",
+        "rightsTitle": "ARTÍCULO 9.5 - MÉTODO DE EJERCICIO DE LOS DERECHOS POR PARTE DEL USUARIO",
+        "rightsText1": "El usuario puede en cualquier momento enviar una solicitud al equipo de Mes Convicciones enviando un correo electrónico a la siguiente dirección:",
+        "rightsText2": "El Usuario también puede presentar una reclamación ante la CNIL.",
+        "rightsText3": "Un Delegado de Protección de Datos (DPO) vela por el cumplimiento de mesconvictions.com con las normas europeas y nacionales relativas a la protección de datos personales. Puede ponerse en contacto con él para cualquier pregunta relacionada con la protección de sus datos o para ejercer sus derechos en la siguiente dirección:",
+        "rightsText4": "Los subcontratistas de la Sociedad Mes Convicciones también cumplen con la normativa relativa a la protección de datos personales.",
+        "jurisdictionTitle": "ARTÍCULO 13.2 - JURISDICCIÓN",
+        "jurisdictionText1": "En caso de fracaso del procedimiento de resolución amistosa, cualquier litigio resultante de la formación, interpretación, ejecución o terminación de los acuerdos celebrados entre la Sociedad y un Usuario, se someterá a la jurisdicción exclusiva del Tribunal competente de la ciudad de París (75).",
+        "jurisdictionText2": "Todas las referencias a Lille han sido sustituidas por París, de acuerdo con el domicilio social de la empresa MES CONVICCIONES.",
+        "contactTitle": "Contacto",
+        "contactAddress": "141 avenue de Wagram, 75017 París, Francia",
+        "contactEmail": "Email:",
+        "contactSiret": "SIRET:",
+        "variables": {
+            "websiteLink": "mesconvictions.com",
+            "rcsNumber": "833 401 037",
+            "siretNumber": "833 401 037 00027",
+            "vatNumber": "FR95833401037"
+        }
     }
 }

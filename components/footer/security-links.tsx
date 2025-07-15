@@ -11,7 +11,7 @@ export function SecurityLinks() {
 				<FooterLink href="/privacy">{t('dataPolicy')}</FooterLink>
 			</li>
 			<li>
-				<FooterLink href="/terms">{t('termsOfUse')}</FooterLink>
+				<FooterLink href="/cgu">{t('termsOfUse')}</FooterLink>
 			</li>
 		</FooterSection>
 	);
