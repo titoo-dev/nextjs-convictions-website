@@ -22,15 +22,15 @@ export async function getPublicPetitions(
 
         // Make API request
         const response = await fetch(
-            `${process.env.API_BASE_URL}/petition/public/home/${language}/${category}`,
-            {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Accept: 'application/json',
-                },
-            }
-        );
+			`${process.env.NEXT_PUBLIC_API_BASE_URL}/petition/public/home/${language}/${category}`,
+			{
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					Accept: 'application/json',
+				},
+			}
+		);
 
         const data = await response.json()
 

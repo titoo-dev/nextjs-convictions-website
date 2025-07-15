@@ -32,7 +32,7 @@ export async function getUniquePublicPetition(
 
 		// Make API request
 		const response = await fetch(
-			`${process.env.API_BASE_URL}/petition/public/one/${id}/${language}`,
+			`${process.env.NEXT_PUBLIC_API_BASE_URL}/petition/public/one/${id}/${language}`,
 			{
 				method: 'GET',
 				headers: {

@@ -30,14 +30,17 @@ export async function signInWithGoogle(params: SignInWithGoogleParams) {
         };
 
         // Make POST request to /auth/signInWithGoogle
-        const response = await fetch(`${process.env.API_BASE_URL}/auth/signInWithGoogle`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
-            },
-            body: JSON.stringify(requestBody),
-        });
+        const response = await fetch(
+			`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/signInWithGoogle`,
+			{
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+				body: JSON.stringify(requestBody),
+			}
+		);
 
         const responseData: SignInResponse = await response.json();
 

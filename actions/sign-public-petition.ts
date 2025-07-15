@@ -15,13 +15,16 @@ export async function signPublicPetition(request: SignPublicPetitionRequest): Pr
         const validatedData = signPublicPetitionRequestSchema.parse(request);
 
         // Make API call
-        const response = await fetch(`${process.env.API_BASE_URL}/petition/public/sign-by-anonymous`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(validatedData),
-        });
+        const response = await fetch(
+			`${process.env.NEXT_PUBLIC_API_BASE_URL}/petition/public/sign-by-anonymous`,
+			{
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(validatedData),
+			}
+		);
 
         if (!response.ok) {
             return {

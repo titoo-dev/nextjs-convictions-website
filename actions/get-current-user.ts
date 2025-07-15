@@ -9,17 +9,14 @@ export async function getCurrentUser(accessToken: string | null): Promise<User |
             return null;
         }
 
-        const response = await fetch(
-            `${process.env.API_BASE_URL}/user`,
-            {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Accept: 'application/json',
-                    Authorization: `Bearer ${accessToken}`,
-                },
-            }
-        );
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/user`, {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+				Accept: 'application/json',
+				Authorization: `Bearer ${accessToken}`,
+			},
+		});
 
         if (response.status !== 200) {
             console.error('Failed to fetch current user:', response.statusText);

@@ -8,6 +8,7 @@ import { Footer } from '@/components/footer/footer';
 import { Toaster } from 'sonner';
 import { NextIntlClientProvider } from 'next-intl';
 import { getLocale, getMessages } from 'next-intl/server';
+import { QueryProvider } from '@/components/query-provider';
 
 const inter = Inter({
 	variable: '--font-inter',
@@ -44,13 +45,15 @@ export default async function RootLayout({
 						shadow={false}
 						color="var(--primary)"
 					/>
-					<Header />
-					<div className="bg-background text-foreground">
-						{children}
-					</div>
+					<QueryProvider>
+						<Header />
+						<div className="bg-background text-foreground">
+							{children}
+						</div>
 
-					<Footer />
-					<Toaster />
+						<Footer />
+						<Toaster />
+					</QueryProvider>
 				</NextIntlClientProvider>
 			</body>
 		</html>

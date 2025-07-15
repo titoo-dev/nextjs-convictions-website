@@ -203,9 +203,13 @@ export const authLocalStorage = {
         try {
             if (typeof window === 'undefined') return;
             
+            const now = new Date();
+            const expiresAt = new Date(now.getTime() + (15 * 60 * 1000)).toISOString(); // Add 15 minutes
+            
             const tokensData = {
                 ...tokens,
                 savedAt: new Date().toISOString(),
+                expiresAt: tokens.expiresAt || expiresAt,
             };
             
             localStorage.setItem(AUTH_TOKENS_KEY, JSON.stringify(tokensData));
@@ -216,12 +220,20 @@ export const authLocalStorage = {
 
     getTokens: (): AuthTokens | null => {
         try {
+
+            console.log('authLocalStorage.getTokens called');
+
             if (typeof window === 'undefined') return null;
             
             const saved = localStorage.getItem(AUTH_TOKENS_KEY);
+
+            console.log('Loaded auth tokens from localStorage:', saved);
+
             if (!saved) return null;
             
-            const tokensData = JSON.parse(saved);
+            console.log('Loaded auth tokens from localStorage:', saved);
+            
+            const tokensData: AuthTokens = JSON.parse(saved);
             
             // Check if tokens are expired
             if (tokensData.expiresAt) {
@@ -229,6 +241,7 @@ export const authLocalStorage = {
                 const now = new Date();
                 
                 if (now >= expiresAt) {
+                    console.log('Auth tokens expired, clearing tokens');
                     // Tokens expired, remove them
                     authLocalStorage.clearTokens();
                     return null;
@@ -271,12 +284,13 @@ export const authLocalStorage = {
     },
 
     updateAccessToken: (accessToken: string, expiresAt?: string): void => {
+        const now = new Date();
         const currentTokens = authLocalStorage.getTokens();
         if (currentTokens) {
             authLocalStorage.saveTokens({
                 ...currentTokens,
                 accessToken,
-                expiresAt,
+                expiresAt: expiresAt || new Date(now.getTime() + (15 * 60 * 1000)).toISOString(),
             });
         }
     },

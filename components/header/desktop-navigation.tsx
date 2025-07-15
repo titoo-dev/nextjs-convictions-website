@@ -1,18 +1,17 @@
-import { getTranslations } from 'next-intl/server';
+"use client";
+
+import { useTranslations } from 'next-intl';
 import { LanguageSelector } from './language-selector';
 import { LoginDialog } from './login-dialog';
 import { NavigationButton } from './navigation-button';
-import { getCurrentUser } from '@/actions/get-current-user';
 import RenderWhen from '../render-when';
+import { useGetCurrentUser } from '@/hooks/use-get-current-user';
+import { Skeleton } from '../ui/skeleton';
 
-type Props = {
-	accessToken: string | null;
-};
+export function DesktopNavigation() {
+	const t = useTranslations('navigation');
 
-export async function DesktopNavigation({ accessToken }: Props) {
-	const t = await getTranslations('navigation');
-
-	const currentUser = await getCurrentUser(accessToken);
+	const { data: currentUser, isLoading } = useGetCurrentUser();
 
 	return (
 		<nav className="hidden md:flex items-center space-x-4">
@@ -22,7 +21,11 @@ export async function DesktopNavigation({ accessToken }: Props) {
 			<NavigationButton href="/support-us">
 				{t('supportUs')}
 			</NavigationButton>
-			<RenderWhen condition={!currentUser}>
+			<RenderWhen condition={isLoading}>
+				<Skeleton className="h-10 w-32" />
+			</RenderWhen>
+
+			<RenderWhen condition={!isLoading && !currentUser}>
 				<LoginDialog />
 			</RenderWhen>
 			<LanguageSelector />

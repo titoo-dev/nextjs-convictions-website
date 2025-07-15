@@ -27,7 +27,7 @@ export async function createPublicDonation(
 
 		// Make API request
 		const response = await fetch(
-			`${process.env.API_BASE_URL}/donation/public/create`,
+			`${process.env.NEXT_PUBLIC_API_BASE_URL}/donation/public/create`,
 			{
 				method: 'POST',
 				headers: {
