@@ -14,7 +14,18 @@
             "spanish": "Español"
         },
         "profile": "Perfil",
-        "logout": "Cerrar sesión"
+        "logout": "Cerrar sesión",
+        "userProfile": {
+            "modify": "Editar perfil",
+            "logout": "Cerrar sesión",
+            "my-petitions": "Mis peticiones",
+            "my-signatures": "Mis firmas",
+            "no-petitions-created": "Aún no has creado ninguna petición.",
+            "create-petition": "Crear una petición",
+            "no-signatures": "Aún no has firmado ninguna petición.",
+            "discover-petitions": "Descubrir peticiones",
+            "petitions-description": "Ver y gestionar tus peticiones"
+        }
     },
     "hero": {
         "badge": "Millones de voces unidas",

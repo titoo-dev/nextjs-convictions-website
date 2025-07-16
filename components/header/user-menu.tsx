@@ -11,6 +11,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { User } from "@/schemas/user"
+import Link from "next/link"
 
 type UserMenuProps = {
     user?: User;
@@ -59,13 +60,12 @@ export function UserMenu({ user, onLogout, onProfileClick }: UserMenuProps) {
 					</div>
 				</DropdownMenuLabel>
 				<DropdownMenuSeparator />
-				<DropdownMenuItem
-					onClick={onProfileClick}
-					className="cursor-pointer"
-				>
-					<UserIcon className="mr-2 h-4 w-4" />
-					<span>{t('profile')}</span>
-				</DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                    <Link href="/profile" className="cursor-pointer flex items-center w-full">
+                        <UserIcon className="mr-2 h-4 w-4" />
+                        <span>{t('profile')}</span>
+                    </Link>
+                </DropdownMenuItem>
 				<DropdownMenuSeparator />
 				<DropdownMenuItem
 					onClick={onLogout}
