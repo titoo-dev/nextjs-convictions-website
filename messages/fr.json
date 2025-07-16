@@ -12,7 +12,9 @@
             "english": "Anglais",
             "french": "Français",
             "spanish": "Espagnol"
-        }
+        },
+        "profile": "Profil",
+        "logout": "Déconnexion"
     },
     "hero": {
         "badge": "Des millions de voix unies",

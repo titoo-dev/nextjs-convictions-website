@@ -9,6 +9,7 @@ import { useGetCurrentUser } from '@/hooks/use-get-current-user';
 import { Skeleton } from '../ui/skeleton';
 import { useEffect } from 'react';
 import { userLocalStorage } from '@/lib/local-storage';
+import { UserMenu } from './user-menu';
 
 export function DesktopNavigation() {
 	const t = useTranslations('navigation');
@@ -36,7 +37,13 @@ export function DesktopNavigation() {
 			<RenderWhen condition={!isLoading && !currentUser}>
 				<LoginDialog />
 			</RenderWhen>
+
 			<LanguageSelector />
+			<RenderWhen condition={!isLoading && !!currentUser}>
+				<UserMenu user={currentUser!} />
+			</RenderWhen>
 		</nav>
 	);
 }
+
+

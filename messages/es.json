@@ -12,7 +12,9 @@
             "english": "English",
             "french": "Français",
             "spanish": "Español"
-        }
+        },
+        "profile": "Perfil",
+        "logout": "Cerrar sesión"
     },
     "hero": {
         "badge": "Millones de voces unidas",
