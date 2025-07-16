@@ -3,19 +3,39 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { getTranslations } from "next-intl/server"
 import { ProfilePetitionsTab } from "@/components/profile/profile-petitions-tab"
 import { ProfileSignaturesTab } from "@/components/profile/profile-signatures-tab"
+import { getCurrentUser } from "@/actions/get-current-user"
 
 export default async function ProfilePage() {
-    const t = await getTranslations('header.userProfile')
+	const t = await getTranslations('header.userProfile');
+	const currentUser = await getCurrentUser();
 
-    return (
+	if (!currentUser) {
+		// Handle case where user is not authenticated
+		return (
+			<div className="container mx-auto px-4 py-8 max-w-7xl">
+				<div className="text-center">
+					<h1 className="text-2xl font-bold text-gray-900 mb-4">
+						{t('not-authenticated')}
+					</h1>
+					<p className="text-gray-600">
+						{t('please-sign-in')}
+					</p>
+				</div>
+			</div>
+		)
+	}
+
+	return (
 		<div className="container mx-auto px-4 py-8 max-w-7xl">
 			<div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 				{/* Profile Card */}
 				<div className="lg:col-span-1">
 					<ProfileCard
-						username="titosy"
-						email="titosy@yopmail.com"
-						avatarUrl="/placeholder-avatar.jpg"
+						username={currentUser.name}
+						email={currentUser.email}
+						avatarUrl={
+							currentUser.pictureUrl || '/placeholder-avatar.jpg'
+						}
 					/>
 				</div>
 
