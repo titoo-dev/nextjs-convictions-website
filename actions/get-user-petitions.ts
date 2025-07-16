@@ -1,14 +1,16 @@
+'use server'
+
 import { getLocale } from 'next-intl/server';
 import { UserPetition, UserPetitionSchema } from '../schemas/user-petition'
 import { z } from 'zod'
-
-'use server'
-
+import { getAccessToken } from '@/lib/cookies-storage';
 
 const UserPetitionsResponseSchema = z.array(UserPetitionSchema)
 
-export async function getUserPetitions(accessToken: string | null): Promise<UserPetition[] | null> {
+export async function getUserPetitions(): Promise<UserPetition[] | null> {
     try {
+        const accessToken = await getAccessToken();
+        
         if (!accessToken) {
             return null;
         }
