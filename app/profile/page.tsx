@@ -1,13 +1,11 @@
 import { ProfileCard } from "@/components/profile/profile-card"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Edit3, LogOut, User } from "lucide-react"
-import { useTranslations } from "next-intl"
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
+import { getTranslations } from "next-intl/server"
+import { ProfilePetitionsTab } from "@/components/profile/profile-petitions-tab"
+import { ProfileSignaturesTab } from "@/components/profile/profile-signatures-tab"
 
-export default function ProfilePage() {
-    const t = useTranslations('header.userProfile')
+export default async function ProfilePage() {
+    const t = await getTranslations('header.userProfile')
 
     return (
 		<div className="container mx-auto px-4 py-8 max-w-7xl">
@@ -37,47 +35,11 @@ export default function ProfilePage() {
 						</TabsList>
 
 						<TabsContent value="petitions" className="mt-6">
-							<Card>
-								<CardHeader>
-									<CardTitle className="flex items-center gap-2">
-										{t('petitions-description')}
-									</CardTitle>
-								</CardHeader>
-								<CardContent>
-									<div className="text-center py-12">
-										<div className="mx-auto size-16 bg-muted rounded-full flex items-center justify-center mb-4">
-											<User className="size-8 text-muted-foreground" />
-										</div>
-										<p className="text-muted-foreground">
-											{t('no-petitions-created')}
-										</p>
-										<Button className="mt-4">
-											{t('create-petition')}
-										</Button>
-									</div>
-								</CardContent>
-							</Card>
+							<ProfilePetitionsTab t={t} />
 						</TabsContent>
 
 						<TabsContent value="signatures" className="mt-6">
-							<Card>
-								<CardHeader>
-									<CardTitle>{t('my-signatures')}</CardTitle>
-								</CardHeader>
-								<CardContent>
-									<div className="text-center py-12">
-										<div className="mx-auto size-16 bg-muted rounded-full flex items-center justify-center mb-4">
-											<User className="size-8 text-muted-foreground" />
-										</div>
-										<p className="text-muted-foreground">
-											{t('no-signatures')}
-										</p>
-										<Button className="mt-4">
-											{t('discover-petitions')}
-										</Button>
-									</div>
-								</CardContent>
-							</Card>
+							<ProfileSignaturesTab t={t} />
 						</TabsContent>
 					</Tabs>
 				</div>
@@ -85,4 +47,3 @@ export default function ProfilePage() {
 		</div>
 	);
 }
-
