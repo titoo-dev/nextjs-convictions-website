@@ -6,8 +6,6 @@
         "typescriptreact",
         "json"
     ],
-    "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": "explicit"
-    },
     "eslint.enable": true,
+    "editor.formatOnSave": true
 }
