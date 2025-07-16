@@ -1,9 +1,23 @@
-import { useTranslations } from "next-intl";
-import { Card, CardContent } from "../ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { Edit3, LogOut, User } from "lucide-react";
-import { Button } from "../ui/button";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "../ui/alert-dialog";
+'use client';
+
+import { useTranslations } from 'next-intl';
+import { Card, CardContent } from '../ui/card';
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
+import { Button } from '../ui/button';
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+} from '../ui/alert-dialog';
+import { useTransition } from 'react';
+import { Edit3, LogOut, User, Loader2 } from 'lucide-react';
+import { logout } from '@/actions/logout';
 
 type ProfileCardProps = {
 	username: string;
@@ -13,6 +27,13 @@ type ProfileCardProps = {
 
 export function ProfileCard({ username, email, avatarUrl }: ProfileCardProps) {
 	const t = useTranslations('profile');
+	const [isPending, startTransition] = useTransition();
+
+	const handleLogout = () => {
+		startTransition(async () => {
+			await logout();
+		});
+	};
 
 	return (
 		<Card>
@@ -47,21 +68,38 @@ export function ProfileCard({ username, email, avatarUrl }: ProfileCardProps) {
 								<Button
 									variant="outline"
 									className="w-full justify-start"
+									disabled={isPending}
 								>
-									<LogOut className="size-4" />
+									{isPending ? (
+										<Loader2 className="size-4 animate-spin" />
+									) : (
+										<LogOut className="size-4" />
+									)}
 									{t('logout')}
 								</Button>
 							</AlertDialogTrigger>
 							<AlertDialogContent>
 								<AlertDialogHeader>
-									<AlertDialogTitle>{t('logoutConfirmTitle')}</AlertDialogTitle>
+									<AlertDialogTitle>
+										{t('logoutConfirmTitle')}
+									</AlertDialogTitle>
 									<AlertDialogDescription>
 										{t('logoutConfirmDescription')}
 									</AlertDialogDescription>
 								</AlertDialogHeader>
 								<AlertDialogFooter>
-									<AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
-									<AlertDialogAction>{t('logout')}</AlertDialogAction>
+									<AlertDialogCancel disabled={isPending}>
+										{t('cancel')}
+									</AlertDialogCancel>
+									<AlertDialogAction
+										onClick={handleLogout}
+										disabled={isPending}
+									>
+										{isPending && (
+											<Loader2 className="size-4 animate-spin mr-2" />
+										)}
+										{t('logout')}
+									</AlertDialogAction>
 								</AlertDialogFooter>
 							</AlertDialogContent>
 						</AlertDialog>

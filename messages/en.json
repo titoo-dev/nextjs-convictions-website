@@ -48,7 +48,8 @@
                 "title": "Delete petition?",
                 "description": "Are you sure you want to delete this petition? This action cannot be undone.",
                 "cancel": "Cancel",
-                "confirm": "Delete"
+                "confirm": "Delete",
+                "deleting": "Deleting..."
             }
         }
     },

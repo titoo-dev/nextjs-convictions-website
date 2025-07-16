@@ -48,7 +48,8 @@
                 "title": "Supprimer la pétition ?",
                 "description": "Êtes-vous sûr de vouloir supprimer cette pétition ? Cette action est irréversible.",
                 "cancel": "Annuler",
-                "confirm": "Supprimer"
+                "confirm": "Supprimer",
+                "deleting": "Suppression..."
             }
         }
     },

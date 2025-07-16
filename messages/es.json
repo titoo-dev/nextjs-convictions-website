@@ -48,7 +48,8 @@
                 "title": "¿Eliminar petición?",
                 "description": "¿Estás seguro de que deseas eliminar esta petición? Esta acción no se puede deshacer.",
                 "cancel": "Cancelar",
-                "confirm": "Eliminar"
+                "confirm": "Eliminar",
+                "deleting": "Eliminando..."
             }
         }
     },

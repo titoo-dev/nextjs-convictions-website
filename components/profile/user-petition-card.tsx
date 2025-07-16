@@ -7,16 +7,25 @@ import { Edit, Trash2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../ui/alert-dialog';
+import { useTransition } from 'react';
+import { deletePetition } from '@/actions/delete-petition';
 
 export function UserPetitionCard({ petition }: { petition: UserPetition }) {
 	const t = useTranslations('profile.petitions');
+	const [isPending, startTransition] = useTransition();
 
 	const handleEdit = (id: string) => {
 		console.log('Edit petition with ID:', id);
 	};
 
 	const handleDelete = (id: string) => {
-		console.log('Delete petition with ID:', id);
+		startTransition(async () => {
+			const result = await deletePetition(id);
+			if (!result.success) {
+				console.error('Failed to delete petition:', result.error);
+				// You might want to show a toast notification here
+			}
+		});
 	};
 
 	return (
@@ -66,6 +75,7 @@ export function UserPetitionCard({ petition }: { petition: UserPetition }) {
 							size="sm"
 							onClick={() => handleEdit(petition.id)}
 							className="h-8 w-8 p-0"
+							disabled={isPending}
 						>
 							<Edit className="h-4 w-4" />
 						</Button>
@@ -75,6 +85,7 @@ export function UserPetitionCard({ petition }: { petition: UserPetition }) {
 									variant="outline"
 									size="sm"
 									className="h-8 w-8 p-0 text-destructive hover:text-destructive"
+									disabled={isPending}
 								>
 									<Trash2 className="h-4 w-4" />
 								</Button>
@@ -89,14 +100,15 @@ export function UserPetitionCard({ petition }: { petition: UserPetition }) {
 									</AlertDialogDescription>
 								</AlertDialogHeader>
 								<AlertDialogFooter>
-									<AlertDialogCancel>
+									<AlertDialogCancel disabled={isPending}>
 										{t('delete-confirmation.cancel')}
 									</AlertDialogCancel>
 									<AlertDialogAction
 										onClick={() => handleDelete(petition.id)}
 										className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+										disabled={isPending}
 									>
-										{t('delete-confirmation.confirm')}
+										{isPending ? t('delete-confirmation.deleting') : t('delete-confirmation.confirm')}
 									</AlertDialogAction>
 								</AlertDialogFooter>
 							</AlertDialogContent>
