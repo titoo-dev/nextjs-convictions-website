@@ -15,6 +15,9 @@
         },
         "profile": "Profile",
         "logout": "Logout",
+        "logoutConfirmTitle": "Are you sure you want to logout?",
+        "logoutConfirmDescription": "You will be logged out of your account and redirected to the homepage.",
+        "cancel": "Cancel",
         "petitions": {
             "emptyState": {
                 "title": "No petitions found",

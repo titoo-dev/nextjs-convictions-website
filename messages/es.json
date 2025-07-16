@@ -15,6 +15,9 @@
         },
         "profile": "Perfil",
         "logout": "Cerrar sesión",
+        "logoutConfirmTitle": "¿Estás seguro de que deseas cerrar sesión?",
+        "logoutConfirmDescription": "Se cerrará tu sesión y serás redirigido a la página principal.",
+        "cancel": "Cancelar",
         "petitions": {
             "emptyState": {
                 "title": "No se encontraron peticiones",

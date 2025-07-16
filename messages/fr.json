@@ -15,6 +15,9 @@
         },
         "profile": "Profil",
         "logout": "Déconnexion",
+        "logoutConfirmTitle": "Êtes-vous sûr de vouloir vous déconnecter ?",
+        "logoutConfirmDescription": "Vous serez déconnecté de votre compte et redirigé vers la page d'accueil.",
+        "cancel": "Annuler",
         "petitions": {
             "emptyState": {
                 "title": "Aucune pétition trouvée",
