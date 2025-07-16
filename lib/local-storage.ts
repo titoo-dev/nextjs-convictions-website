@@ -1,7 +1,9 @@
 import { PetitionFormData } from "@/app/petition/new/page";
+import { User } from "@/schemas/user";
 
 const PETITION_FORM_KEY = 'petition-form-draft';
 const AUTH_TOKENS_KEY = 'auth-tokens';
+const USER_KEY = 'user-data';
 
 export type AuthTokens = {
     accessToken: string;
@@ -210,6 +212,74 @@ export const authLocalStorage = {
                 ...currentTokens,
                 accessToken,
                 expiresAt: expiresAt || new Date(now.getTime() + (15 * 60 * 1000)).toISOString(),
+            });
+        }
+    },
+};
+
+
+export const userLocalStorage = {
+    saveUser: (user: User): void => {
+        try {
+            if (typeof window === 'undefined') return;
+            
+            const userData = {
+                ...user,
+                savedAt: new Date().toISOString(),
+            };
+            
+            localStorage.setItem(USER_KEY, JSON.stringify(userData));
+        } catch (error) {
+            console.warn('Failed to save user data to localStorage:', error);
+        }
+    },
+
+    getUser: (): User | null => {
+        try {
+            if (typeof window === 'undefined') return null;
+            
+            const saved = localStorage.getItem(USER_KEY);
+
+            if (!saved) return null;
+            
+            const userData = JSON.parse(saved);
+            
+            // Remove savedAt before returning (it's not part of User type)
+            const { savedAt, ...user } = userData;
+            
+            return user as User;
+        } catch (error) {
+            console.warn('Failed to load user data from localStorage:', error);
+            userLocalStorage.clearUser();
+            return null;
+        }
+    },
+
+    clearUser: (): void => {
+        try {
+            if (typeof window === 'undefined') return;
+            localStorage.removeItem(USER_KEY);
+        } catch (error) {
+            console.warn('Failed to clear user data from localStorage:', error);
+        }
+    },
+
+    hasUser: (): boolean => {
+        try {
+            if (typeof window === 'undefined') return false;
+            return localStorage.getItem(USER_KEY) !== null;
+        } catch (error) {
+            console.warn('Failed to check user data in localStorage:', error);
+            return false;
+        }
+    },
+
+    updateUser: (updates: Partial<User>): void => {
+        const currentUser = userLocalStorage.getUser();
+        if (currentUser) {
+            userLocalStorage.saveUser({
+                ...currentUser,
+                ...updates,
             });
         }
     },

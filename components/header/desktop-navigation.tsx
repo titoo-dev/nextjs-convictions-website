@@ -7,11 +7,19 @@ import { NavigationButton } from './navigation-button';
 import RenderWhen from '../render-when';
 import { useGetCurrentUser } from '@/hooks/use-get-current-user';
 import { Skeleton } from '../ui/skeleton';
+import { useEffect } from 'react';
+import { userLocalStorage } from '@/lib/local-storage';
 
 export function DesktopNavigation() {
 	const t = useTranslations('navigation');
 
-	const { data: currentUser, isLoading } = useGetCurrentUser();
+	const { data: currentUser, isLoading, isSuccess } = useGetCurrentUser();
+
+	useEffect(() => {
+		if (isSuccess && currentUser) {
+			userLocalStorage.saveUser(currentUser);
+		}
+	}, [isSuccess, currentUser]);
 
 	return (
 		<nav className="hidden md:flex items-center space-x-4">
