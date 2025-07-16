@@ -6,6 +6,7 @@ import { Button } from '../ui/button';
 import { Edit, Trash2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../ui/alert-dialog';
 
 export function UserPetitionCard({ petition }: { petition: UserPetition }) {
 	const t = useTranslations('profile.petitions');
@@ -68,14 +69,38 @@ export function UserPetitionCard({ petition }: { petition: UserPetition }) {
 						>
 							<Edit className="h-4 w-4" />
 						</Button>
-						<Button
-							variant="outline"
-							size="sm"
-							onClick={() => handleDelete(petition.id)}
-							className="h-8 w-8 p-0 text-destructive hover:text-destructive"
-						>
-							<Trash2 className="h-4 w-4" />
-						</Button>
+						<AlertDialog>
+							<AlertDialogTrigger asChild>
+								<Button
+									variant="outline"
+									size="sm"
+									className="h-8 w-8 p-0 text-destructive hover:text-destructive"
+								>
+									<Trash2 className="h-4 w-4" />
+								</Button>
+							</AlertDialogTrigger>
+							<AlertDialogContent>
+								<AlertDialogHeader>
+									<AlertDialogTitle>
+										{t('delete-confirmation.title')}
+									</AlertDialogTitle>
+									<AlertDialogDescription>
+										{t('delete-confirmation.description')}
+									</AlertDialogDescription>
+								</AlertDialogHeader>
+								<AlertDialogFooter>
+									<AlertDialogCancel>
+										{t('delete-confirmation.cancel')}
+									</AlertDialogCancel>
+									<AlertDialogAction
+										onClick={() => handleDelete(petition.id)}
+										className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+									>
+										{t('delete-confirmation.confirm')}
+									</AlertDialogAction>
+								</AlertDialogFooter>
+							</AlertDialogContent>
+						</AlertDialog>
 					</div>
 				</div>
 			</CardContent>

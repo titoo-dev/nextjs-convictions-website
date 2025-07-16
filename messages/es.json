@@ -38,7 +38,13 @@
             "no-media": "Sin medios",
             "signatures-count": "{count} firmas",
             "edit": "Editar",
-            "delete": "Eliminar"
+            "delete": "Eliminar",
+            "delete-confirmation": {
+                "title": "¿Eliminar petición?",
+                "description": "¿Estás seguro de que deseas eliminar esta petición? Esta acción no se puede deshacer.",
+                "cancel": "Cancelar",
+                "confirm": "Eliminar"
+            }
         }
     },
     "hero": {
