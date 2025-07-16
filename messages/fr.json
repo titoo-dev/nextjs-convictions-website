@@ -5,7 +5,7 @@
         "login": "Connexion"
     },
     "header": {
-        "logoAlt": "Logo de Mes convictions",
+        "logoAlt": "Logo Mes convictions",
         "logoText": "Mes convictions",
         "menuTitle": "Navigation",
         "languages": {
@@ -15,16 +15,30 @@
         },
         "profile": "Profil",
         "logout": "Déconnexion",
-        "userProfile": {
-            "modify": "Modifier le profil",
-            "logout": "Déconnexion",
-            "my-petitions": "Mes pétitions",
-            "my-signatures": "Mes signatures",
+        "petitions": {
+            "emptyState": {
+                "title": "Aucune pétition trouvée",
+                "description": "Il n'y a actuellement aucune pétition disponible pour cette catégorie."
+            }
+        }
+    },
+    "profile": {
+        "modify": "Modifier le profil",
+        "logout": "Déconnexion",
+        "my-petitions": "Mes pétitions",
+        "my-signatures": "Mes signatures",
+        "no-petitions-created": "Vous n'avez pas encore créé de pétition.",
+        "create-petition": "Créer une pétition",
+        "no-signatures": "Vous n'avez pas encore signé de pétition.",
+        "discover-petitions": "Découvrir les pétitions",
+        "petitions-description": "Voir et gérer vos pétitions",
+        "petitions": {
             "no-petitions-created": "Vous n'avez pas encore créé de pétition.",
             "create-petition": "Créer une pétition",
-            "no-signatures": "Vous n'avez pas encore signé de pétition.",
-            "discover-petitions": "Découvrir les pétitions",
-            "petitions-description": "Voir et gérer vos pétitions"
+            "no-media": "Aucun média",
+            "signatures-count": "{count} signatures",
+            "edit": "Modifier",
+            "delete": "Supprimer"
         }
     },
     "hero": {

@@ -6,7 +6,7 @@ import { ProfileSignaturesTab } from "@/components/profile/profile-signatures-ta
 import { getCurrentUser } from "@/actions/get-current-user"
 
 export default async function ProfilePage() {
-	const t = await getTranslations('header.userProfile');
+	const t = await getTranslations('profile');
 	const currentUser = await getCurrentUser();
 
 	if (!currentUser) {

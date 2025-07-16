@@ -11,7 +11,7 @@ type ProfileCardProps = {
 };
 
 export function ProfileCard({ username, email, avatarUrl }: ProfileCardProps) {
-	const t = useTranslations('header.userProfile');
+	const t = useTranslations('profile');
 
 	return (
 		<Card>

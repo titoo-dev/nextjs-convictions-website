@@ -15,16 +15,30 @@
         },
         "profile": "Profile",
         "logout": "Logout",
-        "userProfile": {
-            "modify": "Edit profile",
-            "logout": "Logout",
-            "my-petitions": "My petitions",
-            "my-signatures": "My signatures",
+        "petitions": {
+            "emptyState": {
+                "title": "No petitions found",
+                "description": "There are currently no petitions available for this category."
+            }
+        }
+    },
+    "profile": {
+        "modify": "Edit profile",
+        "logout": "Logout",
+        "my-petitions": "My petitions",
+        "my-signatures": "My signatures",
+        "no-petitions-created": "You haven't created any petitions yet.",
+        "create-petition": "Create a petition",
+        "no-signatures": "You haven't signed any petitions yet.",
+        "discover-petitions": "Discover petitions",
+        "petitions-description": "View and manage your petitions",
+        "petitions": {
             "no-petitions-created": "You haven't created any petitions yet.",
             "create-petition": "Create a petition",
-            "no-signatures": "You haven't signed any petitions yet.",
-            "discover-petitions": "Discover petitions",
-            "petitions-description": "View and manage your petitions"
+            "no-media": "No media",
+            "signatures-count": "{count} signatures",
+            "edit": "Edit",
+            "delete": "Delete"
         }
     },
     "hero": {

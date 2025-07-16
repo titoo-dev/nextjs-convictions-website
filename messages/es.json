@@ -15,16 +15,30 @@
         },
         "profile": "Perfil",
         "logout": "Cerrar sesión",
-        "userProfile": {
-            "modify": "Editar perfil",
-            "logout": "Cerrar sesión",
-            "my-petitions": "Mis peticiones",
-            "my-signatures": "Mis firmas",
+        "petitions": {
+            "emptyState": {
+                "title": "No se encontraron peticiones",
+                "description": "Actualmente no hay peticiones disponibles para esta categoría."
+            }
+        }
+    },
+    "profile": {
+        "modify": "Editar perfil",
+        "logout": "Cerrar sesión",
+        "my-petitions": "Mis peticiones",
+        "my-signatures": "Mis firmas",
+        "no-petitions-created": "Aún no has creado ninguna petición.",
+        "create-petition": "Crear una petición",
+        "no-signatures": "Aún no has firmado ninguna petición.",
+        "discover-petitions": "Descubrir peticiones",
+        "petitions-description": "Ver y gestionar tus peticiones",
+        "petitions": {
             "no-petitions-created": "Aún no has creado ninguna petición.",
             "create-petition": "Crear una petición",
-            "no-signatures": "Aún no has firmado ninguna petición.",
-            "discover-petitions": "Descubrir peticiones",
-            "petitions-description": "Ver y gestionar tus peticiones"
+            "no-media": "Sin medios",
+            "signatures-count": "{count} firmas",
+            "edit": "Editar",
+            "delete": "Eliminar"
         }
     },
     "hero": {
