@@ -1,5 +1,5 @@
 "use client"
-import { User as UserIcon, LogOut, Settings } from "lucide-react"
+import { User as UserIcon, LogOut } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { useTranslations } from "next-intl"
 import {
@@ -19,7 +19,7 @@ type UserMenuProps = {
     onProfileClick?: () => void;
 }
 
-export function UserMenu({ user, onLogout, onProfileClick }: UserMenuProps) {
+export function UserMenu({ user, onLogout }: UserMenuProps) {
     const t = useTranslations('header');
     
     const userInitials = user?.name

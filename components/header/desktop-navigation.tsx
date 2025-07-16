@@ -1,13 +1,13 @@
-import { useTranslations } from 'next-intl';
 import { LanguageSelector } from './language-selector';
 import { LoginDialog } from './login-dialog';
 import { NavigationButton } from './navigation-button';
 import RenderWhen from '../render-when';
 import { UserMenu } from './user-menu';
 import { getCurrentUser } from '@/actions/get-current-user';
+import { getTranslations } from 'next-intl/server';
 
 export async function DesktopNavigation() {
-	const t = useTranslations('navigation');
+	const t = await getTranslations('navigation');
 
 	const currentUser = await getCurrentUser();
 

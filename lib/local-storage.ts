@@ -149,6 +149,8 @@ export const userLocalStorage = {
             
             // Remove savedAt before returning (it's not part of User type)
             const { savedAt, ...user } = userData;
+
+            console.info('savedAt', savedAt);
             
             return user as User;
         } catch (error) {

@@ -5,22 +5,29 @@ import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Button } from '../ui/button';
 import { Edit, Trash2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 
 export function UserPetitionCard({ petition }: { petition: UserPetition }) {
 	const t = useTranslations('profile.petitions');
 
-	const handleEdit = (id: string) => {};
+	const handleEdit = (id: string) => {
+		console.log('Edit petition with ID:', id);
+	};
 
-	const handleDelete = (id: string) => {};
+	const handleDelete = (id: string) => {
+		console.log('Delete petition with ID:', id);
+	};
 
 	return (
 		<Card className="flex flex-col h-full">
 			<CardHeader className="flex-1">
 				<div className="relative">
 					{petition.mediaType === 'PICTURE' && petition.pictureUrl ? (
-						<img
+						<Image
 							src={petition.pictureUrl}
 							alt={petition.title}
+							width={400}
+							height={192}
 							className="w-full h-48 object-cover rounded-md"
 						/>
 					) : petition.mediaType === 'VIDEO_YOUTUBE' &&
