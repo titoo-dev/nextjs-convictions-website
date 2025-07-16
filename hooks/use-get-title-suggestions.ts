@@ -5,8 +5,6 @@ import { SuggestionsResponse } from '@/schemas/suggestions-response';
 
 type UseGetTitleSuggestionsOptions = {
 	enabled?: boolean;
-	staleTime?: number;
-	cacheTime?: number;
 };
 
 export function useGetTitleSuggestions(

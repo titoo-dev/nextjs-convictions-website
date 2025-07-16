@@ -8,11 +8,10 @@ import {
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { cn } from '@/lib/utils';
 import { useLocale, useTranslations } from 'next-intl';
-import { useState, useEffect } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useDebouncedCallback } from 'use-debounce';
 import { useGetTitleSuggestions } from '@/hooks/use-get-title-suggestions';
 import { TitleSuggestionPayload } from '@/schemas/title-suggestion-payload';
+import { useDebounce } from 'use-debounce';
 
 type PetitionData = {
 	category: string;
@@ -27,6 +26,9 @@ type TitleStepProps = {
 export function TitleStep({ formData, updateFormData }: TitleStepProps) {
 	const t = useTranslations('petition.form.titleStep');
 	const locale = useLocale();
+
+	// Debounce the title input for API calls
+	const [debouncedTitle] = useDebounce(formData.title, 300);
 
 	const categories = [
 		'culture',
@@ -67,21 +69,20 @@ export function TitleStep({ formData, updateFormData }: TitleStepProps) {
 		return categoryMap[category] || 'CULTURE';
 	};
 
-	// Create payload for API call
+	// Create payload for API call using debounced title
 	const suggestionPayload = {
-		inputTitle: formData.title,
+		inputTitle: debouncedTitle,
 		category: mapCategoryToAPI(formData.category),
 		responseLanguage: locale.toUpperCase() as 'FR' | 'EN' | 'ES',
 	} as TitleSuggestionPayload;
 
-	// Use the API hook for getting suggestions
+	// Use the API hook for getting suggestions with debounced title
 	const {
 		data: suggestionsData,
 		isLoading: isLoadingSuggestions,
 		error: suggestionsError,
 	} = useGetTitleSuggestions(suggestionPayload, {
-		enabled: Boolean(formData.category && formData.title.length >= 2),
-		staleTime: 5 * 60 * 1000, // 5 minutes
+		enabled: Boolean(formData.category && debouncedTitle.length >= 2),
 	});
 
 	const suggestions = suggestionsData?.suggestions || [];
@@ -159,7 +160,7 @@ export function TitleStep({ formData, updateFormData }: TitleStepProps) {
 										)}
 									</div>
 								) : formData.category &&
-								  formData.title.length >= 2 ? (
+								  debouncedTitle.length >= 2 ? (
 									t('suggestionsEmpty')
 								) : (
 									t('suggestionsPrompt')
