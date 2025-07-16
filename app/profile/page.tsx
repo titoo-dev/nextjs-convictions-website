@@ -1,3 +1,4 @@
+import { ProfileCard } from "@/components/profile/profile-card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -13,48 +14,11 @@ export default function ProfilePage() {
 			<div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 				{/* Profile Card */}
 				<div className="lg:col-span-1">
-					<Card>
-						<CardContent className="pt-6">
-							<div className="flex flex-col items-center space-y-4">
-								<Avatar className="size-20">
-									<AvatarImage
-										src="/placeholder-avatar.jpg"
-										alt="titosy"
-									/>
-									<AvatarFallback className="bg-orange-500 text-white text-lg">
-										<User className="size-8" />
-									</AvatarFallback>
-								</Avatar>
-
-								<div className="text-center">
-									<h2 className="text-xl font-semibold">
-										titosy
-									</h2>
-									<p className="text-muted-foreground text-sm">
-										titosy@yopmail.com
-									</p>
-								</div>
-
-								<div className="w-full space-y-2">
-									<Button
-										variant="outline"
-										className="w-full justify-start"
-									>
-										<Edit3 className="size-4" />
-										{t('modify')}
-									</Button>
-
-									<Button
-										variant="outline"
-										className="w-full justify-start"
-									>
-										<LogOut className="size-4" />
-										{t('logout')}
-									</Button>
-								</div>
-							</div>
-						</CardContent>
-					</Card>
+					<ProfileCard
+						username="titosy"
+						email="titosy@yopmail.com"
+						avatarUrl="/placeholder-avatar.jpg"
+					/>
 				</div>
 
 				{/* Main Content */}
@@ -121,3 +85,4 @@ export default function ProfilePage() {
 		</div>
 	);
 }
+
