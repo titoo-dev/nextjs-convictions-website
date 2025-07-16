@@ -45,7 +45,6 @@ export default async function ProfilePage() {
 						<TabsList className="grid w-full grid-cols-2">
 							<TabsTrigger
 								value="petitions"
-								className="text-orange-500 data-[state=active]:text-orange-600"
 							>
 								{t('my-petitions')}
 							</TabsTrigger>
