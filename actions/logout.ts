@@ -1,7 +1,7 @@
 'use server'
 
 import { clearTokens, getAccessToken } from '@/lib/cookies-storage';
-import { redirect } from 'next/navigation';
+import { redirect, RedirectType } from 'next/navigation';
 
 export async function logout(): Promise<void> {
     try {
@@ -20,13 +20,10 @@ export async function logout(): Promise<void> {
         }
 
         await clearTokens();
-
-        redirect('/');
-
     } catch (error) {
         console.error('Error during logout:', error);
     } finally {
         // Always redirect to home page after logout attempt
-        redirect('/');
+        redirect('/', RedirectType.replace);
     }
 }
