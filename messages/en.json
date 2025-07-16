@@ -219,6 +219,7 @@
                 "suggestions": "🔥 Suggestions",
                 "suggestionsEmpty": "No suggestions available for your current input",
                 "suggestionsPrompt": "Choose a theme and start writing a title to get suggestions",
+                "suggestionsError": "Failed to load suggestions. Please try again.",
                 "advice": "💡 Advice",
                 "adviceText": "Use action verbs. For example: \"Ban plastic bags in our city\" or \"Protect the forest of X\". Avoid vague formulations.",
                 "categories": {
