@@ -54,11 +54,11 @@ export default async function ProfilePage() {
 						</TabsList>
 
 						<TabsContent value="petitions" className="mt-6">
-							<ProfilePetitionsTab t={t} />
+							<ProfilePetitionsTab />
 						</TabsContent>
 
 						<TabsContent value="signatures" className="mt-6">
-							<ProfileSignaturesTab t={t} />
+							<ProfileSignaturesTab />
 						</TabsContent>
 					</Tabs>
 				</div>

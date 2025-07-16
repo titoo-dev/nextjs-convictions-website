@@ -1,12 +1,11 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { User } from "lucide-react"
+import { getTranslations } from "next-intl/server"
 
-type Props = {
-    t: (key: string) => string
-}
+export async function ProfileSignaturesTab() {
+    const t = await getTranslations('profile');
 
-export function ProfileSignaturesTab({ t }: Props) {
     return (
         <Card>
             <CardHeader>
