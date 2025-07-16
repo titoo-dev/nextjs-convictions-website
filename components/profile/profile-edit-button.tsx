@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import { Button } from '../ui/button';
-import { useState } from 'react';
+import { useState, useTransition } from 'react';
 import { Edit3, Camera } from 'lucide-react';
 import { Input } from '../ui/input';
 import { Avatar, AvatarImage, AvatarFallback } from '../ui/avatar';
@@ -14,6 +14,8 @@ import {
 	DialogTitle,
 	DialogFooter,
 } from '../ui/dialog';
+import { updateUser } from '@/actions/update-user';
+import { toast } from 'sonner';
 
 type ProfileEditButtonProps = {
 	user: {
@@ -26,32 +28,64 @@ type ProfileEditButtonProps = {
 export function ProfileEditButton({ user, onSave }: ProfileEditButtonProps) {
 	const t = useTranslations('profile');
 	const [isOpen, setIsOpen] = useState(false);
-	const [name, setName] = useState(user.name);
-	const [selectedImage, setSelectedImage] = useState<File | null>(null);
 	const [previewUrl, setPreviewUrl] = useState(
 		user.picture || '/placeholder-avatar.jpg'
 	);
+	const [isPending, startTransition] = useTransition();
 
 	const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const file = event.target.files?.[0];
 		if (file) {
-			setSelectedImage(file);
 			const url = URL.createObjectURL(file);
 			setPreviewUrl(url);
 		}
 	};
 
-	const handleSave = () => {
-		onSave?.({
-			name,
-			...(selectedImage && { picture: selectedImage.name }),
+	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+
+		startTransition(async () => {
+			try {
+				const formData = new FormData(event.currentTarget);
+				const name = formData.get('name') as string;
+				const picture = formData.get('picture') as File | null;
+
+				const updateData: { name?: string; picture?: File } = {};
+
+				if (name && name.trim() !== user.name) {
+					updateData.name = name.trim();
+				}
+
+				if (picture && picture.size > 0) {
+					updateData.picture = picture;
+				}
+
+				const result = await updateUser(updateData);
+
+				if (!result) {
+					toast.error(t('updateError'));
+					return;
+				}
+
+				if (result.success) {
+					toast.success(t('updateSuccess'));
+					onSave?.({
+						name: name || user.name,
+						...(picture &&
+							picture.size > 0 && { picture: picture.name }),
+					});
+					setIsOpen(false);
+				} else {
+					toast.error(result.error || t('updateError'));
+				}
+			} catch (error) {
+				console.error('Update user error:', error);
+				toast.error(t('updateError'));
+			}
 		});
-		setIsOpen(false);
 	};
 
 	const handleCancel = () => {
-		setName(user.name);
-		setSelectedImage(null);
 		setPreviewUrl(user.picture);
 		setIsOpen(false);
 	};
@@ -67,13 +101,19 @@ export function ProfileEditButton({ user, onSave }: ProfileEditButtonProps) {
 				{t('modify')}
 			</Button>
 
-			<Dialog open={isOpen} onOpenChange={setIsOpen}>
+			<Dialog
+				open={isOpen}
+				onOpenChange={(state) => {
+					setIsOpen(state);
+					if (!state) handleCancel();
+				}}
+			>
 				<DialogContent className="sm:max-w-md">
 					<DialogHeader>
 						<DialogTitle>{t('editProfile')}</DialogTitle>
 					</DialogHeader>
 
-					<div className="space-y-6">
+					<form onSubmit={handleSubmit} className="space-y-6">
 						<div className="flex flex-col items-center space-y-4">
 							<div className="relative">
 								<Avatar className="size-20">
@@ -87,17 +127,19 @@ export function ProfileEditButton({ user, onSave }: ProfileEditButtonProps) {
 									</AvatarFallback>
 								</Avatar>
 								<label
-									htmlFor="image-upload"
+									htmlFor="picture"
 									className="absolute -bottom-1 -right-1 flex size-7 cursor-pointer items-center justify-center rounded-full bg-primary text-primary-foreground shadow-md hover:bg-primary/90"
 								>
 									<Camera className="size-3" />
 								</label>
 								<input
-									id="image-upload"
+									id="picture"
+									name="picture"
 									type="file"
 									accept="image/*"
 									className="hidden"
 									onChange={handleImageChange}
+									disabled={isPending}
 								/>
 							</div>
 						</div>
@@ -111,19 +153,27 @@ export function ProfileEditButton({ user, onSave }: ProfileEditButtonProps) {
 							</label>
 							<Input
 								id="name"
-								value={name}
-								onChange={(e) => setName(e.target.value)}
+								name="name"
+								defaultValue={user.name}
 								placeholder={t('enterName')}
+								disabled={isPending}
 							/>
 						</div>
-					</div>
 
-					<DialogFooter>
-						<Button variant="outline" onClick={handleCancel}>
-							{t('cancel')}
-						</Button>
-						<Button onClick={handleSave}>{t('save')}</Button>
-					</DialogFooter>
+						<DialogFooter>
+							<Button
+								type="button"
+								variant="outline"
+								onClick={handleCancel}
+								disabled={isPending}
+							>
+								{t('cancel')}
+							</Button>
+							<Button type="submit" disabled={isPending}>
+								{isPending ? t('saving') : t('save')}
+							</Button>
+						</DialogFooter>
+					</form>
 				</DialogContent>
 			</Dialog>
 		</>

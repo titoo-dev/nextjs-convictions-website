@@ -1,4 +1,4 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
 import createNextIntlPlugin from 'next-intl/plugin';
 
 const nextConfig: NextConfig = {
@@ -8,6 +8,11 @@ const nextConfig: NextConfig = {
 			new URL('https://dev-api.mesconvictions.com/media/**'),
 			new URL('https://img.youtube.com/**'),
 		],
+	},
+	experimental: {
+		serverActions: {
+			bodySizeLimit: '10mb',
+		},
 	},
 };
 

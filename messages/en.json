@@ -44,6 +44,9 @@
         "no-signatures": "You haven't signed any petitions yet.",
         "discover-petitions": "Discover petitions",
         "petitions-description": "View and manage your petitions",
+        "updateSuccess": "Profile updated successfully!",
+        "updateError": "Failed to update profile. Please try again.",
+        "saving": "Saving...",
         "petitions": {
             "no-petitions-created": "You haven't created any petitions yet.",
             "create-petition": "Create a petition",

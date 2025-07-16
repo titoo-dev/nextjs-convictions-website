@@ -44,6 +44,9 @@
         "no-signatures": "Vous n'avez pas encore signé de pétition.",
         "discover-petitions": "Découvrir les pétitions",
         "petitions-description": "Voir et gérer vos pétitions",
+        "updateSuccess": "Profil mis à jour avec succès !",
+        "updateError": "Échec de la mise à jour du profil. Veuillez réessayer.",
+        "saving": "Enregistrement...",
         "petitions": {
             "no-petitions-created": "Vous n'avez pas encore créé de pétition.",
             "create-petition": "Créer une pétition",
