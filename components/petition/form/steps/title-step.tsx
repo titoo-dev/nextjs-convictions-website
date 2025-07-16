@@ -7,10 +7,12 @@ import {
 } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { cn } from '@/lib/utils';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { useState, useEffect } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useDebouncedCallback } from 'use-debounce';
+import { useGetTitleSuggestions } from '@/hooks/use-get-title-suggestions';
+import { TitleSuggestionPayload } from '@/schemas/title-suggestion-payload';
 
 type PetitionData = {
 	category: string;
@@ -24,8 +26,7 @@ type TitleStepProps = {
 
 export function TitleStep({ formData, updateFormData }: TitleStepProps) {
 	const t = useTranslations('petition.form.titleStep');
-	const [suggestions, setSuggestions] = useState<string[]>([]);
-	const [isLoadingSuggestions, setIsLoadingSuggestions] = useState(false);
+	const locale = useLocale();
 
 	const categories = [
 		'culture',
@@ -45,77 +46,45 @@ export function TitleStep({ formData, updateFormData }: TitleStepProps) {
 		'other',
 	];
 
-	// Dummy AI suggestions based on category and title
-	const generateSuggestions = (category: string, title: string): string[] => {
-		const baseSuggestions = {
-			environment: [
-				'Protégeons nos forêts contre la déforestation massive',
-				'Pour une transition énergétique équitable et durable',
-				'Stop à la pollution plastique dans nos océans',
-			],
-			education: [
-				'Pour un enseignement gratuit et accessible à tous',
-				"Améliorons les conditions d'apprentissage dans nos écoles",
-				"Non à la suppression des postes d'enseignants",
-			],
-			health: [
-				'Pour un accès équitable aux soins de santé',
-				'Sauvons notre système de santé publique',
-				'Non à la fermeture des hôpitaux de proximité',
-			],
-			politics: [
-				'Pour plus de transparence dans nos institutions',
-				'Contre la corruption dans la vie politique',
-				'Pour une démocratie plus participative',
-			],
+	// Map form categories to API categories
+	const mapCategoryToAPI = (category: string) => {
+		const categoryMap: Record<string, string> = {
+			womenRights: 'WOMEN_RIGHTS',
+			menRights: 'MEN_RIGHTS',
+			culture: 'CULTURE',
+			religion: 'RELIGION',
+			education: 'EDUCATION',
+			environment: 'ENVIRONMENT',
+			racism: 'RACISM',
+			politics: 'POLITICS',
+			handicap: 'HANDICAP',
+			health: 'HEALTH',
+			transport: 'TRANSPORT',
+			immigration: 'IMMIGRATION',
+			justice: 'JUSTICE',
+			animals: 'ANIMALS',
 		};
-
-		const categoryKey = category as keyof typeof baseSuggestions;
-		const categorySuggestions = baseSuggestions[categoryKey] || [
-			'Pour une société plus juste et équitable',
-			'Défendons nos droits fondamentaux',
-			'Ensemble pour un changement positif',
-		];
-
-		// Filter suggestions based on title similarity
-		if (title.trim().length > 3) {
-			return categorySuggestions
-				.filter(
-					(suggestion) =>
-						!suggestion.toLowerCase().includes(title.toLowerCase())
-				)
-				.slice(0, 3);
-		}
-
-		return categorySuggestions.slice(0, 3);
+		return categoryMap[category] || 'CULTURE';
 	};
 
-	// Debounced function for generating suggestions
-	const debouncedGenerateSuggestions = useDebouncedCallback(
-		(category: string, title: string) => {
-			if (!category || title.length < 2) {
-				setSuggestions([]);
-				setIsLoadingSuggestions(false);
-				return;
-			}
+	// Create payload for API call
+	const suggestionPayload = {
+		inputTitle: formData.title,
+		category: mapCategoryToAPI(formData.category),
+		responseLanguage: locale.toUpperCase() as 'FR' | 'EN' | 'ES',
+	} as TitleSuggestionPayload;
 
-			const newSuggestions = generateSuggestions(category, title);
-			setSuggestions(newSuggestions);
-			setIsLoadingSuggestions(false);
-		},
-		800
-	);
+	// Use the API hook for getting suggestions
+	const {
+		data: suggestionsData,
+		isLoading: isLoadingSuggestions,
+		error: suggestionsError,
+	} = useGetTitleSuggestions(suggestionPayload, {
+		enabled: Boolean(formData.category && formData.title.length >= 2),
+		staleTime: 5 * 60 * 1000, // 5 minutes
+	});
 
-	// Effect to trigger debounced suggestions
-	useEffect(() => {
-		if (!formData.category || formData.title.length < 2) {
-			setSuggestions([]);
-			return;
-		}
-
-		setIsLoadingSuggestions(true);
-		debouncedGenerateSuggestions(formData.category, formData.title);
-	}, [formData.category, formData.title, debouncedGenerateSuggestions]);
+	const suggestions = suggestionsData?.suggestions || [];
 
 	return (
 		<div className="space-y-6">
@@ -165,6 +134,10 @@ export function TitleStep({ formData, updateFormData }: TitleStepProps) {
 										<Skeleton className="h-4 w-full" />
 										<Skeleton className="h-4 w-4/5" />
 										<Skeleton className="h-4 w-3/4" />
+									</div>
+								) : suggestionsError ? (
+									<div className="mt-4 text-red-600">
+										{t('suggestionsError')}
 									</div>
 								) : suggestions.length > 0 ? (
 									<div className="space-y-2 mt-4">
