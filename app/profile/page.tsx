@@ -10,9 +10,8 @@ export default async function ProfilePage() {
 	const currentUser = await getCurrentUser();
 
 	if (!currentUser) {
-		// Handle case where user is not authenticated
 		return (
-			<div className="container mx-auto px-4 py-8 max-w-7xl">
+			<div className="container grid place-items-center mx-auto px-4 py-8 max-w-7xl min-h-screen">
 				<div className="text-center">
 					<h1 className="text-2xl font-bold text-gray-900 mb-4">
 						{t('not-authenticated')}

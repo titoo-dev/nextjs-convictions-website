@@ -3,6 +3,7 @@ import { Card, CardContent } from "../ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Edit3, LogOut, User } from "lucide-react";
 import { Button } from "../ui/button";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "../ui/alert-dialog";
 
 type ProfileCardProps = {
 	username: string;
@@ -41,13 +42,29 @@ export function ProfileCard({ username, email, avatarUrl }: ProfileCardProps) {
 							{t('modify')}
 						</Button>
 
-						<Button
-							variant="outline"
-							className="w-full justify-start"
-						>
-							<LogOut className="size-4" />
-							{t('logout')}
-						</Button>
+						<AlertDialog>
+							<AlertDialogTrigger asChild>
+								<Button
+									variant="outline"
+									className="w-full justify-start"
+								>
+									<LogOut className="size-4" />
+									{t('logout')}
+								</Button>
+							</AlertDialogTrigger>
+							<AlertDialogContent>
+								<AlertDialogHeader>
+									<AlertDialogTitle>{t('logoutConfirmTitle')}</AlertDialogTitle>
+									<AlertDialogDescription>
+										{t('logoutConfirmDescription')}
+									</AlertDialogDescription>
+								</AlertDialogHeader>
+								<AlertDialogFooter>
+									<AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
+									<AlertDialogAction>{t('logout')}</AlertDialogAction>
+								</AlertDialogFooter>
+							</AlertDialogContent>
+						</AlertDialog>
 					</div>
 				</div>
 			</CardContent>

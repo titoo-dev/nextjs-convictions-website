@@ -25,6 +25,11 @@
     "profile": {
         "modify": "Modifier le profil",
         "logout": "Déconnexion",
+        "logoutConfirmTitle": "Êtes-vous sûr de vouloir vous déconnecter ?",
+        "logoutConfirmDescription": "Vous serez déconnecté de votre compte et redirigé vers la page d'accueil.",
+        "cancel": "Annuler",
+        "not-authenticated": "Vous n'êtes pas authentifié",
+        "please-sign-in": "Veuillez vous connecter pour accéder à cette fonctionnalité.",
         "my-petitions": "Mes pétitions",
         "my-signatures": "Mes signatures",
         "no-petitions-created": "Vous n'avez pas encore créé de pétition.",

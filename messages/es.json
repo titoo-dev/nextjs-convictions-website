@@ -25,6 +25,11 @@
     "profile": {
         "modify": "Editar perfil",
         "logout": "Cerrar sesión",
+        "logoutConfirmTitle": "¿Estás seguro de que deseas cerrar sesión?",
+        "logoutConfirmDescription": "Se cerrará tu sesión y serás redirigido a la página principal.",
+        "cancel": "Cancelar",
+        "not-authenticated": "No estás autenticado",
+        "please-sign-in": "Por favor inicia sesión para acceder a esta función.",
         "my-petitions": "Mis peticiones",
         "my-signatures": "Mis firmas",
         "no-petitions-created": "Aún no has creado ninguna petición.",

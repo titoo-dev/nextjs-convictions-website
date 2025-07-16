@@ -25,6 +25,11 @@
     "profile": {
         "modify": "Edit profile",
         "logout": "Logout",
+        "logoutConfirmTitle": "Are you sure you want to logout?",
+        "logoutConfirmDescription": "You will be logged out of your account and redirected to the homepage.",
+        "cancel": "Cancel",
+        "not-authenticated": "You are not authenticated",
+        "please-sign-in": "Please sign in to access this feature.",
         "my-petitions": "My petitions",
         "my-signatures": "My signatures",
         "no-petitions-created": "You haven't created any petitions yet.",
