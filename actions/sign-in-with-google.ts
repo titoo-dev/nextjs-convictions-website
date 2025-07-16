@@ -2,6 +2,7 @@
 
 import { saveTokens } from '@/lib/cookies-storage';
 import { generateToken } from '@/lib/token';
+import { revalidatePath } from 'next/cache';
 
 type SignInResponse = {
     refresh_token?: string;
@@ -51,6 +52,8 @@ export async function signInWithGoogle(params: SignInWithGoogleParams) {
                 refreshToken: responseData.refresh_token,
             });
         }
+
+        revalidatePath('/');
 
         return responseData;
     } catch (error) {

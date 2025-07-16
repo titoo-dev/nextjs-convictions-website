@@ -9,6 +9,7 @@ import {
 	signInWithEmailResponseSchema,
 	type SignInWithEmailResponse,
 } from '@/schemas/signin-with-email-response';
+import { revalidatePath } from 'next/cache';
 
 export async function signInWithEmail(formData: FormData): Promise<{
 	success: boolean;
@@ -54,6 +55,8 @@ export async function signInWithEmail(formData: FormData): Promise<{
 			accessToken: validatedResponse.access_token,
 			refreshToken: validatedResponse.refresh_token,
 		});
+
+		revalidatePath('/');
 
 		return { success: true, data: validatedResponse };
 	} catch (error) {

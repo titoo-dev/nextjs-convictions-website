@@ -1,22 +1,25 @@
 'use server'
 
 import { User, userSchema } from '../schemas/user'
+import { getAccessToken } from '../lib/cookies-storage'
 
 
-export async function getCurrentUser(accessToken: string | null): Promise<User | null> {
+export async function getCurrentUser(): Promise<User | null> {
     try {
+        const accessToken = await getAccessToken();
+        
         if (!accessToken) {
             return null;
         }
 
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/user`, {
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json',
-				Accept: 'application/json',
-				Authorization: `Bearer ${accessToken}`,
-			},
-		});
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+                Authorization: `Bearer ${accessToken}`,
+            },
+        });
 
         if (response.status !== 200) {
             console.error('Failed to fetch current user:', response.statusText);

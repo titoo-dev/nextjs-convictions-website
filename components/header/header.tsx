@@ -1,5 +1,3 @@
-"use client";
-
 import { DesktopNavigation } from "./desktop-navigation";
 import { Logo } from "./logo";
 import { MobileMenu } from "./mobile-menu";

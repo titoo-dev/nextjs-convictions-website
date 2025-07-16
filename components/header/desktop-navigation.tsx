@@ -1,26 +1,15 @@
-"use client";
-
 import { useTranslations } from 'next-intl';
 import { LanguageSelector } from './language-selector';
 import { LoginDialog } from './login-dialog';
 import { NavigationButton } from './navigation-button';
 import RenderWhen from '../render-when';
-import { useGetCurrentUser } from '@/hooks/use-get-current-user';
-import { Skeleton } from '../ui/skeleton';
-import { useEffect } from 'react';
-import { userLocalStorage } from '@/lib/local-storage';
 import { UserMenu } from './user-menu';
+import { getCurrentUser } from '@/actions/get-current-user';
 
-export function DesktopNavigation() {
+export async function DesktopNavigation() {
 	const t = useTranslations('navigation');
 
-	const { data: currentUser, isLoading, isSuccess } = useGetCurrentUser();
-
-	useEffect(() => {
-		if (isSuccess && currentUser) {
-			userLocalStorage.saveUser(currentUser);
-		}
-	}, [isSuccess, currentUser]);
+	const currentUser = await getCurrentUser();
 
 	return (
 		<nav className="hidden md:flex items-center space-x-4">
@@ -30,16 +19,13 @@ export function DesktopNavigation() {
 			<NavigationButton href="/support-us">
 				{t('supportUs')}
 			</NavigationButton>
-			<RenderWhen condition={isLoading}>
-				<Skeleton className="h-10 w-32" />
-			</RenderWhen>
 
-			<RenderWhen condition={!isLoading && !currentUser}>
+			<RenderWhen condition={!currentUser}>
 				<LoginDialog />
 			</RenderWhen>
 
 			<LanguageSelector />
-			<RenderWhen condition={!isLoading && !!currentUser}>
+			<RenderWhen condition={!!currentUser}>
 				<UserMenu user={currentUser!} />
 			</RenderWhen>
 		</nav>
