@@ -53,7 +53,13 @@
                 "cancel": "Cancel",
                 "confirm": "Delete",
                 "deleting": "Deleting..."
-            }
+            },
+            "no-signed-petitions": "You haven't signed any petitions yet.",
+            "browse-petitions": "Browse petitions",
+            "signed": "Signed",
+            "published-on": "Published on",
+            "created-by": "Created by",
+            "view": "View"
         }
     },
     "hero": {
