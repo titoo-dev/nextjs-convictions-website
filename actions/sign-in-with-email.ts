@@ -1,5 +1,6 @@
 'use server';
 
+import { saveTokens } from '@/lib/cookies-storage';
 import {
 	signInWithEmailRequestSchema,
 	type SignInWithEmailRequest,
@@ -9,9 +10,7 @@ import {
 	type SignInWithEmailResponse,
 } from '@/schemas/signin-with-email-response';
 
-export async function signInWithEmail(
-	formData: FormData
-): Promise<{
+export async function signInWithEmail(formData: FormData): Promise<{
 	success: boolean;
 	data?: SignInWithEmailResponse;
 	error?: string;
@@ -50,6 +49,11 @@ export async function signInWithEmail(
 		// Validate response data
 		const validatedResponse: SignInWithEmailResponse =
 			signInWithEmailResponseSchema.parse(responseData);
+
+		await saveTokens({
+			accessToken: validatedResponse.access_token,
+			refreshToken: validatedResponse.refresh_token,
+		});
 
 		return { success: true, data: validatedResponse };
 	} catch (error) {

@@ -8,7 +8,6 @@ import { useTranslations } from 'next-intl';
 import { useTransition } from 'react';
 import { signInWithEmail } from '@/actions/sign-in-with-email';
 import { toast } from 'sonner';
-import { authLocalStorage } from '@/lib/local-storage';
 
 type LoginFormProps = {
 	onSuccess?: () => void;
@@ -28,11 +27,6 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
 				const result = await signInWithEmail(formData);
 
 				if (result.success) {
-					authLocalStorage.saveTokens({
-						accessToken: result.data?.access_token ?? '',
-						refreshToken: result.data?.refresh_token ?? '',
-					});
-
 					toast.success(tDialog('loginSuccess'));
 
 					onSuccess?.();

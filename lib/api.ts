@@ -1,5 +1,5 @@
 import { User } from "../schemas/user";
-import { authLocalStorage } from "./local-storage";
+import { getAccessToken } from './cookies-storage';
 
 // lib/api.ts
 
@@ -10,10 +10,7 @@ import { authLocalStorage } from "./local-storage";
  */
 export async function fetchCurrentUser(): Promise<User | null> {
 	// Use the auth local storage utility to get the access token
-	const accessToken =
-		typeof window !== 'undefined'
-			? authLocalStorage.getAccessToken()
-			: null;
+	const accessToken = await getAccessToken();
 
 	if (!accessToken) {
 		return null;

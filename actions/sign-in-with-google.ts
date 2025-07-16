@@ -1,5 +1,6 @@
 'use server'
 
+import { saveTokens } from '@/lib/cookies-storage';
 import { generateToken } from '@/lib/token';
 
 type SignInResponse = {
@@ -43,6 +44,13 @@ export async function signInWithGoogle(params: SignInWithGoogleParams) {
 		);
 
         const responseData: SignInResponse = await response.json();
+
+        if (responseData.access_token && responseData.refresh_token) {
+            await saveTokens({
+                accessToken: responseData.access_token,
+                refreshToken: responseData.refresh_token,
+            });
+        }
 
         return responseData;
     } catch (error) {

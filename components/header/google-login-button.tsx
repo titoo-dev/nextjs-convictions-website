@@ -5,7 +5,6 @@ import { useTransition } from 'react';
 import { signInWithPopup } from 'firebase/auth';
 import { auth, provider } from '@/lib/firebase';
 import { signInWithGoogle } from '@/actions/sign-in-with-google';
-import { authLocalStorage } from '@/lib/local-storage';
 import { useLocale, useTranslations } from 'next-intl';
 
 type GoogleLoginButtonProps = {
@@ -33,18 +32,10 @@ export function GoogleLoginButton({ onSuccess }: GoogleLoginButtonProps) {
 				};
 
 				// Call the server action to complete authentication
-				const response = await signInWithGoogle(userParams);
+				await signInWithGoogle(userParams);
 
-				// Store tokens in localStorage on successful sign-in
-				if (response.access_token && response.refresh_token) {
-					authLocalStorage.saveTokens({
-						accessToken: response.access_token,
-						refreshToken: response.refresh_token,
-					});
-
-					if (onSuccess) {
-						onSuccess();
-					}
+				if (onSuccess) {
+					onSuccess();
 				}
 			} catch (error) {
 				console.error('Login failed:', error);

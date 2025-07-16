@@ -2,14 +2,7 @@ import { PetitionFormData } from "@/app/petition/new/page";
 import { User } from "@/schemas/user";
 
 const PETITION_FORM_KEY = 'petition-form-draft';
-const AUTH_TOKENS_KEY = 'auth-tokens';
 const USER_KEY = 'user-data';
-
-export type AuthTokens = {
-    accessToken: string;
-    refreshToken: string;
-    expiresAt?: string; // ISO string for token expiration
-};
 
 // Helper function to convert file to base64
 export const fileToBase64 = (file: File): Promise<string> => {
@@ -123,96 +116,6 @@ export const petitionLocalStorage = {
         } catch (error) {
             console.warn('Failed to check petition form data in localStorage:', error);
             return false;
-        }
-    },
-};
-
-export const authLocalStorage = {
-    saveTokens: (tokens: AuthTokens): void => {
-        try {
-            if (typeof window === 'undefined') return;
-            
-            const now = new Date();
-            const expiresAt = new Date(now.getTime() + (15 * 60 * 1000)).toISOString(); // Add 15 minutes
-            
-            const tokensData = {
-                ...tokens,
-                savedAt: new Date().toISOString(),
-                expiresAt: tokens.expiresAt || expiresAt,
-            };
-            
-            localStorage.setItem(AUTH_TOKENS_KEY, JSON.stringify(tokensData));
-        } catch (error) {
-            console.warn('Failed to save auth tokens to localStorage:', error);
-        }
-    },
-
-    getTokens: (): AuthTokens | null => {
-        try {
-            if (typeof window === 'undefined') return null;
-            
-            const saved = localStorage.getItem(AUTH_TOKENS_KEY);
-
-            if (!saved) return null;
-            
-            const tokensData: AuthTokens = JSON.parse(saved);
-            
-            // Check if tokens are expired
-            if (tokensData.expiresAt) {
-                const expiresAt = new Date(tokensData.expiresAt);
-                const now = new Date();
-                
-                if (now >= expiresAt) {
-                    // Tokens expired, remove them
-                    authLocalStorage.clearTokens();
-                    return null;
-                }
-            }
-            
-            return {
-                accessToken: tokensData.accessToken,
-                refreshToken: tokensData.refreshToken,
-                expiresAt: tokensData.expiresAt,
-            };
-        } catch (error) {
-            console.warn('Failed to load auth tokens from localStorage:', error);
-            authLocalStorage.clearTokens();
-            return null;
-        }
-    },
-
-    getAccessToken: (): string | null => {
-        const tokens = authLocalStorage.getTokens();
-        return tokens?.accessToken || null;
-    },
-
-    getRefreshToken: (): string | null => {
-        const tokens = authLocalStorage.getTokens();
-        return tokens?.refreshToken || null;
-    },
-
-    clearTokens: (): void => {
-        try {
-            if (typeof window === 'undefined') return;
-            localStorage.removeItem(AUTH_TOKENS_KEY);
-        } catch (error) {
-            console.warn('Failed to clear auth tokens from localStorage:', error);
-        }
-    },
-
-    isAuthenticated: (): boolean => {
-        return authLocalStorage.getTokens() !== null;
-    },
-
-    updateAccessToken: (accessToken: string, expiresAt?: string): void => {
-        const now = new Date();
-        const currentTokens = authLocalStorage.getTokens();
-        if (currentTokens) {
-            authLocalStorage.saveTokens({
-                ...currentTokens,
-                accessToken,
-                expiresAt: expiresAt || new Date(now.getTime() + (15 * 60 * 1000)).toISOString(),
-            });
         }
     },
 };
