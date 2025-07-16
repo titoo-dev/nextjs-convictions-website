@@ -223,7 +223,8 @@
                 "titleLabel": "Título",
                 "titlePlaceholder": "¿Qué cambio quieres?",
                 "suggestions": "🔥 Sugerencias",
-                "suggestionsEmpty": "Por favor escribe un título primero",
+                "suggestionsEmpty": "No hay sugerencias disponibles para tu entrada actual",
+                "suggestionsPrompt": "Elige un tema y comienza a escribir un título para obtener sugerencias",
                 "advice": "💡 Consejo",
                 "adviceText": "Usa verbos de acción. Por ejemplo: \"Prohibir bolsas de plástico en nuestra ciudad\" o \"Proteger el bosque de X\". Evita formulaciones vagas.",
                 "categories": {

@@ -217,7 +217,8 @@
                 "titleLabel": "Title",
                 "titlePlaceholder": "What change do you want?",
                 "suggestions": "🔥 Suggestions",
-                "suggestionsEmpty": "Please write a title first",
+                "suggestionsEmpty": "No suggestions available for your current input",
+                "suggestionsPrompt": "Choose a theme and start writing a title to get suggestions",
                 "advice": "💡 Advice",
                 "adviceText": "Use action verbs. For example: \"Ban plastic bags in our city\" or \"Protect the forest of X\". Avoid vague formulations.",
                 "categories": {
