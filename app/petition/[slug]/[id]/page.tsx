@@ -67,7 +67,7 @@ export default async function PetitionPage(props: {
 							<SignatureCounter petition={petition} />
 						</RenderWhen>
 						<SignForm petition={petition} />
-						<ShareSection />
+						<ShareSection petition={petition} />
 					</div>
 				</div>
 			</div>

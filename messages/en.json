@@ -185,7 +185,8 @@
             "title": "Share to your friends",
             "facebook": "Facebook",
             "twitter": "Twitter",
-            "whatsapp": "WhatsApp"
+            "whatsapp": "WhatsApp",
+            "email": "Mail"
         },
         "success": {
             "title": "Your commitment doesn't stop here!",

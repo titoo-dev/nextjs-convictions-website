@@ -2,49 +2,96 @@
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Share2 } from 'lucide-react';
+import { PublicPetition } from '@/schemas/public-petition';
+import { Mail, Share2 } from 'lucide-react';
 import { Facebook, Twitter, MessageCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
-export function ShareSection() {
-    const t = useTranslations('petition.share');
+type ShareSectionProps = {
+	petition: PublicPetition;
+};
 
-    return (
-        <Card className="shadow-none">
-            <CardHeader>
-                <CardTitle className="text-base sm:text-lg flex items-center">
-                    <Share2 className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
-                    {t('title')}
-                </CardTitle>
-            </CardHeader>
-            <CardContent>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        className="flex items-center justify-center gap-2 text-xs sm:text-sm"
-                    >
-                        <Facebook className="h-3 w-3 sm:h-4 sm:w-4" />
-                        {t('facebook')}
-                    </Button>
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        className="flex items-center justify-center gap-2 text-xs sm:text-sm"
-                    >
-                        <Twitter className="h-3 w-3 sm:h-4 sm:w-4" />
-                        {t('twitter')}
-                    </Button>
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        className="flex items-center justify-center gap-2 text-xs sm:text-sm"
-                    >
-                        <MessageCircle className="h-3 w-3 sm:h-4 sm:w-4" />
-                        {t('whatsapp')}
-                    </Button>
-                </div>
-            </CardContent>
-        </Card>
-    );
+export function ShareSection({ petition }: ShareSectionProps) {
+	const t = useTranslations('petition.share');
+
+	const handleShare = (platform: string) => {
+		const petitionUrl = encodeURIComponent(petition.urlPetition);
+		const petitionTitle = encodeURIComponent(petition.title);
+
+		let shareUrl = '';
+
+		switch (platform) {
+			case 'facebook':
+				shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${petitionUrl}`;
+				break;
+			case 'twitter':
+				shareUrl = `https://x.com/intent/tweet?text=${petitionUrl}`;
+				break;
+			case 'whatsapp':
+				shareUrl = `https://api.whatsapp.com/send?text=${petitionUrl}`;
+				break;
+			case 'email':
+				shareUrl = `mailto:?subject=${petitionTitle}&body=${petitionUrl}`;
+				break;
+		}
+
+		if (shareUrl) {
+			window.open(shareUrl, '_blank', 'noopener,noreferrer');
+		}
+	};
+
+	return (
+		<Card className="shadow-none">
+			<CardHeader>
+				<CardTitle className="text-base sm:text-lg flex items-center">
+					<Share2 className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
+					{t('title')}
+				</CardTitle>
+			</CardHeader>
+			<CardContent>
+				<div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3">
+					<Button
+						variant="outline"
+						size="sm"
+						className="flex items-center justify-center gap-2 text-xs sm:text-sm"
+						onClick={() => handleShare('facebook')}
+					>
+						<Facebook className="h-3 w-3 sm:h-4 sm:w-4" />
+						{t('facebook')}
+					</Button>
+					<Button
+						variant="outline"
+						size="sm"
+						className="flex items-center justify-center gap-2 text-xs sm:text-sm"
+						onClick={() => handleShare('twitter')}
+					>
+						<Twitter className="h-3 w-3 sm:h-4 sm:w-4" />
+						{t('twitter')}
+					</Button>
+					<Button
+						variant="outline"
+						size="sm"
+						className={
+							'flex items-center justify-center gap-2 text-xs sm:text-sm'
+						}
+						onClick={() => handleShare('whatsapp')}
+					>
+						<MessageCircle className="h-3 w-3 sm:h-4 sm:w-4" />
+						{t('whatsapp')}
+					</Button>
+					<Button
+						variant="outline"
+						size="sm"
+						className={
+							'flex items-center justify-center gap-2 text-xs sm:text-sm'
+						}
+						onClick={() => handleShare('email')}
+					>
+						<Mail className="h-3 w-3 sm:h-4 sm:w-4" />
+						{t('email')}
+					</Button>
+				</div>
+			</CardContent>
+		</Card>
+	);
 }

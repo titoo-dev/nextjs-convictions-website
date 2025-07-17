@@ -191,7 +191,8 @@
             "title": "Comparte con tus amigos",
             "facebook": "Facebook",
             "twitter": "Twitter",
-            "whatsapp": "WhatsApp"
+            "whatsapp": "WhatsApp",
+            "email": "Mail"
         },
         "success": {
             "title": "¡Tu compromiso no termina aquí!",

@@ -191,7 +191,8 @@
             "title": "Partagez à vos amis",
             "facebook": "Facebook",
             "twitter": "Twitter",
-            "whatsapp": "WhatsApp"
+            "whatsapp": "WhatsApp",
+            "email": "Mail"
         },
         "success": {
             "title": "Votre engagement ne s'arrête pas là !",
