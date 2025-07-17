@@ -1,7 +1,14 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
-import { PetitionMedia } from "./petition-media";
-import { PetitionStats } from "./petition-stats";
-import Link from "next/link";
+import { slugify } from '@/lib/utils';
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardHeader,
+	CardTitle,
+} from '../ui/card';
+import { PetitionMedia } from './petition-media';
+import { PetitionStats } from './petition-stats';
+import Link from 'next/link';
 
 type PetitionCardProps = {
 	petition: {
@@ -18,7 +25,7 @@ type PetitionCardProps = {
 
 export function PetitionCard({ petition }: PetitionCardProps) {
 	return (
-		<Link href={`/petition/${petition.id_seq}`}>
+		<Link href={`/petition/${slugify(petition.title)}/${petition.id_seq}`}>
 			<Card className="hover:shadow-lg transition-shadow flex flex-col h-full cursor-pointer">
 				<CardHeader className="flex-1">
 					<PetitionMedia

@@ -1,5 +1,5 @@
-import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
+import { clsx, type ClassValue } from 'clsx';
+import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
@@ -13,20 +13,25 @@ export const getYouTubeVideoId = (url: string) => {
 };
 
 // Image validation
-export const validateImageUrl = (url: string): { isValid: boolean; error?: string } => {
+export const validateImageUrl = (
+	url: string
+): { isValid: boolean; error?: string } => {
 	if (!url.trim()) {
-		return { isValid: false, error: "Image URL is required" };
+		return { isValid: false, error: 'Image URL is required' };
 	}
 
 	try {
 		new URL(url);
 	} catch {
-		return { isValid: false, error: "Invalid URL format" };
+		return { isValid: false, error: 'Invalid URL format' };
 	}
 
 	const imageExtensions = /\.(jpg|jpeg|png|gif|webp|svg|bmp|ico)(\?.*)?$/i;
 	if (!imageExtensions.test(url)) {
-		return { isValid: false, error: "URL must point to an image file (jpg, jpeg, png, gif, webp, svg, bmp, ico)" };
+		return {
+			isValid: false,
+			error: 'URL must point to an image file (jpg, jpeg, png, gif, webp, svg, bmp, ico)',
+		};
 	}
 
 	return { isValid: true };
@@ -92,7 +97,10 @@ export function validateYouTubeUrl(url: string): {
 	};
 }
 
-export function getYouTubeThumbnail(videoId: string, quality: 'default' | 'medium' | 'high' | 'standard' | 'maxres' = 'medium'): string {
+export function getYouTubeThumbnail(
+	videoId: string,
+	quality: 'default' | 'medium' | 'high' | 'standard' | 'maxres' = 'medium'
+): string {
 	const qualityMap = {
 		default: 'default',
 		medium: 'mqdefault',
@@ -126,7 +134,12 @@ export function validateImageFile(file: File): {
 	}
 
 	// Check supported formats
-	const supportedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+	const supportedTypes = [
+		'image/jpeg',
+		'image/png',
+		'image/gif',
+		'image/webp',
+	];
 	if (!supportedTypes.includes(file.type)) {
 		return {
 			isValid: false,
@@ -137,4 +150,29 @@ export function validateImageFile(file: File): {
 	return {
 		isValid: true,
 	};
+}
+
+/**
+ * Converts a string to a URL-friendly slug
+ * @param text The text to convert to a slug
+ * @returns A slugified string
+ */
+export function slugify(text: string): string {
+	return (
+		text
+			.toString()
+			.toLowerCase()
+			.trim()
+			// Replace spaces with hyphens
+			.replace(/\s+/g, '-')
+			// Remove accents and diacritics
+			.normalize('NFD')
+			.replace(/[\u0300-\u036f]/g, '')
+			// Remove special characters except hyphens
+			.replace(/[^a-z0-9-]/g, '')
+			// Remove multiple consecutive hyphens
+			.replace(/-+/g, '-')
+			// Remove leading and trailing hyphens
+			.replace(/^-+|-+$/g, '')
+	);
 }

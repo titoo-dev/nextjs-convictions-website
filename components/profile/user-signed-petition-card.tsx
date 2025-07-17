@@ -8,6 +8,7 @@ import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Badge } from '../ui/badge';
+import { slugify } from '@/lib/utils';
 
 export function UserSignedPetitionCard({
 	petition,
@@ -84,7 +85,11 @@ export function UserSignedPetitionCard({
 						<div className="text-sm text-muted-foreground">
 							{t('created-by')} {petition.author.name}
 						</div>
-						<Link href={`/petition/${petition.id_seq}`}>
+						<Link
+							href={`/petition/${slugify(petition.title)}/${
+								petition.id_seq
+							}`}
+						>
 							<Button
 								variant="outline"
 								size="sm"

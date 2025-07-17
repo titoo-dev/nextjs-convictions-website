@@ -31,9 +31,7 @@ export default async function PetitionPage(props: {
 					<h1 className="text-2xl font-bold text-gray-900 mb-2">
 						{t('notFound.title')}
 					</h1>
-					<p className="text-gray-600">
-						{t('notFound.description')}
-					</p>
+					<p className="text-gray-600">{t('notFound.description')}</p>
 				</div>
 			</div>
 		);
