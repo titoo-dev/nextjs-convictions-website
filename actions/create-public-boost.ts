@@ -15,16 +15,42 @@ export async function createPublicBoost(
 	formData: FormData
 ): Promise<ActionResult> {
 	try {
-		// Extract and validate form data
+		// Extract data from FormData
+		const email = formData.get('email') as string;
 		const type = formData.get('type') as string;
 		const petitionId = formData.get('petitionId') as string;
-		const email = formData.get('email') as string;
 
-		const validatedData = createBoostSchema.parse({
-			type,
-			petitionId,
-			email,
-		});
+		// Validate required fields
+		if (!email?.trim()) {
+			return {
+				success: false,
+				error: 'Email is required',
+			};
+		}
+
+		if (!type?.trim()) {
+			return {
+				success: false,
+				error: 'Boost type is required',
+			};
+		}
+
+		if (!petitionId?.trim()) {
+			return {
+				success: false,
+				error: 'Petition ID is required',
+			};
+		}
+
+		// Create request object
+		const requestData: CreateBoost = {
+			email: email.trim(),
+			type: type as CreateBoost['type'],
+			petitionId: petitionId,
+		};
+
+		// Validate request data
+		const validatedData = createBoostSchema.parse(requestData);
 
 		// Make API request
 		const response = await fetch(

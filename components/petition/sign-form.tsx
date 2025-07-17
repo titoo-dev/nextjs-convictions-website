@@ -11,6 +11,7 @@ import { PetitionFormInputs } from './petition-form-inputs';
 import { NotificationOptions } from './notification-options';
 import { useLocale, useTranslations } from 'next-intl';
 import Link from 'next/link';
+import { useParams } from 'next/navigation';
 
 type SignFormProps = {
 	petition: PublicPetition;
@@ -147,7 +148,7 @@ export function SignForm({ petition }: SignFormProps) {
 									disabled={isSubmitting}
 									className="flex-1 border-orange-500 text-orange-500 hover:bg-orange-50 font-semibold py-3 sm:py-3 text-sm sm:text-base"
 								>
-									<Link href="/boost-plan">
+									<Link href={`/boost-plan/${petition.id}`}>
 										{t('boostButton')}
 									</Link>
 								</Button>
