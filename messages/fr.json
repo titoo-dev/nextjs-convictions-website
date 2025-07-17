@@ -502,6 +502,15 @@
             "priceSuffix": "€",
             "choosePlan": "Choisir cette formule",
             "popularBadge": "Populaire"
+        },
+        "dialog": {
+            "title": "Boostez votre pétition avec {plan}",
+            "emailLabel": "Adresse email",
+            "emailPlaceholder": "Entrez votre adresse email",
+            "emailError": "Veuillez entrer une adresse email valide",
+            "emailRequired": "L'adresse email est requise",
+            "cancel": "Annuler",
+            "confirm": "Confirmer et continuer"
         }
     }
 }

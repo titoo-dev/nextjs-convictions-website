@@ -502,6 +502,15 @@
             "priceSuffix": "€",
             "choosePlan": "Elegir este plan",
             "popularBadge": "Popular"
+        },
+        "dialog": {
+            "title": "Impulsa tu petición con {plan}",
+            "emailLabel": "Dirección de correo electrónico",
+            "emailPlaceholder": "Introduce tu dirección de correo electrónico",
+            "emailError": "Por favor, introduce una dirección de correo electrónico válida",
+            "emailRequired": "La dirección de correo electrónico es obligatoria",
+            "cancel": "Cancelar",
+            "confirm": "Confirmar y continuar"
         }
     }
 }
