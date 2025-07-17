@@ -4,6 +4,9 @@
         "supportUs": "Support Us",
         "login": "Login"
     },
+    "search": {
+        "placeholder": "Search petitions..."
+    },
     "header": {
         "logoAlt": "My convictions logo",
         "logoText": "My convictions",

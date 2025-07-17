@@ -4,6 +4,9 @@
         "supportUs": "Apóyanos",
         "login": "Iniciar sesión"
     },
+    "search": {
+        "placeholder": "Buscar peticiones..."
+    },
     "header": {
         "logoAlt": "Logo de Mis convicciones",
         "logoText": "Mis convicciones",
