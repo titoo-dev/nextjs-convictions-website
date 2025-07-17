@@ -163,6 +163,7 @@
             "commentPlaceholder": "Deja un comentario (opcional)",
             "signButton": "Firmar",
             "alreadySignedButton": "Ya firmado",
+            "boostButton": "Impulsar petición",
             "signing": "Firmando...",
             "notifications": {
                 "yes": "Sí, manténganme informado si esta petición tiene éxito, y díganme cómo puedo contribuir",
@@ -463,5 +464,44 @@
         "button": "Continuar con Google",
         "signingIn": "Iniciando sesión...",
         "error": "Error al iniciar sesión"
+    },
+    "boostPlan": {
+        "hero": {
+            "title": "Impulsa tu petición",
+            "description": "Aumenta la visibilidad de tu petición con nuestros planes simples y efectivos",
+            "iconAlt": "Icono de rayo"
+        },
+        "plans": {
+            "searchPriority": {
+                "title": "Prioridad en búsquedas",
+                "description": "Tu petición aparece en la parte superior de los resultados de búsqueda para mayor visibilidad.",
+                "features": [
+                    "Posicionamiento prioritario en resultados de búsqueda",
+                    "Mayor visibilidad para los firmantes",
+                    "Resultados rápidos para tu petición"
+                ]
+            },
+            "homepageFeatured": {
+                "title": "Destacada en la página principal",
+                "description": "Tu petición se destaca en la página principal durante 24h.",
+                "features": [
+                    "Visualización en la página principal",
+                    "Máxima visibilidad durante 24h",
+                    "Atrae nuevos firmantes"
+                ]
+            },
+            "targetedEmail": {
+                "title": "Email dirigido",
+                "description": "Tu petición se envía por correo electrónico a una audiencia seleccionada para maximizar el impacto.",
+                "features": [
+                    "Envío directo a una audiencia calificada",
+                    "Llega a las personas más interesadas",
+                    "Alta tasa de participación"
+                ]
+            },
+            "priceSuffix": "€",
+            "choosePlan": "Elegir este plan",
+            "popularBadge": "Popular"
+        }
     }
 }

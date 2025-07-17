@@ -157,6 +157,7 @@
             "commentPlaceholder": "Leave a comment (optional)",
             "signButton": "I sign",
             "alreadySignedButton": "Already signed",
+            "boostButton": "Boost petition",
             "signing": "Signing...",
             "notifications": {
                 "yes": "Yes, keep me informed if this petition succeeds, and tell me how I can contribute",
@@ -463,5 +464,44 @@
         "button": "Continue with Google",
         "signingIn": "Signing in...",
         "error": "Login failed"
+    },
+    "boostPlan": {
+        "hero": {
+            "title": "Boost your petition",
+            "description": "Increase your petition's visibility with our simple and effective plans",
+            "iconAlt": "Lightning bolt icon"
+        },
+        "plans": {
+            "searchPriority": {
+                "title": "Priority in search",
+                "description": "Your petition appears at the top of search results for more visibility.",
+                "features": [
+                    "Priority ranking in search results",
+                    "Increased visibility to signers",
+                    "Quick results for your petition"
+                ]
+            },
+            "homepageFeatured": {
+                "title": "Featured on homepage",
+                "description": "Your petition is featured on the homepage for 24h.",
+                "features": [
+                    "Homepage display",
+                    "Maximum visibility for 24h",
+                    "Attract new signers"
+                ]
+            },
+            "targetedEmail": {
+                "title": "Targeted email",
+                "description": "Your petition is sent by email to a selected audience to maximize impact.",
+                "features": [
+                    "Direct send to a qualified audience",
+                    "Reach the most concerned people",
+                    "High engagement rate"
+                ]
+            },
+            "priceSuffix": "€",
+            "choosePlan": "Choose this plan",
+            "popularBadge": "Popular"
+        }
     }
 }

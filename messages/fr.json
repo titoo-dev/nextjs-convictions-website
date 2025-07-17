@@ -163,6 +163,7 @@
             "commentPlaceholder": "Laisser un commentaire (optionnel)",
             "signButton": "Je signe",
             "alreadySignedButton": "Déjà signé",
+            "boostButton": "Booster cette pétition",
             "signing": "Signature en cours...",
             "notifications": {
                 "yes": "Oui, tenez-moi informé si cette pétition réussit, et dites-moi comment je peux contribuer",
@@ -463,5 +464,44 @@
         "button": "Continuer avec Google",
         "signingIn": "Connexion...",
         "error": "Échec de la connexion"
+    },
+    "boostPlan": {
+        "hero": {
+            "title": "Boostez votre pétition",
+            "description": "Augmentez la visibilité de votre pétition avec nos formules simples et efficaces",
+            "iconAlt": "Icône éclair"
+        },
+        "plans": {
+            "searchPriority": {
+                "title": "Priorité dans la recherche",
+                "description": "Votre pétition apparaît en haut des résultats de recherche pour plus de visibilité.",
+                "features": [
+                    "Classement prioritaire dans les résultats de recherche",
+                    "Visibilité accrue auprès des signataires",
+                    "Résultats rapides pour votre pétition"
+                ]
+            },
+            "homepageFeatured": {
+                "title": "À la une sur la page d'accueil",
+                "description": "Votre pétition est mise en avant sur la page d'accueil pendant 24h.",
+                "features": [
+                    "Affichage sur la page d'accueil",
+                    "Visibilité maximale pendant 24h",
+                    "Attirez de nouveaux signataires"
+                ]
+            },
+            "targetedEmail": {
+                "title": "Email ciblé",
+                "description": "Votre pétition est envoyée par email à un public sélectionné pour maximiser l'impact.",
+                "features": [
+                    "Envoi direct à un public qualifié",
+                    "Touchez les personnes les plus concernées",
+                    "Taux d'engagement élevé"
+                ]
+            },
+            "priceSuffix": "€",
+            "choosePlan": "Choisir cette formule",
+            "popularBadge": "Populaire"
+        }
     }
 }
