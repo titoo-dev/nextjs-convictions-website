@@ -1,48 +1,74 @@
-'use server'
+'use server';
 
-import { PublicPetition, PublicPetitionSchema } from '../schemas/public-petition'
+import { getLocale } from 'next-intl/server';
+import {
+	PublicPetition,
+	PublicPetitionSchema,
+} from '../schemas/public-petition';
 
 export type GetPetitionsResponse = {
-    petitions: PublicPetition[]
-}
+	petitions: PublicPetition[];
+};
 
 export type GetPetitionsParams = {
-    category?: 'ALL' | string,
-    language?: 'FR' | 'EN' | 'ES',
-}
+	filter: FilteredPetitionParams;
+};
+
+export type FilteredPetitionParams = {
+	page?: number;
+	category?: string | 'ALL';
+	query?: string;
+};
 
 export async function getPublicPetitions(
-    params: GetPetitionsParams,
+	params: GetPetitionsParams
 ): Promise<GetPetitionsResponse> {
-    try {
-        const {
-            category = 'ALL',
-            language = 'EN',
-        } = params
+	try {
+		const locale = (await getLocale()).toUpperCase();
 
-        // Make API request
-        const response = await fetch(
-			`${process.env.NEXT_PUBLIC_API_BASE_URL}/petition/public/home/${language}/${category}`,
-			{
-				method: 'GET',
-				headers: {
-					'Content-Type': 'application/json',
-					Accept: 'application/json',
-				},
+		const { page = 1, category = 'ALL', query = '' } = params.filter;
+
+		let url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/petition/public/home/${locale}/${category}`;
+
+		if (query !== '') {
+			const searchParams = new URLSearchParams();
+
+			searchParams.append('languageOrigin', locale);
+
+			searchParams.append('page', page.toString());
+
+			if (category) {
+				searchParams.append('category', category);
 			}
-		);
 
-        const data = await response.json()
+			searchParams.append('query', query);
 
-        const parsedPetitions = PublicPetitionSchema.array().parse(data);
+			url = `${
+				process.env.NEXT_PUBLIC_API_BASE_URL
+			}/petition/public/paginate?${searchParams.toString()}`;
+		}
 
-        return { petitions: parsedPetitions };
-    } catch (error) {
-        console.error('Error fetching public petitions:', error)
-        
-        // Return empty result on error to prevent UI crashes
-        return {
-            petitions: [],
-        }
-    }
+		// Make API request
+		const response = await fetch(url, {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+				Accept: 'application/json',
+			},
+			cache: 'no-store',
+		});
+
+		const data = await response.json();
+
+		const parsedPetitions = PublicPetitionSchema.array().parse(data);
+
+		return { petitions: parsedPetitions };
+	} catch (error) {
+		console.error('Error fetching public petitions:', error);
+
+		// Return empty result on error to prevent UI crashes
+		return {
+			petitions: [],
+		};
+	}
 }

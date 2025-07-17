@@ -1,22 +1,22 @@
-import { getPublicPetitions } from '@/actions/get-public-petitions';
+import {
+	FilteredPetitionParams,
+	getPublicPetitions,
+} from '@/actions/get-public-petitions';
 import { SectionHeader } from './section-header';
 import { PetitionsGrid } from './petition-grid';
 import { Suspense } from 'react';
 import { PetitionGridSkeleton } from './petition-grid-skeleton';
 import { FilterSection } from './filter-section';
 import { EmptyState } from './empty-state';
-import { getLocale } from 'next-intl/server';
 import { SearchInput } from './search-input';
 
 type PetitionContentProps = {
-	category?: string;
+	filter: FilteredPetitionParams;
 };
 
-async function PetitionContent({ category }: PetitionContentProps) {
-	const locale = await getLocale();
+async function PetitionContent({ filter }: PetitionContentProps) {
 	const { petitions: popularPetitions } = await getPublicPetitions({
-		category: category || 'ALL',
-		language: locale.toUpperCase() as 'FR' | 'EN' | 'ES',
+		filter,
 	});
 
 	if (popularPetitions.length === 0) {
@@ -27,11 +27,11 @@ async function PetitionContent({ category }: PetitionContentProps) {
 }
 
 type PopularPetitionSectionProps = {
-	category?: string;
+	filter: FilteredPetitionParams;
 };
 
 export function PopularPetitionSection({
-	category,
+	filter,
 }: PopularPetitionSectionProps) {
 	return (
 		<section className="py-16 px-4 sm:px-6 lg:px-8">
@@ -40,7 +40,7 @@ export function PopularPetitionSection({
 				<SearchInput />
 				<FilterSection />
 				<Suspense fallback={<PetitionGridSkeleton />}>
-					<PetitionContent category={category} />
+					<PetitionContent filter={filter} />
 				</Suspense>
 			</div>
 		</section>
