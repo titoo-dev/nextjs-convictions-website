@@ -11,7 +11,6 @@ import { PetitionFormInputs } from './petition-form-inputs';
 import { NotificationOptions } from './notification-options';
 import { useLocale, useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
 
 type SignFormProps = {
 	petition: PublicPetition;
