@@ -1,13 +1,17 @@
 'use server';
 
 import {
-	createBoostSchema,
-	type CreateBoost,
-} from '@/schemas/create-public-boost';
+	createpublicBoostRequestSchema,
+	type CreatePublicBoostRequest,
+} from '@/schemas/create-public-boost-request';
+import {
+	CreatePublicBoostResponse,
+	createPublicBoostResponseSchema,
+} from '@/schemas/create-public-boost-response';
 
 type ActionResult = {
 	success: boolean;
-	data?: CreateBoost;
+	data?: CreatePublicBoostResponse;
 	error?: string;
 };
 
@@ -20,37 +24,15 @@ export async function createPublicBoost(
 		const type = formData.get('type') as string;
 		const petitionId = formData.get('petitionId') as string;
 
-		// Validate required fields
-		if (!email?.trim()) {
-			return {
-				success: false,
-				error: 'Email is required',
-			};
-		}
-
-		if (!type?.trim()) {
-			return {
-				success: false,
-				error: 'Boost type is required',
-			};
-		}
-
-		if (!petitionId?.trim()) {
-			return {
-				success: false,
-				error: 'Petition ID is required',
-			};
-		}
-
 		// Create request object
-		const requestData: CreateBoost = {
+		const requestData: CreatePublicBoostRequest = {
 			email: email.trim(),
-			type: type as CreateBoost['type'],
+			type: type as CreatePublicBoostRequest['type'],
 			petitionId: petitionId,
 		};
 
 		// Validate request data
-		const validatedData = createBoostSchema.parse(requestData);
+		const validatedData = createpublicBoostRequestSchema.parse(requestData);
 
 		// Make API request
 		const response = await fetch(
@@ -74,9 +56,8 @@ export async function createPublicBoost(
 		const responseData = await response.json();
 
 		// Validate response data
-		const validatedResponse = createBoostSchema.parse(responseData);
-
-		console.log('Boost created successfully:', validatedResponse);
+		const validatedResponse =
+			createPublicBoostResponseSchema.parse(responseData);
 
 		return {
 			success: true,

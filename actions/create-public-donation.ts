@@ -1,8 +1,6 @@
 'use server';
 
-import {
-	createPublicDonationRequestSchema,
-} from '@/schemas/create-public-donation-request';
+import { createPublicDonationRequestSchema } from '@/schemas/create-public-donation-request';
 import {
 	createPublicDonationRequestSchema as responseSchema,
 	type CreatePublicDonationRequest as CreatePublicDonationResponse,
@@ -37,7 +35,7 @@ export async function createPublicDonation(
 			}
 		);
 
-		if (!response.ok) {
+		if (response.status !== 201) {
 			return {
 				success: false,
 				error: `Request failed with status ${response.status}`,

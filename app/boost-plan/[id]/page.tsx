@@ -114,6 +114,8 @@ export default function BoostPlanPage() {
 						description: t('dialog.successDescription'),
 						duration: 5000,
 					});
+
+					window.location.href = result.data?.url ?? '/';
 				} else {
 					const errorMessage =
 						result.error || t('dialog.genericError');
@@ -200,7 +202,7 @@ export default function BoostPlanPage() {
 									</p>
 								</CardHeader>
 
-								<CardContent className="pt-0">
+								<CardContent className="pt-0 mt-auto">
 									<Button
 										onClick={() =>
 											handlePlanSelect(plan.type)
