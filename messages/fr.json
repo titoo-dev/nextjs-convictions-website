@@ -253,7 +253,9 @@
                 "description": "Décrivez l'objectif que vous voulez atteindre : un changement de loi, une action concrète, une position, etc. Soyez concis, convaincant, et inspirez les autres à rejoindre votre cause.",
                 "objectivePlaceholder": "Pourquoi lancez-vous cette pétition ?",
                 "suggestions": "🔥 Suggestions",
-                "suggestionsEmpty": "Veuillez d'abord écrire un objectif",
+                "suggestionsEmpty": "Aucune suggestion disponible pour votre saisie actuelle",
+                "suggestionsPrompt": "Commencez à écrire votre objectif pour obtenir des suggestions",
+                "suggestionsError": "Échec du chargement des suggestions. Veuillez réessayer.",
                 "advice": "⚠️ Conseil",
                 "adviceText": "Un objectif clair et motivant donne du sens à votre pétition et augmente vos chances de mobilisation.",
                 "aiUsage": "Vous avez atteint {percentage}% de votre utilisation prévue de l'assistance IA"

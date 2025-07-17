@@ -253,7 +253,9 @@
                 "description": "Describe el objetivo que quieres lograr: un cambio de ley, una acción concreta, una posición, etc. Sé conciso, convincente, e inspira a otros a unirse a tu causa.",
                 "objectivePlaceholder": "¿Por qué estás lanzando esta petición?",
                 "suggestions": "🔥 Sugerencias",
-                "suggestionsEmpty": "Por favor escribe un objetivo primero",
+                "suggestionsEmpty": "No hay sugerencias disponibles para tu entrada actual",
+                "suggestionsPrompt": "Comienza a escribir tu objetivo para obtener sugerencias",
+                "suggestionsError": "Error al cargar sugerencias. Por favor, inténtalo de nuevo.",
                 "advice": "⚠️ Consejo",
                 "adviceText": "Un objetivo claro y motivador da sentido a tu petición y aumenta tus posibilidades de movilización.",
                 "aiUsage": "Has alcanzado el {percentage}% de tu uso planificado de asistencia de IA"

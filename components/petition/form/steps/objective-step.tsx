@@ -1,23 +1,57 @@
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+	Card,
+	CardDescription,
+	CardHeader,
+	CardTitle,
+} from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
+import { useDebounce } from 'use-debounce';
+import { ObjectiveSuggestionPayload } from '@/schemas/objective-suggestion-payload';
+import { useGetObjectiveSuggestions } from '@/hooks/use-get-objective-suggestions';
+import { Skeleton } from '@/components/ui/skeleton';
 
 type PetitionData = {
-    objective: string;
-    destination: string;
+	objective: string;
+	destination: string;
+	title: string;
+	category: string;
 };
 
 type ObjectiveStepProps = {
-    formData: PetitionData;
-    updateFormData: (updates: Partial<PetitionData>) => void;
+	formData: PetitionData;
+	updateFormData: (updates: Partial<PetitionData>) => void;
 };
 
-export function ObjectiveStep({ formData, updateFormData }: ObjectiveStepProps) {
-    const t = useTranslations('petition.form.objectiveStep');
+export function ObjectiveStep({
+	formData,
+	updateFormData,
+}: ObjectiveStepProps) {
+	const t = useTranslations('petition.form.objectiveStep');
+	const locale = useLocale();
 
-    return (
+	const [debouncedObjective] = useDebounce(formData.objective, 300);
+
+	const suggestionPayload = {
+		inputGoal: debouncedObjective,
+		category: formData.category ?? '',
+		responseLanguage: locale.toUpperCase() as 'FR' | 'EN' | 'ES',
+		title: formData.title || '', // Assuming title is part of formData
+	} as ObjectiveSuggestionPayload;
+
+	const {
+		data: suggestionsData,
+		isLoading: isLoadingSuggestions,
+		error: suggestionsError,
+	} = useGetObjectiveSuggestions(suggestionPayload, {
+		enabled: Boolean(debouncedObjective.length >= 10),
+	});
+
+	const suggestions = suggestionsData?.suggestions || [];
+
+	return (
 		<div className="space-y-6">
 			<h2 className="text-2xl font-bold">{t('title')}</h2>
 
@@ -56,7 +90,38 @@ export function ObjectiveStep({ formData, updateFormData }: ObjectiveStepProps) 
 							{t('suggestions')}
 						</CardTitle>
 						<CardDescription className="text-sm text-gray-600">
-							{t('suggestionsEmpty')}
+							{isLoadingSuggestions ? (
+								<div className="space-y-3 mt-4">
+									<Skeleton className="h-4 w-full" />
+									<Skeleton className="h-4 w-4/5" />
+									<Skeleton className="h-4 w-3/4" />
+								</div>
+							) : suggestionsError ? (
+								<div className="mt-4 text-red-600">
+									{t('suggestionsError')}
+								</div>
+							) : suggestions.length > 0 ? (
+								<div className="space-y-2 mt-4">
+									{suggestions.map((suggestion, index) => (
+										<button
+											key={index}
+											type="button"
+											className="block w-full text-left p-3 rounded-md border border-orange-200 bg-white hover:bg-orange-50 transition-colors text-gray-700"
+											onClick={() =>
+												updateFormData({
+													objective: suggestion,
+												})
+											}
+										>
+											{suggestion}
+										</button>
+									))}
+								</div>
+							) : debouncedObjective.length >= 10 ? (
+								t('suggestionsEmpty')
+							) : (
+								t('suggestionsPrompt')
+							)}
 						</CardDescription>
 					</CardHeader>
 				</Card>
@@ -78,11 +143,13 @@ export function ObjectiveStep({ formData, updateFormData }: ObjectiveStepProps) 
 }
 
 // Add validation function for objective step
-export function validateObjectiveStep(formData: Pick<PetitionData, 'objective' | 'destination'>): boolean {
-    return !!(
-        formData.destination && 
-        formData.destination.trim().length > 0 &&
-        formData.objective && 
-        formData.objective.trim().length > 0
-    );
+export function validateObjectiveStep(
+	formData: Pick<PetitionData, 'objective' | 'destination'>
+): boolean {
+	return !!(
+		formData.destination &&
+		formData.destination.trim().length > 0 &&
+		formData.objective &&
+		formData.objective.trim().length > 0
+	);
 }

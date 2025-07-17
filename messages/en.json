@@ -247,7 +247,9 @@
                 "description": "Describe the goal you want to achieve: a law change, a concrete action, a position, etc. Be concise, convincing, and inspire others to join your cause.",
                 "objectivePlaceholder": "Why are you launching this petition?",
                 "suggestions": "🔥 Suggestions",
-                "suggestionsEmpty": "Please write a objective first",
+                "suggestionsEmpty": "No suggestions available for your current input",
+                "suggestionsPrompt": "Start writing your objective to get suggestions",
+                "suggestionsError": "Failed to load suggestions. Please try again.",
                 "advice": "⚠️ Advice",
                 "adviceText": "A clear and motivating objective gives meaning to your petition and increases your chances of mobilization.",
                 "aiUsage": "You have reached {percentage}% of your planned AI assistance usage"
