@@ -497,10 +497,10 @@
             },
             "homepageFeatured": {
                 "title": "Destacada en la página principal",
-                "description": "Tu petición se destaca en la página principal durante 24h.",
+                "description": "Tu petición se destaca en la página principal",
                 "features": [
                     "Visualización en la página principal",
-                    "Máxima visibilidad durante 24h",
+                    "Máxima visibilidad",
                     "Atrae nuevos firmantes"
                 ]
             },

@@ -497,10 +497,10 @@
             },
             "homepageFeatured": {
                 "title": "À la une sur la page d'accueil",
-                "description": "Votre pétition est mise en avant sur la page d'accueil pendant 24h.",
+                "description": "Votre pétition est mise en avant sur la page d'accueil",
                 "features": [
                     "Affichage sur la page d'accueil",
-                    "Visibilité maximale pendant 24h",
+                    "Visibilité maximale",
                     "Attirez de nouveaux signataires"
                 ]
             },

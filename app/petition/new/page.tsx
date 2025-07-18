@@ -42,9 +42,8 @@ import {
 	PublishStep,
 	validatePublishStep,
 } from '@/components/petition/form/steps/publish-step';
-import {
-	petitionLocalStorage,
-} from '@/lib/local-storage';
+import { petitionLocalStorage } from '@/lib/local-storage';
+import { imageIndexedDB } from '@/lib/indexed-db';
 
 type Step =
 	| 'title'
@@ -62,6 +61,7 @@ export type PetitionFormData = {
 	destination: string;
 	mediaType: 'PICTURE' | 'VIDEO_YOUTUBE';
 	picture: File | null;
+	pictureId: string | null; // Optional ID for IndexedDB
 	currentStep?: Step;
 	videoYoutubeUrl?: string;
 	signatureGoal: number;
@@ -84,59 +84,98 @@ export default function NewPetitionPage() {
 		mediaType: 'PICTURE',
 		signatureGoal: 1000,
 		picture: null,
+		pictureId: null, // Initialize with null
 	});
 	const [hasLoadedFromStorage, setHasLoadedFromStorage] = useState(false);
 	const [showDraftRestored, setShowDraftRestored] = useState(false);
 
 	// Load form data from localStorage on component mount
 	useEffect(() => {
-		const savedData = petitionLocalStorage.load();
-		if (savedData) {
-			const restoredFormData: PetitionFormData = {
-				category: savedData.category || '',
-				title: savedData.title || '',
-				objective: savedData.objective || '',
-				content: savedData.content || '',
-				destination: savedData.destination || '',
-				mediaType: savedData.mediaType || 'PICTURE',
-				videoYoutubeUrl: savedData.videoYoutubeUrl,
-				signatureGoal: savedData.signatureGoal || 1000,
-				publishNow: savedData.publishNow,
-				scheduledDate: savedData.scheduledDate,
-				scheduledTime: savedData.scheduledTime,
-				picture: savedData.picture || null,
-			};
-			
-			setFormData(restoredFormData);
+		const loadFormData = async () => {
+			const savedData = petitionLocalStorage.load();
+			if (savedData) {
+				// Restore the picture file from IndexedDB if we have an ID
+				let pictureFile = null;
 
-			// Restore current step if available
-			if (
-				savedData.currentStep &&
-				steps.some((step) => step.id === savedData.currentStep)
-			) {
-				setCurrentStep(savedData.currentStep as Step);
+				if (savedData.pictureId) {
+					try {
+						pictureFile = await imageIndexedDB.getImage(
+							savedData.pictureId
+						);
+					} catch (error) {
+						console.error(
+							'Failed to restore image from IndexedDB:',
+							error
+						);
+					}
+				}
+
+				const restoredFormData: PetitionFormData = {
+					category: savedData.category || '',
+					title: savedData.title || '',
+					objective: savedData.objective || '',
+					content: savedData.content || '',
+					destination: savedData.destination || '',
+					mediaType: savedData.mediaType || 'PICTURE',
+					videoYoutubeUrl: savedData.videoYoutubeUrl,
+					signatureGoal: savedData.signatureGoal || 1000,
+					publishNow: savedData.publishNow,
+					scheduledDate: savedData.scheduledDate,
+					scheduledTime: savedData.scheduledTime,
+					picture: pictureFile,
+					pictureId: savedData.pictureId || null, // Restore the ID
+				};
+
+				setFormData(restoredFormData);
+
+				// Restore current step if available
+				if (
+					savedData.currentStep &&
+					steps.some((step) => step.id === savedData.currentStep)
+				) {
+					setCurrentStep(savedData.currentStep as Step);
+				}
+
+				setShowDraftRestored(true);
+
+				// Hide the notification after 10 seconds
+				setTimeout(() => setShowDraftRestored(false), 10 * 1000);
 			}
+			setHasLoadedFromStorage(true);
+		};
 
-			setShowDraftRestored(true);
-
-			// Hide the notification after 5 seconds
-			setTimeout(() => setShowDraftRestored(false), 5000);
-		}
-		setHasLoadedFromStorage(true);
+		loadFormData();
 	}, []);
 
 	// Save form data to localStorage whenever formData changes (but only after initial load)
 	useEffect(() => {
 		if (hasLoadedFromStorage) {
 			const saveData = async () => {
+				// Save form data without the File object
 				const dataToSave: PetitionFormData = {
 					...formData,
 					currentStep,
 				};
 
+				await imageIndexedDB.clearAllImages(); // Clear previous images
+
+				if (formData.picture && formData.picture instanceof File) {
+					try {
+						const pictureId = await imageIndexedDB.storeImage(
+							formData.picture
+						);
+						dataToSave.pictureId = pictureId; // Update the ID in the data to save
+					} catch (error) {
+						console.error(
+							'Failed to store image in IndexedDB:',
+							error
+						);
+					}
+				}
+
 				petitionLocalStorage.save(dataToSave);
 			};
-			
+
 			saveData();
 		}
 	}, [formData, currentStep, hasLoadedFromStorage]);
@@ -219,6 +258,7 @@ export default function NewPetitionPage() {
 
 	const handleClearDraft = () => {
 		petitionLocalStorage.clear();
+		imageIndexedDB.clearAllImages();
 		setFormData({
 			category: '',
 			title: '',
@@ -228,6 +268,7 @@ export default function NewPetitionPage() {
 			mediaType: 'PICTURE',
 			signatureGoal: 1000,
 			picture: null,
+			pictureId: null,
 		});
 		setCurrentStep('title');
 		setShowDraftRestored(false);
@@ -280,9 +321,6 @@ export default function NewPetitionPage() {
 					<MediaStep
 						formData={formData}
 						updateFormData={updateFormData}
-						onFileUpdate={(file: File | null) => {
-							updateFormData({ picture: file });
-						}}
 					/>
 				);
 			case 'signatures':

@@ -497,10 +497,10 @@
             },
             "homepageFeatured": {
                 "title": "Featured on homepage",
-                "description": "Your petition is featured on the homepage for 24h.",
+                "description": "Your petition is featured on the homepage.",
                 "features": [
                     "Homepage display",
-                    "Maximum visibility for 24h",
+                    "Maximum visibility",
                     "Attract new signers"
                 ]
             },

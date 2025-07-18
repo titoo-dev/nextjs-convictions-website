@@ -4,17 +4,18 @@ import { useState, useRef } from 'react';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 
-type ImageUploadProps = {
-	pictureUrl?: string;
-	onImageUpdate: (url: string, file: File) => void;
-	onImageRemove: () => void;
+type PetitionData = {
+	mediaType: 'PICTURE' | 'VIDEO_YOUTUBE';
+	picture: File | null;
+	videoYoutubeUrl?: string;
 };
 
-export function ImageUpload({
-	pictureUrl,
-	onImageUpdate,
-	onImageRemove,
-}: ImageUploadProps) {
+type ImageUploadProps = {
+	pictureUrl?: string;
+	updateFormData: (updates: Partial<PetitionData>) => void;
+};
+
+export function ImageUpload({ pictureUrl, updateFormData }: ImageUploadProps) {
 	const t = useTranslations('petition.form.mediaStep');
 	const [dragActive, setDragActive] = useState(false);
 	const [previewUrl, setPreviewUrl] = useState<string | null>(
@@ -27,7 +28,7 @@ export function ImageUpload({
 
 		const url = URL.createObjectURL(file);
 		setPreviewUrl(url);
-		onImageUpdate(url, file);
+		updateFormData({ picture: file });
 	};
 
 	const handleDrag = (e: React.DragEvent) => {
@@ -55,7 +56,7 @@ export function ImageUpload({
 			URL.revokeObjectURL(previewUrl);
 		}
 		setPreviewUrl(null);
-		onImageRemove();
+		updateFormData({ picture: null });
 		if (fileInputRef.current) {
 			fileInputRef.current.value = '';
 		}

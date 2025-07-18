@@ -10,12 +10,12 @@ type PetitionData = {
 	mediaType: 'PICTURE' | 'VIDEO_YOUTUBE';
 	picture: File | null;
 	videoYoutubeUrl?: string;
+	pictureId: string | null;
 };
 
 type MediaStepProps = {
 	formData: PetitionData;
 	updateFormData: (updates: Partial<PetitionData>) => void;
-	onFileUpdate?: (file: File) => void;
 };
 
 // Main MediaStep Component
@@ -28,23 +28,11 @@ export function MediaStep({ formData, updateFormData }: MediaStepProps) {
 			updateFormData({
 				mediaType,
 				picture: null,
-				videoYoutubeUrl: undefined,
+				pictureId: null,
 			});
 		} else {
-			updateFormData({ mediaType, picture: null });
+			updateFormData({ mediaType, videoYoutubeUrl: undefined });
 		}
-	};
-
-	const handleImageUpdate = (url: string, file: File) => {
-		updateFormData({
-			picture: file,
-		});
-	};
-
-	const handleImageRemove = () => {
-		updateFormData({
-			picture: null,
-		});
 	};
 
 	const handleYouTubeUrlChange = (url: string) => {
@@ -68,10 +56,12 @@ export function MediaStep({ formData, updateFormData }: MediaStepProps) {
 			{formData.mediaType === 'PICTURE' && (
 				<>
 					<ImageUpload
-						pictureUrl={formData.picture ? URL.createObjectURL(formData.picture) : undefined}
-						onImageUpdate={handleImageUpdate}
-						onImageRemove={handleImageRemove}
-						initialFile={formData.picture}
+						pictureUrl={
+							formData.picture
+								? URL.createObjectURL(formData.picture)
+								: undefined
+						}
+						updateFormData={updateFormData}
 					/>
 				</>
 			)}

@@ -17,12 +17,11 @@ import {
 	PopoverTrigger,
 } from '@/components/ui/popover';
 import { Calendar as CalendarIcon, Clock, Info } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { format } from 'date-fns';
 import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
-import { base64ToObjectUrl } from '@/lib/local-storage';
 
 type PetitionData = {
 	category: string;
@@ -31,13 +30,12 @@ type PetitionData = {
 	content: string;
 	destination: string;
 	mediaType: 'PICTURE' | 'VIDEO_YOUTUBE';
-	pictureUrl?: string;
+	picture: File | null;
 	videoYoutubeUrl?: string;
 	signatureGoal: number;
 	publishNow?: boolean;
 	scheduledDate?: string;
 	scheduledTime?: string;
-	pictureFileData?: string; // Add this line
 };
 
 type PublishStepProps = {
@@ -49,54 +47,15 @@ export function PublishStep({ formData, updateFormData }: PublishStepProps) {
 	const t = useTranslations('petition.form.publishStep');
 	const [publishNow, setPublishNow] = useState(formData.publishNow ?? true);
 	const [isCalendarOpen, setIsCalendarOpen] = useState(false);
-	const [displayImageUrl, setDisplayImageUrl] = useState<string | undefined>(
-		undefined
-	);
 
-	// Create display URL for image preview
-	useEffect(() => {
-		let url: string | undefined = undefined;
+	console.log('PublishStep formData:', formData);
 
-		// First check if we have base64 data from local storage
-		if (formData.pictureFileData) {
-			try {
-				url = base64ToObjectUrl(formData.pictureFileData);
-			} catch (error) {
-				console.error('Error converting base64 to object URL:', error);
-			}
+	const imagePreviewUrl = useMemo(() => {
+		if (formData.picture) {
+			return URL.createObjectURL(formData.picture);
 		}
-		// Fallback to pictureUrl if no base64 data
-		else if (formData.pictureUrl) {
-			if (
-				formData.pictureUrl.startsWith('data:image') ||
-				formData.pictureUrl.startsWith('blob:')
-			) {
-				url = formData.pictureUrl;
-			} else if (/^[A-Za-z0-9+/=]+$/.test(formData.pictureUrl)) {
-				// Raw base64 string
-				try {
-					url = base64ToObjectUrl(formData.pictureUrl);
-				} catch (error) {
-					console.error(
-						'Error converting base64 to object URL:',
-						error
-					);
-				}
-			} else {
-				// Regular URL
-				url = formData.pictureUrl;
-			}
-		}
-
-		setDisplayImageUrl(url);
-
-		// Cleanup function
-		return () => {
-			if (url && url.startsWith('blob:')) {
-				URL.revokeObjectURL(url);
-			}
-		};
-	}, [formData.pictureFileData, formData.pictureUrl]);
+		return undefined;
+	}, [formData.picture]);
 
 	const handlePublishOptionChange = (isNow: boolean) => {
 		setPublishNow(isNow);
@@ -243,10 +202,10 @@ export function PublishStep({ formData, updateFormData }: PublishStepProps) {
 								{formData.category || t('summary.notSpecified')}
 							</CardDescription>
 						</div>
-						{displayImageUrl && (
+						{imagePreviewUrl && (
 							<div className="rounded-lg border overflow-hidden relative w-full h-48">
 								<Image
-									src={displayImageUrl}
+									src={imagePreviewUrl}
 									alt="Petition image preview"
 									fill
 									className="object-cover"
@@ -256,7 +215,6 @@ export function PublishStep({ formData, updateFormData }: PublishStepProps) {
 										console.error(
 											'Failed to load petition image preview'
 										);
-										setDisplayImageUrl(undefined);
 									}}
 								/>
 							</div>
