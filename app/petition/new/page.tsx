@@ -46,8 +46,6 @@ import { petitionLocalStorage } from '@/lib/local-storage';
 import { imageIndexedDB } from '@/lib/indexed-db';
 import { createPetition } from '@/actions/create-petition';
 import { toast } from 'sonner';
-import { redirect } from 'next/navigation';
-import { useRouter } from 'next/router';
 
 type Step =
 	| 'title'
