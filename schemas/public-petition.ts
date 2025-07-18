@@ -31,7 +31,7 @@ const PublicPetitionSchema = z.object({
 	objective: z.string(),
 	destination: z.string().nullable(),
 	mediaType: z.enum(['PICTURE', 'VIDEO_YOUTUBE']),
-	videoYoutubeUrl: z.string(),
+	videoYoutubeUrl: z.string().nullable(),
 	signatureGoal: z.number(),
 	publishedAt: z.string(),
 	isPublished: z.boolean(),

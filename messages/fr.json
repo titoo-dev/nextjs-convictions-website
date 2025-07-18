@@ -224,7 +224,12 @@
                 "next": "Suivant",
                 "publishPetition": "Publier la pétition",
                 "draftRestored": "Votre brouillon a été restauré d'une session précédente.",
-                "startFresh": "Recommencer"
+                "startFresh": "Recommencer",
+                "publishing": "Publication...",
+                "publishSuccess": "Votre pétition a été publiée avec succès !",
+                "publishError": "Échec de la publication de la pétition. Veuillez réessayer.",
+                "unexpectedError": "Une erreur inattendue s'est produite. Veuillez réessayer.",
+                "authRequired": "Vous devez être connecté pour publier une pétition."
             },
             "steps": {
                 "title": "Titre",

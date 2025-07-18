@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useTranslations } from 'next-intl';
+import { useState, useEffect, useTransition } from 'react';
+import { useLocale, useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -44,6 +44,10 @@ import {
 } from '@/components/petition/form/steps/publish-step';
 import { petitionLocalStorage } from '@/lib/local-storage';
 import { imageIndexedDB } from '@/lib/indexed-db';
+import { createPetition } from '@/actions/create-petition';
+import { toast } from 'sonner';
+import { redirect } from 'next/navigation';
+import { useRouter } from 'next/router';
 
 type Step =
 	| 'title'
@@ -73,6 +77,8 @@ export type PetitionFormData = {
 export default function NewPetitionPage() {
 	const tPage = useTranslations('petition.form.page');
 	const tSteps = useTranslations('petition.form.steps');
+	const locale = useLocale().toUpperCase();
+	const [isPending, startTransition] = useTransition();
 
 	const [currentStep, setCurrentStep] = useState<Step>('title');
 	const [formData, setFormData] = useState<PetitionFormData>({
@@ -235,25 +241,85 @@ export default function NewPetitionPage() {
 		setFormData((prev) => ({ ...prev, ...updates }));
 	};
 
-	const handlePublish = () => {
-		// const dataToSend = {
-		// 	category: formData.category,
-		// 	title: formData.title,
-		// 	objective: formData.objective,
-		// 	destination: formData.destination,
-		// 	content: formData.content,
-		// 	languageOrigin: local.toUpperCase(),
-		// 	creationStep: 6,
-		// 	mediaType: formData.mediaType,
-		// 	videoYoutubeUrl: formData.videoYoutubeUrl,
-		// 	pictureId: '',
-		// 	signatureGoal: formData.signatureGoal,
-		// 	publishedAt: new Date().toISOString(),
-		// 	isPublished: true,
-		// };
+	const mapCategoryToAPI = (category: string) => {
+		const categoryMap: Record<string, string> = {
+			womenRights: 'WOMEN_RIGHTS',
+			menRights: 'MEN_RIGHTS',
+			culture: 'CULTURE',
+			religion: 'RELIGION',
+			education: 'EDUCATION',
+			environment: 'ENVIRONMENT',
+			racism: 'RACISM',
+			politics: 'POLITICS',
+			handicap: 'HANDICAP',
+			health: 'HEALTH',
+			transport: 'TRANSPORT',
+			immigration: 'IMMIGRATION',
+			justice: 'JUSTICE',
+			animals: 'ANIMALS',
+		};
+		return categoryMap[category] || 'CULTURE';
+	};
 
-		// Clear the draft from localStorage after successful publish
-		petitionLocalStorage.clear();
+	const handlePublish = () => {
+		const dataToSend = {
+			category: mapCategoryToAPI(formData.category),
+			title: formData.title,
+			objective: formData.objective,
+			destination: formData.destination,
+			content: formData.content,
+			languageOrigin: locale,
+			creationStep: 6,
+			mediaType: formData.mediaType,
+			videoYoutubeUrl: formData.videoYoutubeUrl ?? '',
+			pictureId: '',
+			signatureGoal: formData.signatureGoal,
+			publishedAt: new Date().toISOString(),
+			isPublished: true,
+		};
+
+		startTransition(async () => {
+			try {
+				// Show loading toast
+				const loadingToast = toast.loading(tPage('publishing'));
+
+				const result = await createPetition({
+					data: dataToSend,
+					picture: formData.picture,
+				});
+
+				// Dismiss loading toast
+				toast.dismiss(loadingToast);
+
+				if (!result) {
+					// Handle no access token case
+					toast.error(tPage('authRequired'));
+					return;
+				}
+
+				if (result.success) {
+					// Clear the draft from localStorage after successful publish
+					petitionLocalStorage.clear();
+					await imageIndexedDB.clearAllImages();
+
+					// Show success toast
+					toast.success(tPage('publishSuccess'));
+
+					// Redirect to petition page or show success message
+					console.log('Petition created successfully:', result.data);
+				} else {
+					// Handle error
+					toast.error(result.error || tPage('publishError'));
+				}
+			} catch (error) {
+				console.error(
+					'Unexpected error during petition creation:',
+					error
+				);
+				const { toast } = await import('sonner');
+				toast.error(tPage('unexpectedError'));
+			}
+		});
 	};
 
 	const handleClearDraft = () => {
@@ -401,7 +467,7 @@ export default function NewPetitionPage() {
 					<Button
 						variant="outline"
 						onClick={handlePrevious}
-						disabled={currentStepIndex === 0}
+						disabled={currentStepIndex === 0 || isPending}
 						className="flex items-center gap-2"
 					>
 						{tPage('previous')}
@@ -413,12 +479,19 @@ export default function NewPetitionPage() {
 								? handlePublish
 								: handleNext
 						}
-						disabled={!isCurrentStepValid()}
+						disabled={!isCurrentStepValid() || isPending}
 						className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed"
 					>
-						{currentStep === 'publish'
-							? tPage('publishPetition')
-							: tPage('next')}
+						{isPending && currentStep === 'publish' ? (
+							<>
+								<div className="w-4 h-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+								{tPage('publishing')}
+							</>
+						) : currentStep === 'publish' ? (
+							tPage('publishPetition')
+						) : (
+							tPage('next')
+						)}
 					</Button>
 				</div>
 			</div>

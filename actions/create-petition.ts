@@ -1,9 +1,14 @@
 'use server';
-import { createPetitionRequestSchema } from '@/schemas/create-petition-request';
+import { getAccessToken } from '@/lib/cookies-storage';
+import {
+	CreatePetitionRequest,
+	createPetitionRequestSchema,
+} from '@/schemas/create-petition-request';
 import {
 	createPetitionResponseSchema,
 	type CreatePetitionResponse,
 } from '@/schemas/create-petition-response';
+import { redirect } from 'next/navigation';
 
 type ActionResult = {
 	success: boolean;
@@ -11,44 +16,24 @@ type ActionResult = {
 	error?: string;
 };
 
+type CreatePetitionParams = {
+	data: CreatePetitionRequest;
+	picture?: File | null;
+};
+
 export async function createPetition(
-	formData: FormData
-): Promise<ActionResult> {
+	params: CreatePetitionParams
+): Promise<ActionResult | null> {
 	try {
-		// Extract form data
-		const category = formData.get('category') as string;
-		const title = formData.get('title') as string;
-		const objective = formData.get('objective') as string;
-		const destination = formData.get('destination') as string;
-		const content = formData.get('content') as string;
-		const languageOrigin = formData.get('languageOrigin') as string;
-		const creationStep = Number(formData.get('creationStep'));
-		const mediaType = formData.get('mediaType') as string;
-		const videoYoutubeUrl = formData.get('videoYoutubeUrl') as string;
-		const pictureId = formData.get('pictureId') as string;
-		const picture = formData.get('picture') as File;
-		const signatureGoal = Number(formData.get('signatureGoal'));
-		const publishedAt = formData.get('publishedAt') as string;
-		const isPublished = formData.get('isPublished') === 'true';
+		const accessToken = await getAccessToken();
+
+		if (!accessToken) {
+			return null;
+		}
 
 		// Validate form data (excluding file for initial validation)
-		const validatedData = createPetitionRequestSchema.parse({
-			category,
-			title,
-			objective,
-			destination,
-			content,
-			languageOrigin,
-			creationStep,
-			mediaType: mediaType || undefined,
-			videoYoutubeUrl: videoYoutubeUrl || undefined,
-			pictureId: pictureId || undefined,
-			signatureGoal,
-			publishedAt: publishedAt || undefined,
-			isPublished,
-		});
+		const validatedData = createPetitionRequestSchema.parse(params.data);
 
-		// Prepare multipart form data for API request
 		const apiFormData = new FormData();
 
 		// Append all validated fields
@@ -59,8 +44,8 @@ export async function createPetition(
 		});
 
 		// Append file if present
-		if (picture && picture.size > 0) {
-			apiFormData.append('picture', picture);
+		if (params.picture && params.picture.size > 0) {
+			apiFormData.append('picture', params.picture);
 		}
 
 		// Make API request
@@ -69,6 +54,10 @@ export async function createPetition(
 			{
 				method: 'POST',
 				body: apiFormData,
+				headers: {
+					Accept: 'application/json',
+					Authorization: `Bearer ${accessToken}`,
+				},
 			}
 		);
 

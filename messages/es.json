@@ -224,7 +224,12 @@
                 "next": "Siguiente",
                 "publishPetition": "Publicar Petición",
                 "draftRestored": "Tu borrador ha sido restaurado de una sesión anterior.",
-                "startFresh": "Empezar de Nuevo"
+                "startFresh": "Empezar de Nuevo",
+                "publishing": "Publicando...",
+                "publishSuccess": "¡Tu petición ha sido publicada exitosamente!",
+                "publishError": "Error al publicar la petición. Por favor, inténtalo de nuevo.",
+                "unexpectedError": "Ocurrió un error inesperado. Por favor, inténtalo de nuevo.",
+                "authRequired": "Debes iniciar sesión para publicar una petición."
             },
             "steps": {
                 "title": "Título",

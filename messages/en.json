@@ -218,7 +218,12 @@
                 "next": "Next",
                 "publishPetition": "Publish Petition",
                 "draftRestored": "Your draft has been restored from a previous session.",
-                "startFresh": "Start Fresh"
+                "startFresh": "Start Fresh",
+                "publishing": "Publishing...",
+                "publishSuccess": "Your petition has been published successfully!",
+                "publishError": "Failed to publish petition. Please try again.",
+                "unexpectedError": "An unexpected error occurred. Please try again.",
+                "authRequired": "You must be logged in to publish a petition."
             },
             "steps": {
                 "title": "Title",
