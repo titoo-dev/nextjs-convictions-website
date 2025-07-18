@@ -104,7 +104,7 @@ export async function generatePetitionContent(
 	params: GeneratePetitionContentParams
 ): Promise<void> {
 	const {
-		contentInput,
+		contentInput = '',
 		responseLanguage,
 		title,
 		goal,
@@ -118,7 +118,9 @@ export async function generatePetitionContent(
 
 	try {
 		const searchParams = new URLSearchParams({
-			contentInput: encodeURIComponent(contentInput),
+			contentInput: encodeURIComponent(
+				contentInput.length !== 0 ? contentInput : '<p></p>'
+			),
 			responseLanguage: encodeURIComponent(responseLanguage),
 			title: encodeURIComponent(title),
 			goal: encodeURIComponent(goal),
