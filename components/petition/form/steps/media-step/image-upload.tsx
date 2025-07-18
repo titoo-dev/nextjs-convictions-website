@@ -1,70 +1,39 @@
 import { Button } from '@/components/ui/button';
-import { Image as ImageIcon, Upload, XCircle } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { Image as ImageIcon, Upload, X } from 'lucide-react';
+import { useState, useRef } from 'react';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
-import { validateImageFile } from '@/lib/utils';
-import { FileInfo } from './file-info';
 
 type ImageUploadProps = {
 	pictureUrl?: string;
 	onImageUpdate: (url: string, file: File) => void;
 	onImageRemove: () => void;
-	initialFile: File | null;
 };
 
-export function ImageUpload({ pictureUrl, onImageUpdate, onImageRemove, initialFile }: ImageUploadProps) {
+export function ImageUpload({
+	pictureUrl,
+	onImageUpdate,
+	onImageRemove,
+}: ImageUploadProps) {
 	const t = useTranslations('petition.form.mediaStep');
 	const [dragActive, setDragActive] = useState(false);
-	const [imageValidation, setImageValidation] = useState<{
-		isValid: boolean;
-		error?: string;
-	} | null>(null);
-	const [isLoadingImage, setIsLoadingImage] = useState(false);
-	const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+	const [previewUrl, setPreviewUrl] = useState<string | null>(
+		pictureUrl || null
+	);
+	const fileInputRef = useRef<HTMLInputElement>(null);
 
-	// Compute displayUrl: prefer base64 if available, else fallback to pictureUrl
-	const [displayUrl, setDisplayUrl] = useState<string | undefined>(undefined);
+	const handleFile = (file: File) => {
+		if (!file.type.startsWith('image/')) return;
 
-	useEffect(() => {
-		const url = initialFile ? URL.createObjectURL(initialFile) : undefined;
-		setDisplayUrl(url);
-
-		// Validate preview after setting displayUrl
-		if (url) {
-			const img = new window.Image();
-			img.onload = () => setImageValidation({ isValid: true });
-			img.onerror = () => setImageValidation({
-				isValid: false,
-				error: 'Failed to load image preview',
-			});
-			img.src = url;
-		}
-
-		return () => {
-			if (url && url.startsWith('blob:')) {
-				URL.revokeObjectURL(url);
-			}
-		};
-	}, [initialFile, pictureUrl]);
-
-	// Clean up blob URLs on unmount
-	useEffect(() => {
-		return () => {
-			if (pictureUrl && pictureUrl.startsWith('blob:')) {
-				URL.revokeObjectURL(pictureUrl);
-			}
-		};
-	}, [pictureUrl]);
+		const url = URL.createObjectURL(file);
+		setPreviewUrl(url);
+		onImageUpdate(url, file);
+	};
 
 	const handleDrag = (e: React.DragEvent) => {
 		e.preventDefault();
 		e.stopPropagation();
-		if (e.type === 'dragenter' || e.type === 'dragover') {
-			setDragActive(true);
-		} else if (e.type === 'dragleave') {
-			setDragActive(false);
-		}
+		setDragActive(e.type === 'dragenter' || e.type === 'dragover');
 	};
 
 	const handleDrop = (e: React.DragEvent) => {
@@ -72,186 +41,91 @@ export function ImageUpload({ pictureUrl, onImageUpdate, onImageRemove, initialF
 		e.stopPropagation();
 		setDragActive(false);
 
-		const files = e.dataTransfer.files;
-		if (files && files[0]) {
-			handleFileUpload(files[0]);
-		}
+		const file = e.dataTransfer.files?.[0];
+		if (file) handleFile(file);
 	};
 
-	const handleFileUpload = (file: File) => {
-		const validation = validateImageFile(file);
-
-		if (!validation.isValid) {
-			setImageValidation(validation);
-			return;
-		}
-
-		// Clean up previous blob URL if it exists
-		if (pictureUrl && pictureUrl.startsWith('blob:')) {
-			URL.revokeObjectURL(pictureUrl);
-		}
-
-		setIsLoadingImage(true);
-		setImageValidation(null);
-
-		try {
-			// Create blob URL for preview
-			const localUrl = URL.createObjectURL(file);
-			
-			// Test if the blob URL works
-			const img = new window.Image();
-			img.onload = () => {
-				setIsLoadingImage(false);
-				setImageValidation({ isValid: true });
-				setUploadedFile(file);
-				onImageUpdate(localUrl, file);
-			};
-			img.onerror = () => {
-				setIsLoadingImage(false);
-				setImageValidation({
-					isValid: false,
-					error: t('errors.thumbnailLoadFailed'),
-				});
-				URL.revokeObjectURL(localUrl);
-			};
-			img.src = localUrl;
-		} catch (error) {
-			console.error('Error processing file upload:', error);
-			setIsLoadingImage(false);
-			setImageValidation({
-				isValid: false,
-				error: t('errors.processFailed'),
-			});
-		}
+	const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const file = e.target.files?.[0];
+		if (file) handleFile(file);
 	};
 
-	const handleFileSelect = () => {
-		const input = document.createElement('input');
-		input.type = 'file';
-		input.accept = 'image/*';
-		input.style.display = 'none';
-
-		const handleFileChange = (e: Event) => {
-			const target = e.target as HTMLInputElement;
-			const file = target.files?.[0];
-			if (file) {
-				handleFileUpload(file);
-			}
-			// Clean up
-			document.body.removeChild(input);
-		};
-
-		input.addEventListener('change', handleFileChange);
-		document.body.appendChild(input);
-		input.click();
-	};
-
-	const handleRemoveImage = () => {
-		// Clean up blob URL if it exists
-		if (pictureUrl && pictureUrl.startsWith('blob:')) {
-			URL.revokeObjectURL(pictureUrl);
+	const handleRemove = () => {
+		if (previewUrl?.startsWith('blob:')) {
+			URL.revokeObjectURL(previewUrl);
 		}
-
-		// Reset all image-related state
-		setUploadedFile(null);
-		setImageValidation(null);
-		setIsLoadingImage(false);
+		setPreviewUrl(null);
 		onImageRemove();
+		if (fileInputRef.current) {
+			fileInputRef.current.value = '';
+		}
 	};
-
-	const hasValidImage = displayUrl && imageValidation?.isValid;
 
 	return (
 		<div className="space-y-4">
-			{/* File Upload - Only show if no valid image is loaded */}
-			{!hasValidImage && (
+			{!previewUrl ? (
 				<div
-					className={`border-2 border-dashed rounded-lg p-8 text-center transition-all ${
+					className={`border-2 border-dashed rounded-lg p-8 text-center transition-all cursor-pointer ${
 						dragActive
-							? 'border-orange-400 bg-orange-50 scale-105'
+							? 'border-orange-400 bg-orange-50'
 							: 'border-gray-300 hover:border-gray-400 hover:bg-gray-50'
 					}`}
 					onDragEnter={handleDrag}
 					onDragLeave={handleDrag}
 					onDragOver={handleDrag}
 					onDrop={handleDrop}
+					onClick={() => fileInputRef.current?.click()}
 				>
-					<div className="flex flex-col items-center justify-center space-y-4">
+					<div className="flex flex-col items-center space-y-4">
 						<div className="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center">
 							<ImageIcon className="w-8 h-8 text-gray-400" />
 						</div>
-						<div className="flex flex-col items-center space-y-2 text-center">
+						<div className="space-y-2 flex flex-col items-center">
 							<Button
 								type="button"
 								variant="outline"
-								className="flex items-center gap-2 hover:bg-orange-50 hover:border-orange-300"
-								onClick={handleFileSelect}
-								disabled={isLoadingImage}
+								className="flex items-center gap-2"
 							>
 								<Upload className="w-4 h-4" />
-								{isLoadingImage ? t('uploading') : t('selectFile')}
+								{t('selectFile')}
 							</Button>
-							<p className="text-sm text-gray-500">{t('dragAndDrop')}</p>
-							<p className="text-xs text-gray-400">{t('fileFormats')}</p>
+							<p className="text-sm text-gray-500">
+								{t('dragAndDrop')}
+							</p>
+							<p className="text-xs text-gray-400">
+								{t('fileFormats')}
+							</p>
 						</div>
 					</div>
-				</div>
-			)}
-
-			{/* Image Validation Error */}
-			{imageValidation && imageValidation.error && (
-				<div className="p-3 bg-red-50 border border-red-200 rounded-lg">
-					<p className="text-sm text-red-600 flex items-center gap-2">
-						<XCircle className="w-4 h-4" />
-						{imageValidation.error}
-					</p>
-				</div>
-			)}
-
-			{/* Loading State */}
-			{isLoadingImage && (
-				<div className="rounded-lg border p-8 text-center">
-					<div className="w-8 h-8 border-2 border-orange-500 border-t-transparent rounded-full animate-spin mx-auto mb-2" />
-					<p className="text-sm text-gray-600">{t('processing')}</p>
-				</div>
-			)}
-
-			{/* Image Preview */}
-			{hasValidImage && (
-				<div className="space-y-3">
-					<div className="rounded-lg border overflow-hidden relative w-full h-48 group">
-						{displayUrl ? (
-							<Image
-								src={displayUrl}
-								alt="Petition image preview"
-								fill
-								className="object-cover"
-								sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-								onError={() => {
-									console.error('Image preview failed to load:', displayUrl);
-									setImageValidation({
-										isValid: false,
-										error: t('errors.thumbnailLoadFailed'),
-									});
-								}}
-								onLoad={() => {
-									if (!imageValidation?.isValid) {
-										setImageValidation({ isValid: true });
-									}
-								}}
-								unoptimized={true}
-							/>
-						) : (
-							<div className="flex items-center justify-center h-full text-gray-400">
-								{t('errors.thumbnailLoadFailed')}
-							</div>
-						)}
-					</div>
-					<FileInfo 
-						file={uploadedFile} 
-						onRemove={handleRemoveImage}
-						type="image"
+					<input
+						ref={fileInputRef}
+						type="file"
+						accept="image/*"
+						onChange={handleFileSelect}
+						className="hidden"
 					/>
+				</div>
+			) : (
+				<div className="space-y-3">
+					<div className="relative rounded-lg border overflow-hidden">
+						<Image
+							src={previewUrl}
+							alt="Preview"
+							width={400}
+							height={200}
+							className="w-full h-48 object-cover"
+							unoptimized
+						/>
+						<Button
+							type="button"
+							variant="destructive"
+							size="sm"
+							className="absolute top-2 right-2"
+							onClick={handleRemove}
+						>
+							<X className="w-4 h-4" />
+						</Button>
+					</div>
 				</div>
 			)}
 		</div>
