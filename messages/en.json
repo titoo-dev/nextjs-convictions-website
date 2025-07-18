@@ -277,6 +277,8 @@
                     "numberedList": "Numbered List",
                     "quote": "Quote",
                     "aiAssistance": "AI Assistance",
+                    "generating": "Generating...",
+                    "stop": "Stop",
                     "headings": {
                         "normal": "Normal",
                         "heading1": "Heading 1",

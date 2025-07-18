@@ -82,13 +82,18 @@ export async function getObjectiveSuggestions(
 	}
 }
 
+type EventData = {
+	response?: string;
+	tokenNumber?: number;
+};
+
 type GeneratePetitionContentParams = {
 	contentInput: string;
 	responseLanguage: string;
 	title: string;
 	goal: string;
 	category: string;
-	onData?: (data: any) => void;
+	onData?: (data: EventData) => void;
 	onEvent?: (event: string) => void;
 	onId?: (id: string) => void;
 	onComplete?: () => void;
@@ -171,12 +176,8 @@ export async function generatePetitionContent(
 					onId?.(id);
 				} else if (line.startsWith('data:')) {
 					const data = line.substring(5).trim();
-					try {
-						const parsedData = JSON.parse(data);
-						onData?.(parsedData);
-					} catch (parseError) {
-						onData?.(data);
-					}
+					const parsedData: EventData = JSON.parse(data);
+					onData?.(parsedData);
 				}
 			}
 		}

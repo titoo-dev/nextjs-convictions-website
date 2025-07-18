@@ -36,16 +36,6 @@ type WritingStepProps = {
 	updateFormData: (updates: Partial<PetitionData>) => void;
 };
 
-type MessageEventModel = {
-	data: {
-		response?: string;
-		tokenNumber?: number;
-		error?: string;
-	};
-	type: string;
-	id: string;
-};
-
 export function WritingStep({ formData, updateFormData }: WritingStepProps) {
 	const t = useTranslations('petition.form.writingStep');
 	const [editorContent, setEditorContent] = useState(formData.content || '');
@@ -124,11 +114,6 @@ export function WritingStep({ formData, updateFormData }: WritingStepProps) {
 					// Update editor content progressively
 					setEditorContent(newContent);
 					updateFormData({ content: newContent });
-				}
-
-				if (data.error) {
-					setSseError(data.error);
-					setIsGenerating(false);
 				}
 			},
 			onComplete: () => {
@@ -363,7 +348,7 @@ export function WritingStep({ formData, updateFormData }: WritingStepProps) {
 			</div>
 
 			{/* AI Assistance Section */}
-			<div className="bg-gray-50 rounded-lg p-4 border">
+			<div className="bg-gray-50 rounded-lg p-4 border space-y-4">
 				<Button
 					variant="outline"
 					size="sm"

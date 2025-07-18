@@ -283,6 +283,8 @@
                     "numberedList": "Lista numerada",
                     "quote": "Cita",
                     "aiAssistance": "Asistencia IA",
+                    "generating": "Generando...",
+                    "stop": "Detener",
                     "headings": {
                         "normal": "Normal",
                         "heading1": "Encabezado 1",
