@@ -7,6 +7,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Sparkles, Loader2 } from 'lucide-react';
 import 'react-quill-new/dist/quill.snow.css';
+import { generatePetitionContent } from '@/lib/api';
 
 // Dynamically import ReactQuill to avoid SSR issues
 const ReactQuill = dynamic(() => import('react-quill-new'), {
@@ -26,7 +27,7 @@ const ReactQuill = dynamic(() => import('react-quill-new'), {
 type PetitionData = {
 	content: string;
 	title?: string;
-	goal?: string;
+	objective?: string;
 	category?: string;
 };
 
@@ -102,41 +103,22 @@ export function WritingStep({ formData, updateFormData }: WritingStepProps) {
 		title: string;
 		goal: string;
 		category: string;
+		responseLanguage: string;
 	}) => {
-		// Close existing connection if any
-		if (eventSourceRef.current) {
-			eventSourceRef.current.close();
-		}
-
 		setSseError(null);
 		setIsGenerating(true);
 		accumulatedContentRef.current = '';
 
-		const params = new URLSearchParams({
+		generatePetitionContent({
 			contentInput: data.contentInput,
-			responseLanguage: locale,
+			responseLanguage: data.responseLanguage,
 			title: data.title,
 			goal: data.goal,
 			category: data.category,
-		});
-
-		const url = `${
-			process.env.NEXT_PUBLIC_API_BASE_URL
-		}/api/openai/stream-reformulate?${params.toString()}`;
-		const eventSource = new EventSource(url);
-		eventSourceRef.current = eventSource;
-
-		eventSource.onmessage = (event) => {
-			try {
-				const messageEvent: MessageEventModel = {
-					data: JSON.parse(event.data),
-					type: event.type || '',
-					id: event.lastEventId || '',
-				};
-
-				if (messageEvent.data.response) {
+			onData: (data) => {
+				if (data.response) {
 					// Accumulate content progressively
-					accumulatedContentRef.current += messageEvent.data.response;
+					accumulatedContentRef.current += data.response;
 					const newContent = accumulatedContentRef.current;
 
 					// Update editor content progressively
@@ -144,37 +126,26 @@ export function WritingStep({ formData, updateFormData }: WritingStepProps) {
 					updateFormData({ content: newContent });
 				}
 
-				if (messageEvent.data.error) {
-					setSseError(messageEvent.data.error);
+				if (data.error) {
+					setSseError(data.error);
 					setIsGenerating(false);
-					eventSource.close();
 				}
-			} catch (error) {
-				console.error('Error parsing SSE message:', error);
-				setSseError('Error parsing response from AI service');
-			}
-		};
-
-		eventSource.onerror = (error) => {
-			console.error('SSE connection error:', error);
-			setSseError('Connection error with AI service');
-			setIsGenerating(false);
-			eventSource.close();
-		};
-
-		eventSource.onopen = () => {
-			console.log('SSE connection opened');
-		};
-
-		// Handle stream completion
-		eventSource.addEventListener('done', () => {
-			setIsGenerating(false);
-			eventSource.close();
+			},
+			onComplete: () => {
+				setIsGenerating(false);
+			},
+			onError: (error) => {
+				console.error('SSE connection error:', error);
+				setSseError(
+					error.message || 'Connection error with AI service'
+				);
+				setIsGenerating(false);
+			},
 		});
 	};
 
 	// Handle AI assistance button click
-	const handleAiAssistance = () => {
+	const handleAiAssistance = async () => {
 		if (isGenerating) {
 			// Stop current generation
 			if (eventSourceRef.current) {
@@ -184,14 +155,39 @@ export function WritingStep({ formData, updateFormData }: WritingStepProps) {
 			return;
 		}
 
+		const mapCategoryToAPI = (category: string) => {
+			const categoryMap: Record<string, string> = {
+				womenRights: 'WOMEN_RIGHTS',
+				menRights: 'MEN_RIGHTS',
+				culture: 'CULTURE',
+				religion: 'RELIGION',
+				education: 'EDUCATION',
+				environment: 'ENVIRONMENT',
+				racism: 'RACISM',
+				politics: 'POLITICS',
+				handicap: 'HANDICAP',
+				health: 'HEALTH',
+				transport: 'TRANSPORT',
+				immigration: 'IMMIGRATION',
+				justice: 'JUSTICE',
+				animals: 'ANIMALS',
+			};
+			return categoryMap[category] || 'CULTURE';
+		};
+
 		const data = {
 			contentInput: editorContent || '',
 			title: formData.title || '',
-			goal: formData.goal || '',
-			category: formData.category || '',
+			goal: formData.objective || '',
+			category: mapCategoryToAPI(formData.category ?? '') || '',
+			responseLanguage: locale,
 		};
 
+		console.log('Requesting AI assistance with data:', data);
+
 		subscribeSseStream(data);
+
+		await generatePetitionContent(data);
 	};
 
 	// Handle content changes
