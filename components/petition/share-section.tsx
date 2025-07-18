@@ -6,6 +6,8 @@ import { PublicPetition } from '@/schemas/public-petition';
 import { Mail, Share2 } from 'lucide-react';
 import { Facebook, Twitter, MessageCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
+import RenderWhen from '../render-when';
 
 type ShareSectionProps = {
 	petition: PublicPetition;
@@ -13,6 +15,7 @@ type ShareSectionProps = {
 
 export function ShareSection({ petition }: ShareSectionProps) {
 	const t = useTranslations('petition.share');
+	const tBoost = useTranslations('petition.signForm');
 
 	const handleShare = (platform: string) => {
 		const petitionUrl = encodeURIComponent(petition.urlPetition);
@@ -91,6 +94,21 @@ export function ShareSection({ petition }: ShareSectionProps) {
 						{t('email')}
 					</Button>
 				</div>
+
+				<RenderWhen condition={petition.isMine === true}>
+					<div className="flex gap-2 mt-6">
+						<Button
+							asChild
+							type="button"
+							variant="outline"
+							className="flex-1 border-orange-500 text-orange-500 hover:bg-orange-50 font-semibold py-3 sm:py-3 text-sm sm:text-base"
+						>
+							<Link href={`/boost-plan/${petition.id}`}>
+								{tBoost('boostButton')}
+							</Link>
+						</Button>
+					</div>
+				</RenderWhen>
 			</CardContent>
 		</Card>
 	);
