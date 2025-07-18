@@ -189,9 +189,11 @@ export function SignForm({ petition, currentUser }: SignFormProps) {
 								</Button>
 							</div>
 
-							<NotificationOptions
-								disabled={isSubmitting || isAlreadySigned}
-							/>
+							<RenderWhen condition={petition.isISign === false}>
+								<NotificationOptions
+									disabled={isSubmitting || isAlreadySigned}
+								/>
+							</RenderWhen>
 						</form>
 					</div>
 				</CardContent>
