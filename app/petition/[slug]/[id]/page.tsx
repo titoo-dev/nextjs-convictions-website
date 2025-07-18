@@ -70,10 +70,12 @@ export default async function PetitionPage(props: {
 						<RenderWhen condition={petition.usersSignedNumber > 0}>
 							<SignatureCounter petition={petition} />
 						</RenderWhen>
-						<SignForm
-							currentUser={currentUser}
-							petition={petition}
-						/>
+						<RenderWhen condition={petition.isMine === false}>
+							<SignForm
+								currentUser={currentUser}
+								petition={petition}
+							/>
+						</RenderWhen>
 						<ShareSection petition={petition} />
 					</div>
 				</div>

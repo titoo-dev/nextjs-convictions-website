@@ -144,7 +144,12 @@
             "titleWithCount": "Commentaires ({count})",
             "empty": "Aucun commentaire pour le moment. Soyez le premier à partager vos réflexions !",
             "description": "Lisez ce que les autres disent de cette pétition",
-            "yourComment": "Votre commentaire"
+            "yourComment": "Votre commentaire",
+            "deleteComment": "Supprimer le commentaire",
+            "deleteConfirmTitle": "Supprimer votre commentaire ?",
+            "deleteConfirmDescription": "Êtes-vous sûr de vouloir supprimer votre commentaire ? Cette action est irréversible.",
+            "cancel": "Annuler",
+            "delete": "Supprimer"
         },
         "author": {
             "reportPolicy": "Signaler la politique"

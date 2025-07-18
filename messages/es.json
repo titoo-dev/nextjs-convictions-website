@@ -144,7 +144,12 @@
             "titleWithCount": "Comentarios ({count})",
             "empty": "Aún no hay comentarios. ¡Sé el primero en compartir tus pensamientos!",
             "description": "Lee lo que otros dicen sobre esta petición",
-            "yourComment": "Tu comentario"
+            "yourComment": "Tu comentario",
+            "deleteComment": "Eliminar comentario",
+            "deleteConfirmTitle": "¿Eliminar tu comentario?",
+            "deleteConfirmDescription": "¿Estás seguro de que deseas eliminar tu comentario? Esta acción no se puede deshacer.",
+            "cancel": "Cancelar",
+            "delete": "Eliminar"
         },
         "author": {
             "reportPolicy": "Reportar política"
