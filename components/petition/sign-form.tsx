@@ -38,16 +38,6 @@ export function SignForm({ petition, currentUser }: SignFormProps) {
 	const formRef = useRef<HTMLFormElement>(null);
 	const locale = useLocale();
 
-	// Show toast if already signed on component mount
-	useEffect(() => {
-		if (petition.isISign) {
-			toast.success(t('successMessages.alreadySigned'), {
-				description: t('successMessages.alreadySignedDescription'),
-				duration: 4000,
-			});
-		}
-	}, [petition.isISign, t]);
-
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		console.log('Submitting petition sign form', petition);
 		e.preventDefault();

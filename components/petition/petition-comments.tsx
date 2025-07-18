@@ -110,7 +110,7 @@ export function PetitionComments({ petition }: PetitionCommentsProps) {
 					{petition.comments.map((comment) => {
 						const commentState = commentStates[comment.id];
 						const isLiked =
-							commentState?.isLiked ?? comment.isLiked;
+							comment.isLiked || commentState?.isLiked;
 						const likesNumber =
 							commentState?.likesNumber ?? comment.likesNumber;
 
