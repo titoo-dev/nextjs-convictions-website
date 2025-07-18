@@ -1,11 +1,11 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
-import { useTranslations } from 'next-intl';
+import { useState, useEffect, useMemo, useRef } from 'react';
+import { useLocale, useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
-import { Sparkles } from 'lucide-react';
+import { Sparkles, Loader2 } from 'lucide-react';
 import 'react-quill-new/dist/quill.snow.css';
 
 // Dynamically import ReactQuill to avoid SSR issues
@@ -25,6 +25,9 @@ const ReactQuill = dynamic(() => import('react-quill-new'), {
 
 type PetitionData = {
 	content: string;
+	title?: string;
+	goal?: string;
+	category?: string;
 };
 
 type WritingStepProps = {
@@ -32,9 +35,24 @@ type WritingStepProps = {
 	updateFormData: (updates: Partial<PetitionData>) => void;
 };
 
+type MessageEventModel = {
+	data: {
+		response?: string;
+		tokenNumber?: number;
+		error?: string;
+	};
+	type: string;
+	id: string;
+};
+
 export function WritingStep({ formData, updateFormData }: WritingStepProps) {
 	const t = useTranslations('petition.form.writingStep');
 	const [editorContent, setEditorContent] = useState(formData.content || '');
+	const [isGenerating, setIsGenerating] = useState(false);
+	const [sseError, setSseError] = useState<string | null>(null);
+	const eventSourceRef = useRef<EventSource | null>(null);
+	const accumulatedContentRef = useRef<string>('');
+	const locale = useLocale().toUpperCase();
 
 	// Custom toolbar configuration
 	const modules = useMemo(
@@ -78,11 +96,120 @@ export function WritingStep({ formData, updateFormData }: WritingStepProps) {
 		'align',
 	];
 
+	// SSE subscription function
+	const subscribeSseStream = (data: {
+		contentInput: string;
+		title: string;
+		goal: string;
+		category: string;
+	}) => {
+		// Close existing connection if any
+		if (eventSourceRef.current) {
+			eventSourceRef.current.close();
+		}
+
+		setSseError(null);
+		setIsGenerating(true);
+		accumulatedContentRef.current = '';
+
+		const params = new URLSearchParams({
+			contentInput: data.contentInput,
+			responseLanguage: locale,
+			title: data.title,
+			goal: data.goal,
+			category: data.category,
+		});
+
+		const url = `${
+			process.env.NEXT_PUBLIC_API_BASE_URL
+		}/api/openai/stream-reformulate?${params.toString()}`;
+		const eventSource = new EventSource(url);
+		eventSourceRef.current = eventSource;
+
+		eventSource.onmessage = (event) => {
+			try {
+				const messageEvent: MessageEventModel = {
+					data: JSON.parse(event.data),
+					type: event.type || '',
+					id: event.lastEventId || '',
+				};
+
+				if (messageEvent.data.response) {
+					// Accumulate content progressively
+					accumulatedContentRef.current += messageEvent.data.response;
+					const newContent = accumulatedContentRef.current;
+
+					// Update editor content progressively
+					setEditorContent(newContent);
+					updateFormData({ content: newContent });
+				}
+
+				if (messageEvent.data.error) {
+					setSseError(messageEvent.data.error);
+					setIsGenerating(false);
+					eventSource.close();
+				}
+			} catch (error) {
+				console.error('Error parsing SSE message:', error);
+				setSseError('Error parsing response from AI service');
+			}
+		};
+
+		eventSource.onerror = (error) => {
+			console.error('SSE connection error:', error);
+			setSseError('Connection error with AI service');
+			setIsGenerating(false);
+			eventSource.close();
+		};
+
+		eventSource.onopen = () => {
+			console.log('SSE connection opened');
+		};
+
+		// Handle stream completion
+		eventSource.addEventListener('done', () => {
+			setIsGenerating(false);
+			eventSource.close();
+		});
+	};
+
+	// Handle AI assistance button click
+	const handleAiAssistance = () => {
+		if (isGenerating) {
+			// Stop current generation
+			if (eventSourceRef.current) {
+				eventSourceRef.current.close();
+				setIsGenerating(false);
+			}
+			return;
+		}
+
+		const data = {
+			contentInput: editorContent || '',
+			title: formData.title || '',
+			goal: formData.goal || '',
+			category: formData.category || '',
+		};
+
+		subscribeSseStream(data);
+	};
+
 	// Handle content changes
 	const handleChange = (content: string) => {
-		setEditorContent(content);
-		updateFormData({ content });
+		if (!isGenerating) {
+			setEditorContent(content);
+			updateFormData({ content });
+		}
 	};
+
+	// Cleanup on unmount
+	useEffect(() => {
+		return () => {
+			if (eventSourceRef.current) {
+				eventSourceRef.current.close();
+			}
+		};
+	}, []);
 
 	useEffect(() => {
 		if (formData.content && !editorContent) {
@@ -235,6 +362,7 @@ export function WritingStep({ formData, updateFormData }: WritingStepProps) {
 					modules={modules}
 					formats={formats}
 					placeholder={t('defaultContent')}
+					readOnly={isGenerating}
 				/>
 			</div>
 
@@ -243,12 +371,48 @@ export function WritingStep({ formData, updateFormData }: WritingStepProps) {
 				<Button
 					variant="outline"
 					size="sm"
-					className="flex items-center gap-2 text-blue-600 border-blue-200 hover:bg-blue-50 transition-colors"
+					className="flex items-center gap-2 text-blue-600 border-blue-200 hover:bg-blue-50 transition-colors disabled:opacity-50"
+					onClick={handleAiAssistance}
+					disabled={isGenerating && !eventSourceRef.current}
 				>
-					<Sparkles className="h-4 w-4" />
-					{t('toolbar.aiAssistance')}
+					{isGenerating ? (
+						<>
+							<Loader2 className="h-4 w-4 animate-spin" />
+							{t('toolbar.generating')}
+						</>
+					) : (
+						<>
+							<Sparkles className="h-4 w-4" />
+							{t('toolbar.aiAssistance')}
+						</>
+					)}
 				</Button>
+
+				{isGenerating && (
+					<Button
+						variant="ghost"
+						size="sm"
+						className="ml-2 text-red-600 hover:bg-red-50"
+						onClick={() => {
+							if (eventSourceRef.current) {
+								eventSourceRef.current.close();
+								setIsGenerating(false);
+							}
+						}}
+					>
+						{t('toolbar.stop')}
+					</Button>
+				)}
 			</div>
+
+			{/* SSE Error Alert */}
+			{sseError && (
+				<Alert className="bg-red-50 border-red-200">
+					<AlertDescription className="text-red-700">
+						{sseError}
+					</AlertDescription>
+				</Alert>
+			)}
 
 			{/* AI Usage Warning */}
 			<Alert className="bg-orange-50 border-orange-200">
@@ -266,7 +430,9 @@ export function WritingStep({ formData, updateFormData }: WritingStepProps) {
 }
 
 // Add validation function for writing step
-export function validateWritingStep(formData: Pick<PetitionData, 'content'>): boolean {
+export function validateWritingStep(
+	formData: Pick<PetitionData, 'content'>
+): boolean {
 	if (!formData.content) return false;
 
 	// Remove HTML tags and check actual text content length
