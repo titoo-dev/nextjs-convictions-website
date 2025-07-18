@@ -15,6 +15,7 @@ import { User } from '@/schemas/user';
 import { SignPetitionResponse } from '@/schemas/sign-petition-response';
 import { SignPublicPetitionResponse } from '@/schemas/sign-public-petition-response';
 import { signPetition } from '@/actions/sign-petition';
+import RenderWhen from '../render-when';
 
 type SignFormProps = {
 	currentUser: User | null;
@@ -115,6 +116,10 @@ export function SignForm({ petition, currentUser }: SignFormProps) {
 	const isSubmitting = isLoading || isPending;
 	const isAlreadySigned = petition.isISign || success;
 
+	const signaturesLeft = Math.abs(
+		petition.signatureGoal - petition.usersSignedNumber
+	);
+
 	return (
 		<>
 			<Card className="shadow-none gap-0">
@@ -136,29 +141,49 @@ export function SignForm({ petition, currentUser }: SignFormProps) {
 								</div>
 							)}
 
-							<PetitionFormInputs
-								currentUser={currentUser}
-								disabled={isSubmitting || isAlreadySigned}
-							/>
+							<RenderWhen condition={petition.isISign === true}>
+								<div className="p-4 text-sm  bg-green-50 border border-green-200 rounded-md">
+									{t('thankYouMessage', { signaturesLeft })}
+								</div>
+							</RenderWhen>
 
-							<Button
-								type="submit"
-								disabled={isSubmitting || isAlreadySigned}
-								className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 sm:py-3 text-sm sm:text-base disabled:opacity-50"
-							>
-								{isSubmitting ? (
-									<div className="flex items-center justify-center">
-										<div className="animate-spin rounded-full h-3 w-3 sm:h-4 sm:w-4 border-2 border-white border-t-transparent mr-2"></div>
-										<span className="text-sm sm:text-base">
-											{t('signing')}
-										</span>
-									</div>
-								) : isAlreadySigned ? (
-									t('alreadySignedButton')
-								) : (
-									t('signButton')
-								)}
-							</Button>
+							<RenderWhen condition={petition.isISign === false}>
+								<PetitionFormInputs
+									currentUser={currentUser}
+									disabled={isSubmitting || isAlreadySigned}
+								/>
+							</RenderWhen>
+
+							<RenderWhen condition={petition.isISign === false}>
+								<Button
+									type="submit"
+									disabled={isSubmitting || isAlreadySigned}
+									className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 sm:py-3 text-sm sm:text-base disabled:opacity-50"
+								>
+									{isSubmitting ? (
+										<div className="flex items-center justify-center">
+											<div className="animate-spin rounded-full h-3 w-3 sm:h-4 sm:w-4 border-2 border-white border-t-transparent mr-2"></div>
+											<span className="text-sm sm:text-base">
+												{t('signing')}
+											</span>
+										</div>
+									) : isAlreadySigned ? (
+										t('alreadySignedButton')
+									) : (
+										t('signButton')
+									)}
+								</Button>
+							</RenderWhen>
+
+							<RenderWhen condition={petition.isISign}>
+								<Button
+									type="button"
+									className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 sm:py-3 text-sm sm:text-base disabled:opacity-50"
+									onClick={() => setShowSuccessDialog(true)}
+								>
+									{t('nextStepButton')}
+								</Button>
+							</RenderWhen>
 
 							<div className="flex gap-2">
 								<Button

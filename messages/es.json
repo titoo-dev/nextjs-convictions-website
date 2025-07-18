@@ -165,22 +165,24 @@
             "alreadySignedButton": "Ya firmado",
             "boostButton": "Impulsar petición",
             "signing": "Firmando...",
-            "notifications": {
-                "yes": "Sí, manténganme informado si esta petición tiene éxito, y díganme cómo puedo contribuir",
-                "no": "No, no quiero ser informado de esta petición o iniciativas futuras"
-            },
+            "nextStepButton": "Ir al siguiente paso",
             "successMessages": {
                 "alreadySigned": "¡Ya has firmado esta petición!",
                 "alreadySignedDescription": "Gracias por tu apoyo.",
                 "signedSuccessfully": "¡Petición firmada con éxito!",
                 "signedDescription": "Gracias por hacer oír tu voz."
             },
+            "notifications": {
+                "yes": "Sí, manténganme informado si esta petición tiene éxito, y díganme cómo puedo contribuir",
+                "no": "No, no quiero ser informado de esta petición o iniciativas futuras"
+            },
             "errors": {
                 "failedToSign": "Error al firmar la petición",
                 "tryAgain": "Por favor, inténtalo de nuevo.",
                 "unexpectedError": "Ocurrió un error inesperado",
                 "tryAgainLater": "Por favor, inténtalo más tarde."
-            }
+            },
+            "thankYouMessage": "¡Gracias! Gracias a ti, esta petición tiene una verdadera oportunidad de ser escuchada. Solo nos faltan {signaturesLeft} firmas para alcanzar el siguiente objetivo. ¿Puedes ayudarnos a lograrlo?"
         },
         "signatures": {
             "verified": "Firmas verificadas",

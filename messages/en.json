@@ -159,22 +159,24 @@
             "alreadySignedButton": "Already signed",
             "boostButton": "Boost petition",
             "signing": "Signing...",
-            "notifications": {
-                "yes": "Yes, keep me informed if this petition succeeds, and tell me how I can contribute",
-                "no": "No, I do not want to be informed of this petition or future initiatives"
-            },
+            "nextStepButton": "Go to the Next step",
             "successMessages": {
                 "alreadySigned": "You have already signed this petition!",
                 "alreadySignedDescription": "Thank you for your support.",
                 "signedSuccessfully": "Petition signed successfully!",
                 "signedDescription": "Thank you for making your voice heard."
             },
+            "notifications": {
+                "yes": "Yes, keep me informed if this petition succeeds, and tell me how I can contribute",
+                "no": "No, I do not want to be informed of this petition or future initiatives"
+            },
             "errors": {
                 "failedToSign": "Failed to sign petition",
                 "tryAgain": "Please try again.",
                 "unexpectedError": "An unexpected error occurred",
                 "tryAgainLater": "Please try again later."
-            }
+            },
+            "thankYouMessage": "Thank you! Thanks to you, this petition has a real chance of being heard. We are missing only {signaturesLeft} signatures to reach the next goal. Can you help us achieve it?"
         },
         "signatures": {
             "verified": "Verified signatures",

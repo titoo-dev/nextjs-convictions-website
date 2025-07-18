@@ -165,22 +165,24 @@
             "alreadySignedButton": "Déjà signé",
             "boostButton": "Booster cette pétition",
             "signing": "Signature en cours...",
-            "notifications": {
-                "yes": "Oui, tenez-moi informé si cette pétition réussit, et dites-moi comment je peux contribuer",
-                "no": "Non, je ne veux pas être informé de cette pétition ou d'initiatives futures"
-            },
+            "nextStepButton": "Passer à l'étape suivante",
             "successMessages": {
                 "alreadySigned": "Vous avez déjà signé cette pétition !",
                 "alreadySignedDescription": "Merci pour votre soutien.",
                 "signedSuccessfully": "Pétition signée avec succès !",
                 "signedDescription": "Merci d'avoir fait entendre votre voix."
             },
+            "notifications": {
+                "yes": "Oui, tenez-moi informé si cette pétition réussit, et dites-moi comment je peux contribuer",
+                "no": "Non, je ne veux pas être informé de cette pétition ou d'initiatives futures"
+            },
             "errors": {
                 "failedToSign": "Échec de la signature de la pétition",
                 "tryAgain": "Veuillez réessayer.",
                 "unexpectedError": "Une erreur inattendue s'est produite",
                 "tryAgainLater": "Veuillez réessayer plus tard."
-            }
+            },
+            "thankYouMessage": "Merci ! Grâce à vous, cette pétition a une vraie chance d'être entendue. Il ne manque plus que {signaturesLeft} signatures pour atteindre le prochain objectif. Pouvez-vous nous aider à l'atteindre ?"
         },
         "signatures": {
             "verified": "Signatures vérifiées",
