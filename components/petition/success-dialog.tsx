@@ -1,3 +1,4 @@
+import { createPublicDonation } from '@/actions/create-public-donation';
 import { Button } from '@/components/ui/button';
 import {
 	Dialog,
@@ -7,6 +8,8 @@ import {
 	DialogTitle,
 } from '@/components/ui/dialog';
 import { useTranslations } from 'next-intl';
+import { useState } from 'react';
+import { toast } from 'sonner';
 
 type SuccessDialogProps = {
 	open: boolean;
@@ -15,6 +18,35 @@ type SuccessDialogProps = {
 
 export function SuccessDialog({ open, onOpenChange }: SuccessDialogProps) {
 	const t = useTranslations('petition.success');
+	const [isLoading, setIsLoading] = useState(false);
+
+	const handleDonateClick = async () => {
+		setIsLoading(true);
+
+		try {
+			const formData = new FormData();
+			formData.set('amount', '7');
+
+			const result = await createPublicDonation(formData);
+
+			if (result.success && result.data) {
+				window.location.href = result.data.url;
+			} else {
+				toast.error('Erreur lors du traitement du don', {
+					description: result.error || 'Veuillez réessayer',
+					duration: 4000,
+				});
+			}
+		} catch (error) {
+			console.error('Unexpected error:', error);
+			toast.error("Une erreur inattendue s'est produite", {
+				description: 'Veuillez réessayer plus tard',
+				duration: 4000,
+			});
+		} finally {
+			setIsLoading(false);
+		}
+	};
 
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
@@ -49,9 +81,10 @@ export function SuccessDialog({ open, onOpenChange }: SuccessDialogProps) {
 					<div className="space-y-3">
 						<Button
 							className="w-full bg-orange-500 hover:bg-orange-600 text-white font-medium py-3"
-							onClick={() => onOpenChange(false)}
+							onClick={handleDonateClick}
+							disabled={isLoading}
 						>
-							{t('donateButton')}
+							{isLoading ? 'Traitement...' : t('donateButton')}
 						</Button>
 
 						<Button
