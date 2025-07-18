@@ -26,6 +26,8 @@ export default async function PetitionPage(props: {
 		language: locale.toUpperCase() as 'FR' | 'EN' | 'ES',
 	});
 
+	console.log('Fetched petition:', petition);
+
 	if (!petition) {
 		return (
 			<div className="min-h-screen bg-gray-50 flex items-center justify-center">

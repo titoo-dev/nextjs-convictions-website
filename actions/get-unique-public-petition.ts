@@ -1,5 +1,6 @@
 'use server';
 
+import { getAccessToken } from '@/lib/cookies-storage';
 import {
 	PublicPetition,
 	PublicPetitionSchema,
@@ -23,7 +24,15 @@ export async function getUniquePublicPetition(
 	params: GetUniquePetitionParams
 ): Promise<GetUniquePetitionResponse> {
 	try {
+		const accessToken = await getAccessToken();
+
 		const { id, language = 'EN' } = params;
+
+		let url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/petition/public/one/${id}/${language}`;
+
+		if (accessToken) {
+			url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/petition/one/${id}/${language}`;
+		}
 
 		if (!id) {
 			console.error('Petition ID is required');
@@ -31,16 +40,14 @@ export async function getUniquePublicPetition(
 		}
 
 		// Make API request
-		const response = await fetch(
-			`${process.env.NEXT_PUBLIC_API_BASE_URL}/petition/public/one/${id}/${language}`,
-			{
-				method: 'GET',
-				headers: {
-					'Content-Type': 'application/json',
-					Accept: 'application/json',
-				},
-			}
-		);
+		const response = await fetch(url, {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+				Accept: 'application/json',
+				Authorization: `Bearer ${accessToken}`,
+			},
+		});
 
 		const data = await response.json();
 
