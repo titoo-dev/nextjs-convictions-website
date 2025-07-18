@@ -199,7 +199,11 @@
             "description": "Le véritable moteur du changement, c'est notre action collective. Aidez cette pétition à atteindre plus de personnes engagées pour un monde meilleur.",
             "donateQuestion": "Voulez-vous contribuer 7€ pour renforcer sa visibilité dans les médias ?",
             "donateButton": "Oui, je veux donner 7€ pour aider la pétition à atteindre son objectif",
-            "shareButton": "Non, je préfère la partager"
+            "shareButton": "Non, je préfère la partager",
+            "share": {
+                "title": "Partagez avec vos amis",
+                "description": "Faites passer le mot ! Partagez cette pétition sur vos plateformes préférées pour l'aider à obtenir plus de soutien."
+            }
         },
         "signed": {
             "badge": "✓ Signé",

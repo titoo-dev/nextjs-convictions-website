@@ -7,6 +7,7 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from '@/components/ui/dialog';
+import { Facebook, Mail, MessageCircle, Share2, Twitter } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { toast } from 'sonner';
@@ -19,6 +20,7 @@ type SuccessDialogProps = {
 export function SuccessDialog({ open, onOpenChange }: SuccessDialogProps) {
 	const t = useTranslations('petition.success');
 	const [isLoading, setIsLoading] = useState(false);
+	const [shareDialogOpen, setShareDialogOpen] = useState(false);
 
 	const handleDonateClick = async () => {
 		setIsLoading(true);
@@ -48,55 +50,146 @@ export function SuccessDialog({ open, onOpenChange }: SuccessDialogProps) {
 		}
 	};
 
+	const handleShareClick = () => {
+		onOpenChange(false);
+		setShareDialogOpen(true);
+	};
+
+	const handleShare = (platform: string) => {
+		// Get current page URL for sharing
+		const currentUrl = encodeURIComponent(window.location.href);
+		const pageTitle = encodeURIComponent(document.title);
+
+		let shareUrl = '';
+
+		switch (platform) {
+			case 'facebook':
+				shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`;
+				break;
+			case 'twitter':
+				shareUrl = `https://x.com/intent/tweet?text=${currentUrl}`;
+				break;
+			case 'whatsapp':
+				shareUrl = `https://api.whatsapp.com/send?text=${currentUrl}`;
+				break;
+			case 'email':
+				shareUrl = `mailto:?subject=${pageTitle}&body=${currentUrl}`;
+				break;
+		}
+
+		if (shareUrl) {
+			window.open(shareUrl, '_blank', 'noopener,noreferrer');
+		}
+	};
+
 	return (
-		<Dialog open={open} onOpenChange={onOpenChange}>
-			<DialogContent className="max-w-md text-center">
-				<DialogHeader className="space-y-4">
-					<div className="mx-auto w-20 h-20 bg-orange-100 rounded-full flex items-center justify-center">
-						<div className="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center">
-							<svg
-								className="w-6 h-6 text-white"
-								fill="currentColor"
-								viewBox="0 0 20 20"
+		<>
+			<Dialog open={open} onOpenChange={onOpenChange}>
+				<DialogContent className="max-w-md text-center">
+					<DialogHeader className="space-y-4">
+						<div className="mx-auto w-20 h-20 bg-orange-100 rounded-full flex items-center justify-center">
+							<div className="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center">
+								<svg
+									className="w-6 h-6 text-white"
+									fill="currentColor"
+									viewBox="0 0 20 20"
+								>
+									<path
+										fillRule="evenodd"
+										d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+										clipRule="evenodd"
+									/>
+								</svg>
+							</div>
+						</div>
+						<DialogTitle className="text-xl font-semibold text-center">
+							{t('title')}
+						</DialogTitle>
+						<DialogDescription className="text-base text-muted-foreground text-center">
+							{t('description')}
+						</DialogDescription>
+					</DialogHeader>
+
+					<div className="space-y-4">
+						<p className="text-sm font-medium">
+							{t('donateQuestion')}
+						</p>
+
+						<div className="space-y-3">
+							<Button
+								className="w-full bg-orange-500 hover:bg-orange-600 text-white font-medium py-3"
+								onClick={handleDonateClick}
+								disabled={isLoading}
 							>
-								<path
-									fillRule="evenodd"
-									d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-									clipRule="evenodd"
-								/>
-							</svg>
+								{isLoading
+									? 'Traitement...'
+									: t('donateButton')}
+							</Button>
+
+							<Button
+								variant="ghost"
+								className="w-full text-gray-600 hover:text-gray-800"
+								onClick={handleShareClick}
+							>
+								{t('shareButton')}
+							</Button>
 						</div>
 					</div>
-					<DialogTitle className="text-xl font-semibold text-center">
-						{t('title')}
-					</DialogTitle>
-					<DialogDescription className="text-base text-muted-foreground text-center">
-						{t('description')}
-					</DialogDescription>
-				</DialogHeader>
+				</DialogContent>
+			</Dialog>
 
-				<div className="space-y-4">
-					<p className="text-sm font-medium">{t('donateQuestion')}</p>
+			<Dialog open={shareDialogOpen} onOpenChange={setShareDialogOpen}>
+				<DialogContent className="max-w-md">
+					<DialogHeader>
+						<DialogTitle className="text-lg font-semibold flex items-center">
+							<Share2 className="h-5 w-5 mr-2" />
+							{t('share.title')}
+						</DialogTitle>
+						<DialogDescription>
+							{t('share.description')}
+						</DialogDescription>
+					</DialogHeader>
 
-					<div className="space-y-3">
+					<div className="grid grid-cols-2 gap-3 mt-4">
 						<Button
-							className="w-full bg-orange-500 hover:bg-orange-600 text-white font-medium py-3"
-							onClick={handleDonateClick}
-							disabled={isLoading}
+							variant="outline"
+							size="sm"
+							className="flex items-center justify-center gap-2"
+							onClick={() => handleShare('facebook')}
 						>
-							{isLoading ? 'Traitement...' : t('donateButton')}
+							<Facebook className="h-4 w-4" />
+							Facebook
 						</Button>
-
 						<Button
-							variant="ghost"
-							className="w-full text-gray-600 hover:text-gray-800"
-							onClick={() => onOpenChange(false)}
+							variant="outline"
+							size="sm"
+							className="flex items-center justify-center gap-2"
+							onClick={() => handleShare('twitter')}
 						>
-							{t('shareButton')}
+							<Twitter className="h-4 w-4" />
+							Twitter
+						</Button>
+						<Button
+							variant="outline"
+							size="sm"
+							className="flex items-center justify-center gap-2"
+							onClick={() => handleShare('whatsapp')}
+						>
+							<MessageCircle className="h-4 w-4" />
+							WhatsApp
+						</Button>
+						<Button
+							variant="outline"
+							size="sm"
+							className="flex items-center justify-center gap-2"
+							onClick={() => handleShare('email')}
+						>
+							<Mail className="h-4 w-4" />
+							Email
 						</Button>
 					</div>
-				</div>
-			</DialogContent>
-		</Dialog>
+				</DialogContent>
+			</Dialog>
+		</>
 	);
 }

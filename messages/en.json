@@ -193,7 +193,11 @@
             "description": "The true engine of change, it's our collective action. Help this petition reach more people committed to a better world.",
             "donateQuestion": "Do you want to contribute 7€ to strengthen its visibility in the media?",
             "donateButton": "Yes, I want to donate 7€ to help the petition reach its goal",
-            "shareButton": "No, I prefer to share it"
+            "shareButton": "No, I prefer to share it",
+            "share": {
+                "title": "Share with your friends",
+                "description": "Spread the word! Share this petition on your favorite platforms to help it gain more support."
+            }
         },
         "signed": {
             "badge": "✓ Signed",
