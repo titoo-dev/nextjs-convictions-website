@@ -11,12 +11,23 @@ import { PetitionFormInputs } from './petition-form-inputs';
 import { NotificationOptions } from './notification-options';
 import { useLocale, useTranslations } from 'next-intl';
 import Link from 'next/link';
+import { User } from '@/schemas/user';
+import { SignPetitionResponse } from '@/schemas/sign-petition-response';
+import { SignPublicPetitionResponse } from '@/schemas/sign-public-petition-response';
+import { signPetition } from '@/actions/sign-petition';
 
 type SignFormProps = {
+	currentUser: User | null;
 	petition: PublicPetition;
 };
 
-export function SignForm({ petition }: SignFormProps) {
+type ActionResult = {
+	success: boolean;
+	data?: SignPetitionResponse | SignPublicPetitionResponse;
+	error?: string;
+};
+
+export function SignForm({ petition, currentUser }: SignFormProps) {
 	const t = useTranslations('petition.signForm');
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
@@ -37,6 +48,7 @@ export function SignForm({ petition }: SignFormProps) {
 	}, [petition.isISign, t]);
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+		console.log('Submitting petition sign form', petition);
 		e.preventDefault();
 		if (!petition) return;
 
@@ -46,21 +58,29 @@ export function SignForm({ petition }: SignFormProps) {
 		const comment = formData.get('comment') as string;
 		const notifications = formData.get('notifications') as string;
 
-		if (!email?.trim()) return;
-
 		startTransition(async () => {
 			setIsLoading(true);
 			setError(null);
 
 			try {
-				const result = await signPublicPetition({
-					petitionId: petition.id,
-					email: email.trim(),
-					comment: comment.trim() || undefined,
-					isOptin: notifications === 'yes',
-					lang: locale.toUpperCase() as 'EN' | 'FR' | 'ES',
-					name: name,
-				});
+				let result: ActionResult | null = null;
+
+				if (!currentUser) {
+					result = await signPublicPetition({
+						petitionId: petition.id,
+						email: email.trim(),
+						comment: comment.trim() || undefined,
+						isOptin: notifications === 'yes',
+						lang: locale.toUpperCase() as 'EN' | 'FR' | 'ES',
+						name: name,
+					});
+				} else {
+					result = await signPetition({
+						petitionId: petition.id,
+						comment: comment.trim() || undefined,
+						isOptin: notifications === 'yes',
+					});
+				}
 
 				if (result.success) {
 					setSuccess(true);
@@ -97,7 +117,7 @@ export function SignForm({ petition }: SignFormProps) {
 
 	return (
 		<>
-			<Card className="shadow-none">
+			<Card className="shadow-none gap-0">
 				<CardHeader>
 					<CardTitle className="text-lg sm:text-xl">
 						{isAlreadySigned ? t('alreadySigned') : t('title')}
@@ -117,6 +137,7 @@ export function SignForm({ petition }: SignFormProps) {
 							)}
 
 							<PetitionFormInputs
+								currentUser={currentUser}
 								disabled={isSubmitting || isAlreadySigned}
 							/>
 

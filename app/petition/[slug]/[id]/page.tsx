@@ -11,6 +11,7 @@ import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import RenderWhen from '@/components/render-when';
 import { getLocale, getTranslations } from 'next-intl/server';
+import { getCurrentUser } from '@/actions/get-current-user';
 
 export default async function PetitionPage(props: {
 	params: Promise<{ id: string }>;
@@ -18,6 +19,7 @@ export default async function PetitionPage(props: {
 	const params = await props.params;
 	const locale = await getLocale();
 	const t = await getTranslations('petition.page');
+	const currentUser = await getCurrentUser();
 
 	const { petition } = await getUniquePublicPetition({
 		id: params.id,
@@ -66,7 +68,10 @@ export default async function PetitionPage(props: {
 						<RenderWhen condition={petition.usersSignedNumber > 0}>
 							<SignatureCounter petition={petition} />
 						</RenderWhen>
-						<SignForm petition={petition} />
+						<SignForm
+							currentUser={currentUser}
+							petition={petition}
+						/>
 						<ShareSection petition={petition} />
 					</div>
 				</div>
