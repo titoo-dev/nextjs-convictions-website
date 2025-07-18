@@ -17,7 +17,7 @@ import {
 	PopoverTrigger,
 } from '@/components/ui/popover';
 import { Calendar as CalendarIcon, Clock, Info } from 'lucide-react';
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { format } from 'date-fns';
 import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
