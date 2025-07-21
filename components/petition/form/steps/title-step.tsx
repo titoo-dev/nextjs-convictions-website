@@ -28,7 +28,7 @@ export function TitleStep({ formData, updateFormData }: TitleStepProps) {
 	const locale = useLocale();
 
 	// Debounce the title input for API calls
-	const [debouncedTitle] = useDebounce(formData.title, 300);
+	const [debouncedTitle] = useDebounce(formData.title, 5 * 1000);
 
 	const categories = [
 		'culture',

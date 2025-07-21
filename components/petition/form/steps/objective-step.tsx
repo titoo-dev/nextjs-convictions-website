@@ -32,7 +32,7 @@ export function ObjectiveStep({
 	const t = useTranslations('petition.form.objectiveStep');
 	const locale = useLocale();
 
-	const [debouncedObjective] = useDebounce(formData.objective, 300);
+	const [debouncedObjective] = useDebounce(formData.objective, 5 * 1000);
 
 	const suggestionPayload = {
 		inputGoal: debouncedObjective,
