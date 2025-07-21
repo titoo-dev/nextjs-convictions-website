@@ -46,6 +46,7 @@ import { petitionLocalStorage } from '@/lib/local-storage';
 import { imageIndexedDB } from '@/lib/indexed-db';
 import { createPetition } from '@/actions/create-petition';
 import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
 
 type Step =
 	| 'title'
@@ -73,6 +74,7 @@ export type PetitionFormData = {
 };
 
 export default function NewPetitionPage() {
+	const router = useRouter();
 	const tPage = useTranslations('petition.form.page');
 	const tSteps = useTranslations('petition.form.steps');
 	const locale = useLocale().toUpperCase();
@@ -305,6 +307,8 @@ export default function NewPetitionPage() {
 
 					// Redirect to petition page or show success message
 					console.log('Petition created successfully:', result.data);
+
+					router.push(result.data?.urlPetition ?? '/');
 				} else {
 					// Handle error
 					toast.error(result.error || tPage('publishError'));
