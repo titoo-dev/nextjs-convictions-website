@@ -13,7 +13,16 @@ import { useTranslations } from 'next-intl';
 import { LoginForm } from './login-form';
 import { useQueryClient } from '@tanstack/react-query';
 
-export function LoginDialog() {
+import { ReactNode, isValidElement } from 'react';
+
+type LoginDialogProps = {
+	/**
+	 * Optional custom trigger component. If not provided, a default login button is used.
+	 */
+	trigger?: ReactNode;
+};
+
+export function LoginDialog({ trigger }: LoginDialogProps) {
 	const tNavigation = useTranslations('navigation');
 	const tDialog = useTranslations('loginDialog');
 	const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -26,17 +35,26 @@ export function LoginDialog() {
 		});
 	};
 
+	const defaultTrigger = (
+		<Button
+			variant="outline"
+			size="default"
+			className="border-none shadow-none cursor-pointer"
+		>
+			{tNavigation('login')}
+		</Button>
+	);
+
+	/**
+	 * If a custom trigger is provided, ensure it can receive ref and onClick via asChild.
+	 * Otherwise, use the default trigger button.
+	 */
+	const triggerElement =
+		trigger && isValidElement(trigger) ? trigger : defaultTrigger;
+
 	return (
 		<Dialog open={isLoginOpen} onOpenChange={setIsLoginOpen}>
-			<DialogTrigger asChild>
-				<Button
-					variant="outline"
-					size="default"
-					className="border-none shadow-none cursor-pointer"
-				>
-					{tNavigation('login')}
-				</Button>
-			</DialogTrigger>
+			<DialogTrigger asChild>{triggerElement}</DialogTrigger>
 			<DialogContent className="sm:max-w-md">
 				<DialogHeader>
 					<DialogTitle className="text-3xl font-bold bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent mr-auto">

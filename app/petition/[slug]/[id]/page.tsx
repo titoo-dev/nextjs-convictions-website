@@ -60,7 +60,10 @@ export default async function PetitionPage(props: {
 						<PetitionAuthor petition={petition} />
 						<PetitionDetails petition={petition} />
 						<PetitionContent petition={petition} />
-						<PetitionComments petition={petition} />
+						<PetitionComments
+							currentUser={currentUser}
+							petition={petition}
+						/>
 					</div>
 
 					{/* Sidebar */}
