@@ -306,6 +306,7 @@ export default function BoostPlanPage({
 										aria-invalid={!!error}
 										disabled={isSubmitting}
 										required
+										readOnly={!!user?.email}
 									/>
 								</div>
 
