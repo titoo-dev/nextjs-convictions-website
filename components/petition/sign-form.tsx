@@ -132,7 +132,7 @@ export function SignForm({ petition, currentUser }: SignFormProps) {
 							)}
 
 							<RenderWhen condition={petition.isISign === true}>
-								<div className="p-4 text-sm  bg-green-50 border border-green-200 rounded-md">
+								<div className="p-4 mt-2 text-sm  bg-green-50 border border-green-200 rounded-md">
 									{t('thankYouMessage', { signaturesLeft })}
 								</div>
 							</RenderWhen>
@@ -181,7 +181,7 @@ export function SignForm({ petition, currentUser }: SignFormProps) {
 									type="button"
 									variant="outline"
 									disabled={isSubmitting}
-									className="flex-1 border-orange-500 text-orange-500 hover:bg-orange-50 font-semibold py-3 sm:py-3 text-sm sm:text-base"
+									className="flex-1 bg-indigo-50 text-blue-800 hover:bg-indigo-100 font-semibold py-3 sm:py-3 text-sm sm:text-base"
 								>
 									<Link href={`/boost-plan/${petition.id}`}>
 										{t('boostButton')}
