@@ -400,6 +400,35 @@
                 "description": "The petition you're looking for doesn't exist or has been removed."
             },
             "back": "Back"
+        },
+        "report": {
+            "title": "Report policy",
+            "description": "Help us maintain a safe and respectful community by reporting inappropriate content.",
+            "reasonQuestion": "What is the reason for your litigation ?",
+            "privacy_violation_without_consent": {
+                "label": "Privacy violation without consent",
+                "description": "Personal information was collected or used without proper authorization"
+            },
+            "privacy_policy_violation": {
+                "label": "Privacy policy violation",
+                "description": "The petition violates established privacy policies or terms of service"
+            },
+            "lack_of_reliable_evidence": {
+                "label": "Lack of reliable evidence",
+                "description": "The petition contains unsubstantiated claims or misleading information"
+            },
+            "illegal_use_of_personal_data": {
+                "label": "Illegal use of personal data",
+                "description": "Personal data is being used in violation of data protection laws"
+            },
+            "other": {
+                "label": "Other",
+                "description": "Other concerns not covered by the above categories",
+                "customReasonLabel": "Please specify your reason",
+                "customReasonPlaceholder": "Describe the issue..."
+            },
+            "cancel": "Cancel",
+            "send": "Send"
         }
     },
     "support": {

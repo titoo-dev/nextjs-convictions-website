@@ -400,6 +400,35 @@
                 "description": "La pétition que vous cherchez n'existe pas ou a été supprimée."
             },
             "back": "Retour"
+        },
+        "report": {
+            "title": "Politique de signalement",
+            "description": "Aidez-nous à maintenir une communauté sûre et respectueuse en signalant les contenus inappropriés.",
+            "reasonQuestion": "Quelle est la raison de votre litige ?",
+            "privacy_violation_without_consent": {
+                "label": "Violation de la vie privée sans consentement",
+                "description": "Des informations personnelles ont été collectées ou utilisées sans autorisation appropriée"
+            },
+            "privacy_policy_violation": {
+                "label": "Violation de la politique de confidentialité",
+                "description": "La pétition enfreint les politiques de confidentialité ou les conditions d'utilisation établies"
+            },
+            "lack_of_reliable_evidence": {
+                "label": "Manque de preuves fiables",
+                "description": "La pétition contient des affirmations non étayées ou des informations trompeuses"
+            },
+            "illegal_use_of_personal_data": {
+                "label": "Utilisation illégale de données personnelles",
+                "description": "Des données personnelles sont utilisées en violation des lois sur la protection des données"
+            },
+            "other": {
+                "label": "Autre",
+                "description": "Autres préoccupations non couvertes par les catégories ci-dessus",
+                "customReasonLabel": "Veuillez préciser votre raison",
+                "customReasonPlaceholder": "Décrivez le problème..."
+            },
+            "cancel": "Annuler",
+            "send": "Envoyer"
         }
     },
     "support": {

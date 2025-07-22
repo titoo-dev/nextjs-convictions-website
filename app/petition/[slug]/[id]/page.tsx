@@ -57,7 +57,10 @@ export default async function PetitionPage(props: {
 					{/* Main Content */}
 					<div className="lg:col-span-2 space-y-3 sm:space-y-4">
 						<PetitionHero petition={petition} />
-						<PetitionAuthor petition={petition} />
+						<PetitionAuthor
+							currentUser={currentUser}
+							petition={petition}
+						/>
 						<PetitionDetails petition={petition} />
 						<PetitionContent petition={petition} />
 						<PetitionComments

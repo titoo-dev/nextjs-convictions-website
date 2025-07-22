@@ -400,6 +400,35 @@
                 "description": "La petición que buscas no existe o ha sido eliminada."
             },
             "back": "Atrás"
+        },
+        "report": {
+            "title": "Política de reportes",
+            "description": "Ayúdanos a mantener una comunidad segura y respetuosa reportando contenido inapropiado.",
+            "reasonQuestion": "¿Cuál es el motivo de tu litigio?",
+            "privacy_violation_without_consent": {
+                "label": "Violación de privacidad sin consentimiento",
+                "description": "Se recopiló o usó información personal sin la debida autorización"
+            },
+            "privacy_policy_violation": {
+                "label": "Incumplimiento de la política de privacidad",
+                "description": "La petición infringe las políticas de privacidad o los términos de servicio establecidos"
+            },
+            "lack_of_reliable_evidence": {
+                "label": "Falta de pruebas fiables",
+                "description": "La petición contiene afirmaciones no fundamentadas o información engañosa"
+            },
+            "illegal_use_of_personal_data": {
+                "label": "Uso ilegal de datos personales",
+                "description": "Se están utilizando datos personales en violación de las leyes de protección de datos"
+            },
+            "other": {
+                "label": "Otro",
+                "description": "Otras preocupaciones no cubiertas por las categorías anteriores",
+                "customReasonLabel": "Por favor especifica tu motivo",
+                "customReasonPlaceholder": "Describe el problema..."
+            },
+            "cancel": "Cancelar",
+            "send": "Enviar"
         }
     },
     "support": {
