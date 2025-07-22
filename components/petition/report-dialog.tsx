@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useTransition } from 'react';
 import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import {
@@ -17,6 +17,8 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Flag } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { createLitigation } from '@/actions/create-litigation';
+import { toast } from 'sonner';
 
 type ReportReason =
 	| 'privacy_violation_without_consent'
@@ -27,6 +29,7 @@ type ReportReason =
 
 type ReportDialogProps = {
 	children: React.ReactNode;
+	petitionId: string;
 };
 
 const reportReasons: Array<{
@@ -65,24 +68,53 @@ const reportReasons: Array<{
 	},
 ];
 
-export function ReportDialog({ children }: ReportDialogProps) {
+export function ReportDialog({ children, petitionId }: ReportDialogProps) {
 	const t = useTranslations('petition.report');
 	const tReason = useTranslations('petition.report.other');
 	const [isOpen, setIsOpen] = useState(false);
 	const [selectedReason, setSelectedReason] = useState<ReportReason | ''>('');
 	const [customReason, setCustomReason] = useState('');
+	const [isPending, startTransition] = useTransition();
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
-		// TODO: Implement report submission logic
-		const reportData = {
-			reason: selectedReason,
-			customReason: selectedReason === 'other' ? customReason : undefined,
-		};
-		console.log('Report submitted:', reportData);
-		setIsOpen(false);
-		setSelectedReason('');
-		setCustomReason('');
+
+		if (
+			!selectedReason ||
+			(selectedReason === 'other' && !customReason.trim())
+		) {
+			return;
+		}
+
+		startTransition(async () => {
+			try {
+				const reason =
+					selectedReason === 'other'
+						? customReason.trim()
+						: reportReasons.find((r) => r.value === selectedReason)
+								?.label || '';
+
+				await createLitigation({
+					petitionId,
+					reason,
+				});
+
+				toast.success(
+					t('success', {
+						defaultValue: 'Report submitted successfully',
+					})
+				);
+				setIsOpen(false);
+				setSelectedReason('');
+				setCustomReason('');
+			} catch (error) {
+				const errorMessage =
+					error instanceof Error
+						? error.message
+						: 'Failed to submit report';
+				toast.error(t('error', { defaultValue: errorMessage }));
+			}
+		});
 	};
 
 	const handleCancel = () => {
@@ -199,19 +231,30 @@ export function ReportDialog({ children }: ReportDialogProps) {
 							type="button"
 							variant="outline"
 							onClick={handleCancel}
+							disabled={isPending}
 							className="w-full sm:w-auto"
 						>
 							{t('cancel', { defaultValue: 'Cancel' })}
 						</Button>
 						<Button
 							type="submit"
-							disabled={!isFormValid}
+							disabled={!isFormValid || isPending}
 							className={cn(
 								'w-full sm:w-auto bg-orange-500 hover:bg-orange-600 text-white',
-								!isFormValid && 'opacity-50 cursor-not-allowed'
+								(!isFormValid || isPending) &&
+									'opacity-50 cursor-not-allowed'
 							)}
 						>
-							{t('send', { defaultValue: 'Send' })}
+							{isPending ? (
+								<>
+									<div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
+									{t('submitting', {
+										defaultValue: 'Submitting...',
+									})}
+								</>
+							) : (
+								t('send', { defaultValue: 'Send' })
+							)}
 						</Button>
 					</DialogFooter>
 				</form>

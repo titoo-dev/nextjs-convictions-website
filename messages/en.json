@@ -428,7 +428,10 @@
                 "customReasonPlaceholder": "Describe the issue..."
             },
             "cancel": "Cancel",
-            "send": "Send"
+            "send": "Send",
+            "success": "Report submitted successfully",
+            "error": "Failed to submit report",
+            "submitting": "Submitting..."
         }
     },
     "support": {

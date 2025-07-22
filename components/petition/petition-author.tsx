@@ -63,7 +63,9 @@ export function PetitionAuthor({ petition, currentUser }: PetitionAuthorProps) {
 				</div>
 
 				<RenderWhen condition={!!currentUser}>
-					<ReportDialog>{ReportButton}</ReportDialog>
+					<ReportDialog petitionId={petition.id}>
+						{ReportButton}
+					</ReportDialog>
 				</RenderWhen>
 
 				<RenderWhen condition={!currentUser}>

@@ -428,7 +428,10 @@
                 "customReasonPlaceholder": "Décrivez le problème..."
             },
             "cancel": "Annuler",
-            "send": "Envoyer"
+            "send": "Envoyer",
+            "success": "Signalement envoyé avec succès",
+            "error": "Échec de l'envoi du signalement",
+            "submitting": "Envoi en cours..."
         }
     },
     "support": {

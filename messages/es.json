@@ -428,7 +428,10 @@
                 "customReasonPlaceholder": "Describe el problema..."
             },
             "cancel": "Cancelar",
-            "send": "Enviar"
+            "send": "Enviar",
+            "success": "Reporte enviado exitosamente",
+            "error": "No se pudo enviar el reporte",
+            "submitting": "Enviando..."
         }
     },
     "support": {
