@@ -594,5 +594,11 @@
             "backToRegister": "Retour à l'inscription",
             "success": "Email vérifié avec succès"
         }
+    },
+    "donationSuccess": {
+        "title": "Votre paiement a été effectué avec succès !",
+        "gratitudeMessage": "Nous voulons exprimer notre profonde gratitude pour votre don en soutien à la pétition.",
+        "impactMessage": "Votre contribution nous aide à renforcer la pétition et à la rendre plus visible auprès de nouveaux signataires.",
+        "continue": "Continuer"
     }
 }
