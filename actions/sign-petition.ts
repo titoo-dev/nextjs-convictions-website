@@ -8,42 +8,26 @@ import {
 	signPetitionResponseSchema,
 	type SignPetitionResponse,
 } from '@/schemas/sign-petition-response';
-import { getAccessToken } from '@/lib/cookies-storage';
+import { makeAuthenticatedRequest } from '@/lib/api';
 
 type ActionResult = {
 	success: boolean;
-	data?: SignPetitionResponse;
 	error?: string;
+	data?: SignPetitionResponse;
 };
 
 export async function signPetition(
 	request: SignPetitionRequest
 ): Promise<ActionResult> {
 	try {
-		// Get access token
-		const accessToken = await getAccessToken();
-
-		if (!accessToken) {
-			return {
-				success: false,
-				error: 'Authentication required',
-			};
-		}
-
-		// Validate request data
 		const validatedData = signPetitionRequestSchema.parse(request);
 
-		// Make API call with bearer token
-		const response = await fetch(
+		const response = await makeAuthenticatedRequest(
 			`${process.env.NEXT_PUBLIC_API_BASE_URL}/petition/sign`,
 			{
 				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					Accept: 'application/json',
-					Authorization: `Bearer ${accessToken}`,
-				},
 				body: JSON.stringify(validatedData),
+				requiresAuth: true,
 			}
 		);
 
@@ -55,8 +39,6 @@ export async function signPetition(
 		}
 
 		const responseData = await response.json();
-
-		// Validate response data
 		const validatedResponse =
 			signPetitionResponseSchema.parse(responseData);
 

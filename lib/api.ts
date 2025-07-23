@@ -4,19 +4,99 @@ import {
 	SuggestionsResponse,
 	SuggestionsResponseSchema,
 } from '@/schemas/suggestions-response';
+import {
+	getAccessToken,
+	refreshAccessToken,
+	clearTokens,
+} from './cookies-storage';
+
+type ApiRequestOptions = {
+	method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+	headers?: Record<string, string>;
+	body?: string | FormData;
+	requiresAuth?: boolean;
+	maxRetries?: number;
+};
+
+export async function makeAuthenticatedRequest(
+	url: string,
+	options: ApiRequestOptions = {}
+): Promise<Response> {
+	const {
+		method = 'GET',
+		headers = {},
+		body,
+		requiresAuth = true,
+		maxRetries = 1,
+	} = options;
+
+	let attempt = 0;
+
+	while (attempt <= maxRetries) {
+		try {
+			const requestHeaders: Record<string, string> = {
+				'Content-Type': 'application/json',
+				Accept: 'application/json',
+				...headers,
+			};
+
+			if (requiresAuth) {
+				const accessToken = await getAccessToken();
+				if (!accessToken) {
+					throw new Error('No access token available');
+				}
+				requestHeaders.Authorization = `Bearer ${accessToken}`;
+			}
+
+			if (body instanceof FormData) {
+				delete requestHeaders['Content-Type'];
+			}
+
+			const response = await fetch(url, {
+				method,
+				headers: requestHeaders,
+				body,
+			});
+
+			if (
+				response.status === 401 &&
+				requiresAuth &&
+				attempt < maxRetries
+			) {
+				console.warn('Access token expired, attempting refresh...');
+				const refreshedTokens = await refreshAccessToken();
+
+				if (!refreshedTokens) {
+					await clearTokens();
+					throw new Error('Failed to refresh access token');
+				}
+
+				attempt++;
+				continue;
+			}
+
+			return response;
+		} catch (error) {
+			if (attempt >= maxRetries) {
+				throw error;
+			}
+			attempt++;
+		}
+	}
+
+	throw new Error('Max retries exceeded');
+}
 
 export async function getTitleSuggestions(
 	payload: TitleSuggestionPayload
 ): Promise<SuggestionsResponse> {
 	try {
-		const response = await fetch(
+		const response = await makeAuthenticatedRequest(
 			`${process.env.NEXT_PUBLIC_API_BASE_URL}/openai/title`,
 			{
 				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
 				body: JSON.stringify(payload),
+				requiresAuth: false,
 			}
 		);
 
@@ -27,8 +107,6 @@ export async function getTitleSuggestions(
 		}
 
 		const data = await response.json();
-
-		// Validate response against schema
 		const validatedData = SuggestionsResponseSchema.parse(data);
 
 		return validatedData;
@@ -48,14 +126,12 @@ export async function getObjectiveSuggestions(
 	payload: ObjectiveSuggestionPayload
 ): Promise<SuggestionsResponse> {
 	try {
-		const response = await fetch(
+		const response = await makeAuthenticatedRequest(
 			`${process.env.NEXT_PUBLIC_API_BASE_URL}/openai/goal`,
 			{
 				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
 				body: JSON.stringify(payload),
+				requiresAuth: false,
 			}
 		);
 
@@ -66,7 +142,6 @@ export async function getObjectiveSuggestions(
 		}
 
 		const data = await response.json();
-
 		const validatedData = SuggestionsResponseSchema.parse(data);
 
 		return validatedData;

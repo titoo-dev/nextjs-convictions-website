@@ -1,20 +1,20 @@
 'use server';
 
 import { cookies } from 'next/headers';
+import { authResponseSchema } from '@/schemas/auth-response';
 
 export type AuthTokens = {
 	accessToken: string;
 	refreshToken: string;
-	expiresAt?: string; // ISO string for token expiration
+	expiresAt?: string;
 };
 
 export async function saveTokens(tokens: AuthTokens): Promise<void> {
 	try {
 		const cookieStore = await cookies();
 		const now = new Date();
-		const expiresAt = new Date(now.getTime() + 15 * 60 * 1000); // 15 minutes from now
+		const expiresAt = new Date(now.getTime() + 15 * 60 * 1000);
 
-		// Set access token cookie
 		cookieStore.set('access-token', tokens.accessToken, {
 			expires: tokens.expiresAt ? new Date(tokens.expiresAt) : expiresAt,
 			httpOnly: true,
@@ -23,10 +23,9 @@ export async function saveTokens(tokens: AuthTokens): Promise<void> {
 			path: '/',
 		});
 
-		// Set refresh token cookie (longer expiration)
 		const refreshExpiresAt = new Date(
 			now.getTime() + 7 * 24 * 60 * 60 * 1000
-		); // 7 days
+		);
 		cookieStore.set('refresh-token', tokens.refreshToken, {
 			expires: refreshExpiresAt,
 			httpOnly: true,
@@ -35,7 +34,6 @@ export async function saveTokens(tokens: AuthTokens): Promise<void> {
 			path: '/',
 		});
 
-		// Store expiration time
 		if (tokens.expiresAt) {
 			cookieStore.set('token-expires-at', tokens.expiresAt, {
 				expires: tokens.expiresAt
@@ -64,18 +62,16 @@ export async function getTokens(): Promise<AuthTokens | null> {
 			return null;
 		}
 
-		// Check if tokens are expired
 		if (expiresAt) {
 			const expirationDate = new Date(expiresAt);
 			const now = new Date();
+			const bufferTime = 2 * 60 * 1000;
 
-			if (now >= expirationDate) {
-				// Tokens expired, try to refresh them
+			if (now.getTime() >= expirationDate.getTime() - bufferTime) {
 				const refreshedTokens = await refreshAccessToken();
 				if (refreshedTokens) {
 					return refreshedTokens;
 				}
-				// If refresh failed, clear tokens and return null
 				await clearTokens();
 				return null;
 			}
@@ -154,45 +150,58 @@ export async function updateAccessToken(
 
 export async function refreshAccessToken(): Promise<AuthTokens | null> {
 	try {
-		const refreshToken = await getRefreshToken();
+		const cookieStore = await cookies();
+		const refreshToken = cookieStore.get('refresh-token')?.value;
 
 		if (!refreshToken) {
 			console.warn('No refresh token available');
 			return null;
 		}
 
-		const response = await fetch('/auth/refreshToken', {
-			method: 'POST',
-			headers: {
-				Authorization: `Bearer ${refreshToken}`,
-				'Content-Type': 'application/json',
-			},
-		});
+		const response = await fetch(
+			`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/refreshToken`,
+			{
+				method: 'POST',
+				headers: {
+					Authorization: `Bearer ${refreshToken}`,
+					'Content-Type': 'application/json',
+					Accept: 'application/json',
+				},
+			}
+		);
 
-		if (response.status !== 200) {
-			console.warn('Failed to refresh token:', response.statusText);
+		if (!response.ok) {
+			console.warn(
+				'Failed to refresh token:',
+				response.status,
+				response.statusText
+			);
 			await clearTokens();
 			return null;
 		}
 
 		const data = await response.json();
 
-		if (!data.accessToken || !data.refreshToken) {
+		const validatedResponse = authResponseSchema.parse(data);
+
+		if (
+			!validatedResponse.access_token ||
+			!validatedResponse.refresh_token
+		) {
 			console.warn('Invalid response from refresh token endpoint');
 			await clearTokens();
 			return null;
 		}
 
-		// Calculate expiration if not provided by the API
 		const now = new Date();
 		const defaultExpiresAt = new Date(
 			now.getTime() + 15 * 60 * 1000
-		).toISOString(); // 15 minutes
+		).toISOString();
 
 		const newTokens: AuthTokens = {
-			accessToken: data.accessToken,
-			refreshToken: data.refreshToken,
-			expiresAt: data.expiresAt || defaultExpiresAt,
+			accessToken: validatedResponse.access_token,
+			refreshToken: validatedResponse.refresh_token,
+			expiresAt: defaultExpiresAt,
 		};
 
 		await saveTokens(newTokens);
