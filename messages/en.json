@@ -566,5 +566,20 @@
             "cancel": "Cancel",
             "confirm": "Confirm and proceed"
         }
+    },
+    "auth": {
+        "register": {
+            "title": "Create your account",
+            "name": "Name",
+            "email": "Email",
+            "password": "Password",
+            "confirmPassword": "Confirm password",
+            "register": "Create account",
+            "registering": "Creating account...",
+            "or": "or",
+            "continueWithGoogle": "Continue with Google",
+            "alreadyHaveAccount": "Already have an account?",
+            "login": "Sign in"
+        }
     }
 }
