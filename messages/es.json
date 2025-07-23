@@ -149,7 +149,10 @@
             "deleteConfirmTitle": "¿Eliminar tu comentario?",
             "deleteConfirmDescription": "¿Estás seguro de que deseas eliminar tu comentario? Esta acción no se puede deshacer.",
             "cancel": "Cancelar",
-            "delete": "Eliminar"
+            "delete": "Eliminar",
+            "deleteSuccess": "Comentario eliminado",
+            "deleteError": "Error al eliminar el comentario",
+            "deleting": "Eliminando..."
         },
         "author": {
             "reportPolicy": "Reportar política"

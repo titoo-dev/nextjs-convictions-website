@@ -61,7 +61,7 @@ export function CommentCard({
 					</p>
 				</div>
 				<RenderWhen condition={comment.isMine}>
-					<DeleteCommentButton t={t} />
+					<DeleteCommentButton t={t} commentId={comment.id} />
 				</RenderWhen>
 			</div>
 			<div

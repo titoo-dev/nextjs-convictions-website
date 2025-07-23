@@ -16,6 +16,7 @@ import { SignPetitionResponse } from '@/schemas/sign-petition-response';
 import { SignPublicPetitionResponse } from '@/schemas/sign-public-petition-response';
 import { signPetition } from '@/actions/sign-petition';
 import RenderWhen from '../render-when';
+import { useRouter } from 'next/navigation';
 
 type SignFormProps = {
 	currentUser: User | null;
@@ -37,6 +38,7 @@ export function SignForm({ petition, currentUser }: SignFormProps) {
 	const [isPending, startTransition] = useTransition();
 	const formRef = useRef<HTMLFormElement>(null);
 	const locale = useLocale();
+	const router = useRouter();
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		console.log('Submitting petition sign form', petition);
@@ -83,6 +85,7 @@ export function SignForm({ petition, currentUser }: SignFormProps) {
 					});
 					// Reset form
 					formRef.current?.reset();
+					router.refresh();
 				} else {
 					setError(result.error || t('errors.failedToSign'));
 					toast.error(t('errors.failedToSign'), {

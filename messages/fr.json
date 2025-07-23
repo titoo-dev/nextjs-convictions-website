@@ -149,7 +149,10 @@
             "deleteConfirmTitle": "Supprimer votre commentaire ?",
             "deleteConfirmDescription": "Êtes-vous sûr de vouloir supprimer votre commentaire ? Cette action est irréversible.",
             "cancel": "Annuler",
-            "delete": "Supprimer"
+            "delete": "Supprimer",
+            "deleteSuccess": "Commentaire supprimé",
+            "deleteError": "Échec de la suppression du commentaire",
+            "deleting": "Suppression..."
         },
         "author": {
             "reportPolicy": "Signaler la politique"
