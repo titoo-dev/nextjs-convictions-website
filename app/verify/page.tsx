@@ -11,7 +11,7 @@ export default function VerifyPage() {
 	const router = useRouter();
 	const [isLoading, setIsLoading] = useState(false);
 	const [otp, setOtp] = useState(['', '', '', '', '', '']);
-	const [email, setEmail] = useState('ttosey4@youmail.com'); // This would come from registration flow
+	const [email] = useState('ttosey4@youmail.com'); // This would come from registration flow
 	const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
 	useEffect(() => {
