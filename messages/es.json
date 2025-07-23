@@ -580,6 +580,16 @@
             "continueWithGoogle": "Continuar con Google",
             "alreadyHaveAccount": "¿Ya tienes una cuenta?",
             "login": "Iniciar sesión"
+        },
+        "verify": {
+            "title": "Verifica tu email",
+            "emailVerification": "Verificación de email",
+            "description": "Hemos enviado un código de 6 dígitos a {email}. Por favor, introdúcelo a continuación para verificar tu cuenta.",
+            "verify": "Verificar",
+            "verifying": "Verificando...",
+            "didntReceiveCode": "¿No recibiste el código?",
+            "resendCode": "Reenviar código",
+            "backToRegister": "Volver a la registración"
         }
     }
 }
