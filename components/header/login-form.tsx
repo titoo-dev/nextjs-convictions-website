@@ -11,9 +11,10 @@ import { toast } from 'sonner';
 
 type LoginFormProps = {
 	onSuccess?: () => void;
+	onRegister?: () => void;
 };
 
-export function LoginForm({ onSuccess }: LoginFormProps) {
+export function LoginForm({ onSuccess, onRegister }: LoginFormProps) {
 	const tDialog = useTranslations('loginDialog');
 	const [isPending, startTransition] = useTransition();
 
@@ -90,7 +91,8 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
 				{tDialog('noAccount')}{' '}
 				<button
 					type="button"
-					className="text-orange-500 hover:text-orange-600 font-medium"
+					className="text-orange-500 hover:text-orange-600 font-medium cursor-pointer"
+					onClick={onRegister}
 				>
 					{tDialog('registerButton')}
 				</button>

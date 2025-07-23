@@ -14,6 +14,7 @@ import { LoginForm } from './login-form';
 import { useQueryClient } from '@tanstack/react-query';
 
 import { ReactNode, isValidElement } from 'react';
+import { useRouter } from 'next/navigation';
 
 type LoginDialogProps = {
 	/**
@@ -27,12 +28,18 @@ export function LoginDialog({ trigger }: LoginDialogProps) {
 	const tDialog = useTranslations('loginDialog');
 	const [isLoginOpen, setIsLoginOpen] = useState(false);
 	const queryClient = useQueryClient();
+	const router = useRouter();
 
 	const handleSuccess = () => {
 		setIsLoginOpen(false);
 		queryClient.invalidateQueries({
 			queryKey: ['currentUser'],
 		});
+	};
+
+	const handleRegister = () => {
+		setIsLoginOpen(false);
+		router.push('/register');
 	};
 
 	const defaultTrigger = (
@@ -70,7 +77,10 @@ export function LoginDialog({ trigger }: LoginDialogProps) {
 						</p>
 					</div>
 				</DialogHeader>
-				<LoginForm onSuccess={handleSuccess} />
+				<LoginForm
+					onSuccess={handleSuccess}
+					onRegister={handleRegister}
+				/>
 			</DialogContent>
 		</Dialog>
 	);

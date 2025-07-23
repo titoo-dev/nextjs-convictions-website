@@ -1,40 +1,75 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useTransition } from 'react';
 import Link from 'next/link';
 import { Eye, EyeOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
+import { registerUser } from '@/actions/register';
+import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
 
 export default function RegisterPage() {
 	const t = useTranslations('auth');
-	const [isLoading, setIsLoading] = useState(false);
+	const [isPending, startTransition] = useTransition();
 	const [showPassword, setShowPassword] = useState(false);
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+	const [passwordError, setPasswordError] = useState('');
 	const [formData, setFormData] = useState({
 		name: '',
 		email: '',
 		password: '',
 		confirmPassword: '',
 	});
+	const locale = useLocale();
+	const router = useRouter();
 
 	const handleInputChange = (field: string, value: string) => {
 		setFormData((prev) => ({ ...prev, [field]: value }));
+
+		// Clear password error when user types
+		if (field === 'password' || field === 'confirmPassword') {
+			setPasswordError('');
+		}
+	};
+
+	const validatePasswords = () => {
+		if (formData.password !== formData.confirmPassword) {
+			setPasswordError(t('register.passwordMismatch'));
+			return false;
+		}
+		return true;
 	};
 
 	const handleRegister = async (e: React.FormEvent) => {
 		e.preventDefault();
-		setIsLoading(true);
 
-		try {
-			// TODO: Implement registration logic
-			console.log('Registration data:', formData);
-		} catch (error) {
-			console.error('Registration error:', error);
-		} finally {
-			setIsLoading(false);
+		// Validate passwords match
+		if (!validatePasswords()) {
+			return;
 		}
+
+		startTransition(async () => {
+			try {
+				const result = await registerUser({
+					name: formData.name,
+					email: formData.email,
+					password: formData.password,
+					lang: locale.toUpperCase() as 'EN' | 'FR' | 'ES',
+				});
+
+				if (result.success) {
+					toast.success(t('register.success'));
+					router.push('/verify');
+				} else {
+					toast.error(result.error || t('register.error'));
+				}
+			} catch (error) {
+				const { toast } = await import('sonner');
+				toast.error(t('register.error'));
+			}
+		});
 	};
 
 	const handleGoogleAuth = async () => {
@@ -131,7 +166,11 @@ export default function RegisterPage() {
 												e.target.value
 											)
 										}
-										className="w-full pr-10"
+										className={`w-full pr-10 ${
+											passwordError
+												? 'border-red-500 focus:border-red-500'
+												: ''
+										}`}
 										placeholder="*******"
 										required
 									/>
@@ -156,6 +195,7 @@ export default function RegisterPage() {
 									className="block text-sm font-medium text-gray-700 mb-1"
 								>
 									{t('register.confirmPassword')}
+									<span className="text-red-500">*</span>
 								</label>
 								<div className="relative">
 									<Input
@@ -172,7 +212,11 @@ export default function RegisterPage() {
 												e.target.value
 											)
 										}
-										className="w-full pr-10"
+										className={`w-full pr-10 ${
+											passwordError
+												? 'border-red-500 focus:border-red-500'
+												: ''
+										}`}
 										placeholder="*******"
 										required
 									/>
@@ -195,13 +239,31 @@ export default function RegisterPage() {
 							</div>
 						</div>
 
+						{/* Password Error Message */}
+						{passwordError && (
+							<div className="text-red-500 text-sm flex items-center gap-1">
+								<svg
+									className="w-4 h-4"
+									fill="currentColor"
+									viewBox="0 0 20 20"
+								>
+									<path
+										fillRule="evenodd"
+										d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+										clipRule="evenodd"
+									/>
+								</svg>
+								{passwordError}
+							</div>
+						)}
+
 						{/* Register Button */}
 						<Button
 							type="submit"
 							className="w-full bg-orange-500 hover:bg-orange-600 text-white font-medium py-2 px-4 rounded-md transition-colors"
-							disabled={isLoading}
+							disabled={isPending}
 						>
-							{isLoading
+							{isPending
 								? t('register.registering')
 								: t('register.register')}
 						</Button>

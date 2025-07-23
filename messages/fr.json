@@ -579,7 +579,8 @@
             "or": "ou",
             "continueWithGoogle": "Continuer avec Google",
             "alreadyHaveAccount": "Vous avez déjà un compte ?",
-            "login": "Se connecter"
+            "login": "Se connecter",
+            "passwordMismatch": "Les mots de passe ne correspondent pas"
         },
         "verify": {
             "title": "Vérifiez votre email",
