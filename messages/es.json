@@ -600,5 +600,11 @@
         "gratitudeMessage": "Queremos expresar nuestro profundo agradecimiento por tu donación en apoyo a la petición.",
         "impactMessage": "Tu contribución nos ayuda a fortalecer la petición y a hacerla más visible a más personas.",
         "continue": "Continuar"
+    },
+    "donationError": {
+        "title": "Ocurrió un error durante el pago. Por favor, inténtalo de nuevo.",
+        "errorMessage": "Lo sentimos, pero ocurrió un error durante el pago.",
+        "contactMessage": "Si el problema persiste, por favor contáctanos.",
+        "continue": "Continuar"
     }
 }

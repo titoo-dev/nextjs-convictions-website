@@ -600,5 +600,11 @@
         "gratitudeMessage": "Nous voulons exprimer notre profonde gratitude pour votre don en soutien à la pétition.",
         "impactMessage": "Votre contribution nous aide à renforcer la pétition et à la rendre plus visible auprès de nouveaux signataires.",
         "continue": "Continuer"
+    },
+    "donationError": {
+        "title": "Une erreur est survenue lors du paiement. Veuillez réessayer.",
+        "errorMessage": "Nous sommes désolés, mais une erreur est survenue lors du paiement.",
+        "contactMessage": "Si le problème persiste, veuillez nous contacter.",
+        "continue": "Continuer"
     }
 }

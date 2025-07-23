@@ -600,5 +600,11 @@
         "gratitudeMessage": "We want to express our deep gratitude for your donation in support of the petition.",
         "impactMessage": "Your contribution helps us strengthen the petition and makes it more visible to have continued people.",
         "continue": "Continue"
+    },
+    "donationError": {
+        "title": "An error occurred during payment. Please try again.",
+        "errorMessage": "We are sorry, but an error occurred during payment.",
+        "contactMessage": "If the problem persists, please contact us.",
+        "continue": "Continue"
     }
 }
