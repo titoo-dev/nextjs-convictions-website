@@ -580,7 +580,8 @@
             "continueWithGoogle": "Continue with Google",
             "alreadyHaveAccount": "Already have an account?",
             "login": "Sign in",
-            "passwordMismatch": "Passwords do not match"
+            "passwordMismatch": "Passwords do not match",
+            "success": "Account created successfully"
         },
         "verify": {
             "title": "Verify your email",
@@ -590,7 +591,8 @@
             "verifying": "Verifying...",
             "didntReceiveCode": "Didn't receive the code?",
             "resendCode": "Resend code",
-            "backToRegister": "Back to registration"
+            "backToRegister": "Back to registration",
+            "success": "Email verified successfully"
         }
     }
 }

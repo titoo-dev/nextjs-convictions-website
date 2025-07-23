@@ -1,17 +1,25 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useTransition, use } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useTranslations } from 'next-intl';
+import { verifyEmail } from '@/actions/verify-email';
+import { toast } from 'sonner';
 
-export default function VerifyPage() {
+export default function VerifyPage({
+	searchParams,
+}: {
+	searchParams: Promise<{ email: string }>;
+}) {
+	const params = use(searchParams);
 	const t = useTranslations('auth');
 	const router = useRouter();
-	const [isLoading, setIsLoading] = useState(false);
+	const [isPending, startTransition] = useTransition();
 	const [otp, setOtp] = useState(['', '', '', '', '', '']);
-	const [email] = useState('ttosey4@youmail.com'); // This would come from registration flow
+	const [email] = useState(params.email || '');
+
 	const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
 	useEffect(() => {
@@ -68,27 +76,23 @@ export default function VerifyPage() {
 
 		if (otpCode.length !== 6) return;
 
-		setIsLoading(true);
+		startTransition(async () => {
+			try {
+				const result = await verifyEmail({
+					email,
+					code: parseInt(otpCode),
+				});
 
-		try {
-			// TODO: Implement OTP verification logic
-			console.log('Verifying OTP:', otpCode);
-			// On success, redirect to login or dashboard
-			// router.push('/login')
-		} catch (error) {
-			console.error('Verification error:', error);
-		} finally {
-			setIsLoading(false);
-		}
-	};
-
-	const handleResendCode = async () => {
-		try {
-			// TODO: Implement resend code logic
-			console.log('Resending code to:', email);
-		} catch (error) {
-			console.error('Resend error:', error);
-		}
+				if (result.success) {
+					toast.success(t('verify.success'));
+					router.replace('/');
+				} else {
+					toast.error(result.error || t('verify.error'));
+				}
+			} catch (error) {
+				toast.error(t('verify.error'));
+			}
+		});
 	};
 
 	const isFormValid = otp.every((digit) => digit !== '');
@@ -150,27 +154,13 @@ export default function VerifyPage() {
 						<Button
 							type="submit"
 							className="w-full bg-orange-500 hover:bg-orange-600 text-white font-medium py-3 px-4 rounded-md transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
-							disabled={!isFormValid || isLoading}
+							disabled={!isFormValid || isPending}
 						>
-							{isLoading
+							{isPending
 								? t('verify.verifying')
 								: t('verify.verify')}
 						</Button>
 					</form>
-
-					{/* Resend Code */}
-					<div className="mt-6 text-center">
-						<p className="text-sm text-gray-600 mb-2">
-							{t('verify.didntReceiveCode')}
-						</p>
-						<button
-							type="button"
-							onClick={handleResendCode}
-							className="text-orange-500 hover:text-orange-600 font-medium text-sm transition-colors underline"
-						>
-							{t('verify.resendCode')}
-						</button>
-					</div>
 
 					{/* Back to Register */}
 					<div className="mt-4 text-center">

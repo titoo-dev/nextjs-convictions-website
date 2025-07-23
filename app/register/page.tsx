@@ -61,12 +61,11 @@ export default function RegisterPage() {
 
 				if (result.success) {
 					toast.success(t('register.success'));
-					router.push('/verify');
+					router.push(`/verify?email=${formData.email}`);
 				} else {
 					toast.error(result.error || t('register.error'));
 				}
 			} catch (error) {
-				const { toast } = await import('sonner');
 				toast.error(t('register.error'));
 			}
 		});
