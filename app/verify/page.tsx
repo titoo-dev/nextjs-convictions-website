@@ -90,6 +90,7 @@ export default function VerifyPage({
 					toast.error(result.error || t('verify.error'));
 				}
 			} catch (error) {
+				console.error(error);
 				toast.error(t('verify.error'));
 			}
 		});

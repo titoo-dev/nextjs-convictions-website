@@ -66,6 +66,7 @@ export default function RegisterPage() {
 					toast.error(result.error || t('register.error'));
 				}
 			} catch (error) {
+				console.error(error);
 				toast.error(t('register.error'));
 			}
 		});
