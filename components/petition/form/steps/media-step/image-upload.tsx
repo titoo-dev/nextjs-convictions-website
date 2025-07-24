@@ -74,7 +74,10 @@ export function ImageUpload({
 		}
 	};
 
-	const handleGenerateAIImage = () => {
+	const handleGenerateAIImage = (e: React.MouseEvent) => {
+		e.preventDefault();
+		e.stopPropagation();
+
 		if (!petitionTitle && !petitionObjective) {
 			toast.error(
 				t('aiImageRequiredFields') ||
@@ -156,6 +159,10 @@ export function ImageUpload({
 									variant="outline"
 									className="flex items-center gap-2"
 									disabled={isPending}
+									onClick={(e) => {
+										e.stopPropagation();
+										fileInputRef.current?.click();
+									}}
 								>
 									<Upload className="w-4 h-4" />
 									{t('selectFile')}
