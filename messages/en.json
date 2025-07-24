@@ -349,7 +349,12 @@
                 "processing": "Processing image...",
                 "removeImage": "Remove image",
                 "removeVideo": "Remove video",
-                "restoringImage": "Restoring image preview..."
+                "restoringImage": "Restoring image preview...",
+                "generateAI": "Generate AI",
+                "generating": "Generating...",
+                "aiImageGenerated": "AI image generated successfully!",
+                "aiImageError": "Failed to generate AI image. Please try again.",
+                "aiImageRequiredFields": "Please add a title and objective first"
             },
             "signaturesStep": {
                 "title": "Desired number of signatures",

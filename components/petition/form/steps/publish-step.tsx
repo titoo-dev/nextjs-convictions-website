@@ -48,8 +48,6 @@ export function PublishStep({ formData, updateFormData }: PublishStepProps) {
 	const [publishNow, setPublishNow] = useState(formData.publishNow ?? true);
 	const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
-	console.log('PublishStep formData:', formData);
-
 	const imagePreviewUrl = useMemo(() => {
 		if (formData.picture) {
 			return URL.createObjectURL(formData.picture);

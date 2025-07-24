@@ -1,8 +1,10 @@
 import { Button } from '@/components/ui/button';
-import { Image as ImageIcon, Upload, X } from 'lucide-react';
-import { useState, useRef } from 'react';
+import { Image as ImageIcon, Upload, X, Wand2 } from 'lucide-react';
+import { useState, useRef, useTransition } from 'react';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
+import { toast } from 'sonner';
+import { getOpenaiImage } from '@/actions/get-openai-image';
 
 type PetitionData = {
 	mediaType: 'PICTURE' | 'VIDEO_YOUTUBE';
@@ -12,15 +14,25 @@ type PetitionData = {
 
 type ImageUploadProps = {
 	pictureUrl?: string;
+	petitionTitle?: string;
+	petitionObjective?: string;
+	category: string;
 	updateFormData: (updates: Partial<PetitionData>) => void;
 };
 
-export function ImageUpload({ pictureUrl, updateFormData }: ImageUploadProps) {
+export function ImageUpload({
+	pictureUrl,
+	petitionTitle,
+	petitionObjective,
+	category,
+	updateFormData,
+}: ImageUploadProps) {
 	const t = useTranslations('petition.form.mediaStep');
 	const [dragActive, setDragActive] = useState(false);
 	const [previewUrl, setPreviewUrl] = useState<string | null>(
 		pictureUrl || null
 	);
+	const [isPending, startTransition] = useTransition();
 	const fileInputRef = useRef<HTMLInputElement>(null);
 
 	const handleFile = (file: File) => {
@@ -62,6 +74,62 @@ export function ImageUpload({ pictureUrl, updateFormData }: ImageUploadProps) {
 		}
 	};
 
+	const handleGenerateAIImage = () => {
+		if (!petitionTitle && !petitionObjective) {
+			toast.error(
+				t('aiImageRequiredFields') ||
+					'Please add a title and objective first'
+			);
+			return;
+		}
+
+		startTransition(async () => {
+			try {
+				const result = await getOpenaiImage({
+					title: petitionTitle || '',
+					goal: petitionObjective || '',
+					category: category,
+				});
+
+				if (result.success) {
+					const response = await fetch(result.data.url);
+					if (!response.ok) {
+						throw new Error('Failed to fetch generated image');
+					}
+
+					const blob = await response.blob();
+					const file = new File([blob], 'ai-generated-image.png', {
+						type: 'image/png',
+					});
+
+					const previewImageUrl = URL.createObjectURL(file);
+
+					setPreviewUrl(previewImageUrl);
+
+					updateFormData({
+						picture: file,
+					});
+
+					toast.success(
+						t('aiImageGenerated') ||
+							'AI image generated successfully!'
+					);
+				} else {
+					toast.error(
+						t('aiImageError') ||
+							'Failed to generate AI image. Please try again.'
+					);
+				}
+			} catch (error) {
+				console.error('Error generating AI image:', error);
+				toast.error(
+					t('aiImageError') ||
+						'Failed to generate AI image. Please try again.'
+				);
+			}
+		});
+	};
+
 	return (
 		<div className="space-y-4">
 			{!previewUrl ? (
@@ -82,14 +150,33 @@ export function ImageUpload({ pictureUrl, updateFormData }: ImageUploadProps) {
 							<ImageIcon className="w-8 h-8 text-gray-400" />
 						</div>
 						<div className="space-y-2 flex flex-col items-center">
-							<Button
-								type="button"
-								variant="outline"
-								className="flex items-center gap-2"
-							>
-								<Upload className="w-4 h-4" />
-								{t('selectFile')}
-							</Button>
+							<div className="flex flex-col sm:flex-row gap-2">
+								<Button
+									type="button"
+									variant="outline"
+									className="flex items-center gap-2"
+									disabled={isPending}
+								>
+									<Upload className="w-4 h-4" />
+									{t('selectFile')}
+								</Button>
+								<Button
+									type="button"
+									variant="outline"
+									className="flex items-center gap-2 border-purple-200 text-purple-600 hover:bg-purple-50"
+									onClick={handleGenerateAIImage}
+									disabled={isPending}
+								>
+									{isPending ? (
+										<div className="w-4 h-4 animate-spin rounded-full border-2 border-purple-600 border-t-transparent" />
+									) : (
+										<Wand2 className="w-4 h-4" />
+									)}
+									{isPending
+										? t('generating') || 'Generating...'
+										: t('generateAI') || 'Generate AI'}
+								</Button>
+							</div>
 							<p className="text-sm text-gray-500">
 								{t('dragAndDrop')}
 							</p>

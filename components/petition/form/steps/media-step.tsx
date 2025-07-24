@@ -11,6 +11,9 @@ type PetitionData = {
 	picture: File | null;
 	videoYoutubeUrl?: string;
 	pictureId: string | null;
+	title?: string;
+	objective?: string;
+	category: string;
 };
 
 type MediaStepProps = {
@@ -61,6 +64,9 @@ export function MediaStep({ formData, updateFormData }: MediaStepProps) {
 								? URL.createObjectURL(formData.picture)
 								: undefined
 						}
+						petitionTitle={formData.title}
+						petitionObjective={formData.objective}
+						category={formData.category}
 						updateFormData={updateFormData}
 					/>
 				</>

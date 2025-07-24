@@ -355,7 +355,12 @@
                 "processing": "Procesando imagen...",
                 "removeImage": "Eliminar imagen",
                 "removeVideo": "Eliminar video",
-                "restoringImage": "Restaurando la vista previa de la imagen..."
+                "restoringImage": "Restaurando la vista previa de la imagen...",
+                "generateAI": "Generar con IA",
+                "generating": "Generando...",
+                "aiImageGenerated": "Imagen generada con éxito!",
+                "aiImageError": "Error al generar la imagen con IA. Por favor, inténtalo de nuevo.",
+                "aiImageRequiredFields": "Por favor, añade un título y un objetivo primero"
             },
             "signaturesStep": {
                 "title": "Número deseado de firmas",
