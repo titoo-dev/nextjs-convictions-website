@@ -457,15 +457,8 @@ export default function NewPetitionPage() {
 					/>
 				</div>
 
-				{/* Step Content */}
-				<Card className="mb-8 shadow-none">
-					<CardContent className="p-6">
-						{renderStepContent()}
-					</CardContent>
-				</Card>
-
 				{/* Navigation */}
-				<div className="flex justify-between">
+				<div className="flex justify-between mb-6">
 					<Button
 						variant="outline"
 						onClick={handlePrevious}
@@ -496,6 +489,13 @@ export default function NewPetitionPage() {
 						)}
 					</Button>
 				</div>
+
+				{/* Step Content */}
+				<Card className="mb-8 shadow-none">
+					<CardContent className="p-6">
+						{renderStepContent()}
+					</CardContent>
+				</Card>
 			</div>
 		</div>
 	);
