@@ -9,18 +9,10 @@ import {
 import { PetitionMedia } from './petition-media';
 import { PetitionStats } from './petition-stats';
 import Link from 'next/link';
+import { PublicPetition } from '@/schemas/petition';
 
 type PetitionCardProps = {
-	petition: {
-		id: string;
-		id_seq: number;
-		title: string;
-		objective: string;
-		mediaType: string;
-		videoYoutubeUrl?: string | null;
-		pictureUrl?: string | null;
-		usersSignedNumber: number;
-	};
+	petition: PublicPetition;
 };
 
 export function PetitionCard({ petition }: PetitionCardProps) {
@@ -42,9 +34,7 @@ export function PetitionCard({ petition }: PetitionCardProps) {
 					</CardDescription>
 				</CardHeader>
 				<CardContent className="pt-0">
-					<PetitionStats
-						signaturesCount={petition.usersSignedNumber}
-					/>
+					<PetitionStats petition={petition} />
 				</CardContent>
 			</Card>
 		</Link>

@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { User as UserIcon, Heart } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { User } from '@/schemas/user';
-import { PublicPetition } from '@/schemas/public-petition';
+import { PublicPetition } from '@/schemas/petition';
 import { LoginDialog } from '@/components/header/login-dialog';
 import RenderWhen from '../render-when';
 import { cn } from '@/lib/utils';

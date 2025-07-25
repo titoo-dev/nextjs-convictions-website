@@ -7,7 +7,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from '@/components/ui/card';
-import { PublicPetition } from '@/schemas/public-petition';
+import { PublicPetition } from '@/schemas/petition';
 import { MessageCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';

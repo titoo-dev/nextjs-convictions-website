@@ -1,10 +1,7 @@
 'use server';
 
 import { getAccessToken } from '@/lib/cookies-storage';
-import {
-	PublicPetition,
-	PublicPetitionSchema,
-} from '../schemas/public-petition';
+import { PublicPetition, PetitionSchema } from '../schemas/petition';
 
 export type GetUniquePetitionResponse = {
 	petition: PublicPetition | null;
@@ -59,7 +56,7 @@ export async function getUniquePublicPetition(
 			return { petition: null };
 		}
 
-		const validatedPetition = PublicPetitionSchema.parse(data);
+		const validatedPetition = PetitionSchema.parse(data);
 
 		return { petition: validatedPetition };
 	} catch (error) {

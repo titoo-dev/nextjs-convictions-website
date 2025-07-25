@@ -22,7 +22,7 @@ const CommentSchema = z.object({
 	isLiked: z.boolean(),
 });
 
-const PublicPetitionSchema = z.object({
+const PetitionSchema = z.object({
 	id: z.string(),
 	id_seq: z.number(),
 	category: z.string(),
@@ -50,9 +50,9 @@ const PublicPetitionSchema = z.object({
 	litigationNumber: z.number(),
 });
 
-export { PictureSchema, AuthorSchema, CommentSchema, PublicPetitionSchema };
+export { PictureSchema, AuthorSchema, CommentSchema, PetitionSchema };
 
 export type Picture = z.infer<typeof PictureSchema>;
 export type Author = z.infer<typeof AuthorSchema>;
 export type Comment = z.infer<typeof CommentSchema>;
-export type PublicPetition = z.infer<typeof PublicPetitionSchema>;
+export type PublicPetition = z.infer<typeof PetitionSchema>;

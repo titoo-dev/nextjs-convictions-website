@@ -4,7 +4,7 @@ import { useState, useTransition, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from 'sonner';
-import { PublicPetition } from '@/schemas/public-petition';
+import { PublicPetition } from '@/schemas/petition';
 import { signPublicPetition } from '@/actions/sign-public-petition';
 import { SuccessDialog } from './success-dialog';
 import { PetitionFormInputs } from './petition-form-inputs';

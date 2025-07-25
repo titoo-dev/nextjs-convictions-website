@@ -1,16 +1,8 @@
-import { PetitionCard } from "./petition-card";
+import { PublicPetition } from '@/schemas/petition';
+import { PetitionCard } from './petition-card';
 
 type PetitionsGridProps = {
-	petitions: Array<{
-		id: string;
-		id_seq: number;
-		title: string;
-		objective: string;
-		mediaType: string;
-		videoYoutubeUrl?: string | null;
-		pictureUrl?: string | null;
-		usersSignedNumber: number;
-	}>;
+	petitions: Array<PublicPetition>;
 };
 
 export function PetitionsGrid({ petitions }: PetitionsGridProps) {

@@ -1,10 +1,8 @@
 'use server';
 
 import { getLocale } from 'next-intl/server';
-import {
-	PublicPetition,
-	PublicPetitionSchema,
-} from '../schemas/public-petition';
+import { PublicPetition, PetitionSchema } from '../schemas/petition';
+import { getAccessToken } from '@/lib/cookies-storage';
 
 export type GetPetitionsResponse = {
 	petitions: PublicPetition[];
@@ -20,15 +18,19 @@ export type FilteredPetitionParams = {
 	query?: string;
 };
 
-export async function getPublicPetitions(
+export async function getPetitions(
 	params: GetPetitionsParams
 ): Promise<GetPetitionsResponse> {
 	try {
+		const accessToken = await getAccessToken();
+
 		const locale = (await getLocale()).toUpperCase();
 
 		const { page = 1, category = 'ALL', query = '' } = params.filter;
 
-		let url = `${process.env.NEXT_PUBLIC_API_BASE_URL}/petition/public/home/${locale}/${category}`;
+		let url = accessToken
+			? `${process.env.NEXT_PUBLIC_API_BASE_URL}/petition/home/${locale}/${category}`
+			: `${process.env.NEXT_PUBLIC_API_BASE_URL}/petition/public/home/${locale}/${category}`;
 
 		if (query !== '') {
 			const searchParams = new URLSearchParams();
@@ -54,13 +56,14 @@ export async function getPublicPetitions(
 			headers: {
 				'Content-Type': 'application/json',
 				Accept: 'application/json',
+				Authorization: `Bearer ${accessToken}`,
 			},
 			cache: 'no-store',
 		});
 
 		const data = await response.json();
 
-		const parsedPetitions = PublicPetitionSchema.array().parse(data);
+		const parsedPetitions = PetitionSchema.array().parse(data);
 
 		return { petitions: parsedPetitions };
 	} catch (error) {

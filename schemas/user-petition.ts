@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { AuthorSchema, CommentSchema } from './public-petition';
+import { AuthorSchema, CommentSchema } from './petition';
 
 export const UserPetitionSchema = z.object({
 	id: z.string(),

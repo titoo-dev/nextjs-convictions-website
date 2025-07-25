@@ -1,7 +1,7 @@
 'use client';
 
 import { Card, CardContent } from '@/components/ui/card';
-import { PublicPetition } from '@/schemas/public-petition';
+import { PublicPetition } from '@/schemas/petition';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 
@@ -41,7 +41,11 @@ export function PetitionContent({ petition }: PetitionContentProps) {
 									{item.insert}
 								</p>
 							);
-						} else if (item.insert && typeof item.insert === 'object' && 'image' in item.insert) {
+						} else if (
+							item.insert &&
+							typeof item.insert === 'object' &&
+							'image' in item.insert
+						) {
 							return (
 								<div key={index} className="mb-3 sm:mb-4">
 									<Image
