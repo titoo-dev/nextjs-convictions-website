@@ -3,7 +3,7 @@
 import { UserSignedPetition } from '@/schemas/user-signed-petition';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Button } from '../ui/button';
-import { ExternalLink, Calendar } from 'lucide-react';
+import { ExternalLink } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { slugify } from '@/lib/utils';
@@ -15,14 +15,6 @@ export function UserSignedPetitionCard({
 	petition: UserSignedPetition;
 }) {
 	const t = useTranslations('profile.petitions');
-
-	const formatDate = (dateString: string) => {
-		return new Intl.DateTimeFormat('fr-FR', {
-			day: 'numeric',
-			month: 'short',
-			year: 'numeric',
-		}).format(new Date(dateString));
-	};
 
 	return (
 		<Card className="flex flex-col h-full">

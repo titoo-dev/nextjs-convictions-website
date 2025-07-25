@@ -1,11 +1,5 @@
 import { slugify } from '@/lib/utils';
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
-} from '../ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { PetitionMedia } from './petition-media';
 import { PetitionStats } from './petition-stats';
 import Link from 'next/link';

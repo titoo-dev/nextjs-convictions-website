@@ -74,7 +74,6 @@ export default function RegisterPage() {
 
 	const handleGoogleAuth = async () => {
 		try {
-			// TODO: Implement Google authentication
 			console.log('Google auth');
 		} catch (error) {
 			console.error('Google auth error:', error);

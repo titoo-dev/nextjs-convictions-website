@@ -307,8 +307,6 @@ export function NewPetitionClient({ currentUser }: NewPetitionClientProps) {
 
 					toast.success(tPage('publishSuccess'));
 
-					console.log('Petition created successfully:', result.data);
-
 					router.push(result.data?.urlPetition ?? '/');
 				} else {
 					toast.error(result.error || tPage('publishError'));
