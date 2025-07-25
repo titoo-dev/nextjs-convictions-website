@@ -10,6 +10,7 @@ import { PetitionMedia } from './petition-media';
 import { PetitionStats } from './petition-stats';
 import Link from 'next/link';
 import { PublicPetition } from '@/schemas/petition';
+import Image from 'next/image';
 
 type PetitionCardProps = {
 	petition: PublicPetition;
@@ -32,8 +33,22 @@ export function PetitionCard({ petition }: PetitionCardProps) {
 					<CardDescription className="line-clamp-3">
 						{petition.objective}
 					</CardDescription>
+					<div className="flex items-center gap-2 mt-auto">
+						{petition.author.picture && (
+							<Image
+								src={petition.author.pictureUrl}
+								alt={petition.author.name}
+								width={24}
+								height={24}
+								className="w-6 h-6 rounded-full object-cover"
+							/>
+						)}
+						<span className="text-sm text-muted-foreground">
+							{petition.author.name}
+						</span>
+					</div>
 				</CardHeader>
-				<CardContent className="pt-0">
+				<CardContent className="pt-0 mt-auto">
 					<PetitionStats petition={petition} />
 				</CardContent>
 			</Card>
