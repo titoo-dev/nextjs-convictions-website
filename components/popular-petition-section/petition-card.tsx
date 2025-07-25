@@ -30,9 +30,9 @@ export function PetitionCard({ petition }: PetitionCardProps) {
 					<CardTitle className="text-xl line-clamp-2 min-h-[3.5rem]">
 						{petition.title}
 					</CardTitle>
-					<CardDescription className="line-clamp-3">
+					<p className="text-muted-foreground line-clamp-3">
 						{petition.objective}
-					</CardDescription>
+					</p>
 					<div className="flex items-center gap-2 mt-auto">
 						{petition.author.picture && (
 							<Image
@@ -48,7 +48,7 @@ export function PetitionCard({ petition }: PetitionCardProps) {
 						</span>
 					</div>
 				</CardHeader>
-				<CardContent className="pt-0 mt-auto">
+				<CardContent className="pt-0">
 					<PetitionStats petition={petition} />
 				</CardContent>
 			</Card>

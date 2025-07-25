@@ -6,9 +6,20 @@ import { Button } from '../ui/button';
 import { Edit, Trash2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../ui/alert-dialog';
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+} from '../ui/alert-dialog';
 import { useTransition } from 'react';
 import { deletePetition } from '@/actions/delete-petition';
+import { PetitionMedia } from '../popular-petition-section/petition-media';
 
 export function UserPetitionCard({ petition }: { petition: UserPetition }) {
 	const t = useTranslations('profile.petitions');
@@ -31,30 +42,12 @@ export function UserPetitionCard({ petition }: { petition: UserPetition }) {
 	return (
 		<Card className="flex flex-col h-full">
 			<CardHeader className="flex-1">
-				<div className="relative">
-					{petition.mediaType === 'PICTURE' && petition.pictureUrl ? (
-						<Image
-							src={petition.pictureUrl}
-							alt={petition.title}
-							width={400}
-							height={192}
-							className="w-full h-48 object-cover rounded-md"
-						/>
-					) : petition.mediaType === 'VIDEO_YOUTUBE' &&
-					  petition.videoYoutubeUrl ? (
-						<div className="w-full h-48 bg-muted rounded-md flex items-center justify-center">
-							<span className="text-muted-foreground">
-								YouTube Video
-							</span>
-						</div>
-					) : (
-						<div className="w-full h-48 bg-muted rounded-md flex items-center justify-center">
-							<span className="text-muted-foreground">
-								{t('no-media')}
-							</span>
-						</div>
-					)}
-				</div>
+				<PetitionMedia
+					mediaType={petition.mediaType}
+					videoYoutubeUrl={petition.videoYoutubeUrl}
+					pictureUrl={petition.pictureUrl}
+					title={petition.title}
+				/>
 				<CardTitle className="text-xl line-clamp-2 min-h-[3.5rem]">
 					{petition.title}
 				</CardTitle>
@@ -104,11 +97,15 @@ export function UserPetitionCard({ petition }: { petition: UserPetition }) {
 										{t('delete-confirmation.cancel')}
 									</AlertDialogCancel>
 									<AlertDialogAction
-										onClick={() => handleDelete(petition.id)}
+										onClick={() =>
+											handleDelete(petition.id)
+										}
 										className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
 										disabled={isPending}
 									>
-										{isPending ? t('delete-confirmation.deleting') : t('delete-confirmation.confirm')}
+										{isPending
+											? t('delete-confirmation.deleting')
+											: t('delete-confirmation.confirm')}
 									</AlertDialogAction>
 								</AlertDialogFooter>
 							</AlertDialogContent>
