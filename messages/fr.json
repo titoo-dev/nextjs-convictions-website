@@ -125,7 +125,9 @@
         },
         "card": {
             "signatures": "Signatures",
-            "signButton": "Je signe"
+            "signButton": "Je signe",
+            "published": "Publiée",
+            "signed": "Signée"
         },
         "emptyState": {
             "title": "Aucune pétition trouvée",

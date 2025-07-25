@@ -125,7 +125,9 @@
         },
         "card": {
             "signatures": "Firmas",
-            "signButton": "Firmar"
+            "signButton": "Firmar",
+            "published": "Publicada",
+            "signed": "Firmada"
         },
         "emptyState": {
             "title": "No se encontraron peticiones",

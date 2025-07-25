@@ -125,7 +125,9 @@
         },
         "card": {
             "signatures": "Signatures",
-            "signButton": "I sign"
+            "signButton": "I sign",
+            "published": "Published",
+            "signed": "Signed"
         },
         "emptyState": {
             "title": "No petitions found",

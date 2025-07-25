@@ -31,7 +31,7 @@ export function PetitionStats({ petition }: PetitionStatsProps) {
 				<RenderWhen condition={petition.isMine}>
 					<div className="mb-2 ml-auto">
 						<span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-							Published
+							{t('published')}
 						</span>
 					</div>
 				</RenderWhen>
@@ -39,7 +39,7 @@ export function PetitionStats({ petition }: PetitionStatsProps) {
 				<RenderWhen condition={!petition.isMine && petition.isISign}>
 					<div className="mb-2 ml-auto">
 						<span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
-							Signed
+							{t('signed')}
 						</span>
 					</div>
 				</RenderWhen>
