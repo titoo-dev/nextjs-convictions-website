@@ -18,51 +18,27 @@ export function PetitionContent({ petition }: PetitionContentProps) {
 
 	const parseContent = (content: string) => {
 		try {
-			return JSON.parse(content);
+			const {
+				QuillDeltaToHtmlConverter,
+			} = require('quill-delta-to-html');
+			const deltaOps = JSON.parse(content);
+			const converter = new QuillDeltaToHtmlConverter(deltaOps, {});
+			return converter.convert();
 		} catch (error) {
 			console.error('Failed to parse petition content:', error);
-			return [];
+			return content;
 		}
 	};
 
-	console.log(petition.content);
-
-	const contentArray = parseContent(petition.content);
+	const htmlContent = parseContent(petition.content);
 
 	return (
 		<Card className="shadow-none">
 			<CardContent>
-				<div className="prose prose-sm max-w-none">
-					{contentArray.map((item: ContentItem, index: number) => {
-						if (typeof item.insert === 'string') {
-							return (
-								<p
-									key={index}
-									className="mb-3 sm:mb-4 text-sm sm:text-base text-gray-700 leading-relaxed break-words"
-								>
-									{item.insert}
-								</p>
-							);
-						} else if (
-							item.insert &&
-							typeof item.insert === 'object' &&
-							'image' in item.insert
-						) {
-							return (
-								<div key={index} className="mb-3 sm:mb-4">
-									<Image
-										src={item.insert.image}
-										alt={t('imageAlt')}
-										width={800}
-										height={400}
-										className="w-full h-auto rounded-md"
-									/>
-								</div>
-							);
-						}
-						return null;
-					})}
-				</div>
+				<div
+					className="prose prose-sm max-w-none text-sm sm:text-base text-gray-700 leading-relaxed"
+					dangerouslySetInnerHTML={{ __html: htmlContent }}
+				/>
 			</CardContent>
 		</Card>
 	);
