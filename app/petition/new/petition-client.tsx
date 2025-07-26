@@ -74,6 +74,7 @@ export type PetitionFormData = {
 	publishNow?: boolean;
 	scheduledDate?: string;
 	scheduledTime?: string;
+	editorOps?: string;
 };
 
 type NewPetitionClientProps = {
@@ -127,7 +128,7 @@ export function NewPetitionClient({ currentUser }: NewPetitionClientProps) {
 					category: savedData.category || '',
 					title: savedData.title || '',
 					objective: savedData.objective || '',
-					content: savedData.content || '',
+					content: savedData.editorOps || '',
 					destination: savedData.destination || '',
 					mediaType: savedData.mediaType || 'PICTURE',
 					videoYoutubeUrl: savedData.videoYoutubeUrl,
@@ -274,7 +275,7 @@ export function NewPetitionClient({ currentUser }: NewPetitionClientProps) {
 			title: formData.title,
 			objective: formData.objective,
 			destination: formData.destination,
-			content: formData.content,
+			content: formData.editorOps ?? formData.content,
 			languageOrigin: locale,
 			creationStep: 6,
 			mediaType: formData.mediaType,

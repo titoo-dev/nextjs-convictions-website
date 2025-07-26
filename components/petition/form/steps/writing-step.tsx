@@ -29,6 +29,7 @@ type PetitionData = {
 	title?: string;
 	objective?: string;
 	category?: string;
+	editorOps?: string;
 };
 
 type WritingStepProps = {
@@ -39,6 +40,7 @@ type WritingStepProps = {
 export function WritingStep({ formData, updateFormData }: WritingStepProps) {
 	const t = useTranslations('petition.form.writingStep');
 	const [editorContent, setEditorContent] = useState(formData.content || '');
+	const [editorDelta, setEditorDelta] = useState<any>(null);
 	const [isGenerating, setIsGenerating] = useState(false);
 	const [sseError, setSseError] = useState<string | null>(null);
 	const eventSourceRef = useRef<EventSource | null>(null);
@@ -111,9 +113,14 @@ export function WritingStep({ formData, updateFormData }: WritingStepProps) {
 					accumulatedContentRef.current += data.response;
 					const newContent = accumulatedContentRef.current;
 
+					const newOptFormatted = `[{"insert":"${newContent}"}]`;
+
 					// Update editor content progressively
 					setEditorContent(newContent);
-					updateFormData({ content: newContent });
+					updateFormData({
+						content: newContent,
+						editorOps: newOptFormatted,
+					});
 				}
 			},
 			onComplete: () => {
@@ -168,18 +175,26 @@ export function WritingStep({ formData, updateFormData }: WritingStepProps) {
 			responseLanguage: locale,
 		};
 
-		console.log('Requesting AI assistance with data:', data);
-
 		subscribeSseStream(data);
 
 		await generatePetitionContent(data);
 	};
 
 	// Handle content changes
-	const handleChange = (content: string) => {
+	const handleChange = (
+		content: string,
+		delta: any,
+		source: string,
+		editor: any
+	) => {
 		if (!isGenerating) {
 			setEditorContent(content);
-			updateFormData({ content });
+			const editorOps = editor.getContents().ops;
+			setEditorDelta(editor.getContents());
+			updateFormData({
+				content,
+				editorOps: JSON.stringify(editorOps),
+			});
 		}
 	};
 

@@ -25,6 +25,8 @@ export function PetitionContent({ petition }: PetitionContentProps) {
 		}
 	};
 
+	console.log(petition.content);
+
 	const contentArray = parseContent(petition.content);
 
 	return (
