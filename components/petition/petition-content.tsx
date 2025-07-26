@@ -2,25 +2,15 @@
 
 import { Card, CardContent } from '@/components/ui/card';
 import { PublicPetition } from '@/schemas/petition';
-import { useTranslations } from 'next-intl';
-import Image from 'next/image';
+import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html';
 
 type PetitionContentProps = {
 	petition: PublicPetition;
 };
 
-type ContentItem = {
-	insert: string | { image: string };
-};
-
 export function PetitionContent({ petition }: PetitionContentProps) {
-	const t = useTranslations('petition.content');
-
 	const parseContent = (content: string) => {
 		try {
-			const {
-				QuillDeltaToHtmlConverter,
-			} = require('quill-delta-to-html');
 			const deltaOps = JSON.parse(content);
 			const converter = new QuillDeltaToHtmlConverter(deltaOps, {});
 			return converter.convert();

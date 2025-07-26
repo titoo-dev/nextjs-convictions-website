@@ -40,7 +40,9 @@ type WritingStepProps = {
 export function WritingStep({ formData, updateFormData }: WritingStepProps) {
 	const t = useTranslations('petition.form.writingStep');
 	const [editorContent, setEditorContent] = useState(formData.content || '');
-	const [editorDelta, setEditorDelta] = useState<any>(null);
+
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const [, setEditorDelta] = useState<any>(null);
 	const [isGenerating, setIsGenerating] = useState(false);
 	const [sseError, setSseError] = useState<string | null>(null);
 	const eventSourceRef = useRef<EventSource | null>(null);
@@ -180,11 +182,12 @@ export function WritingStep({ formData, updateFormData }: WritingStepProps) {
 		await generatePetitionContent(data);
 	};
 
-	// Handle content changes
 	const handleChange = (
 		content: string,
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		delta: any,
 		source: string,
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		editor: any
 	) => {
 		if (!isGenerating) {
