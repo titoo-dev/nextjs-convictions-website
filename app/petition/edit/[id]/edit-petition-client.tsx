@@ -71,6 +71,7 @@ export type PetitionFormData = {
 	scheduledDate?: string;
 	scheduledTime?: string;
 	editorOps?: string;
+	pictureUrl?: string;
 };
 
 type EditPetitionClientProps = {
@@ -100,6 +101,7 @@ export function EditPetitionClient({
 		videoYoutubeUrl: petition.videoYoutubeUrl ?? '',
 		picture: null,
 		pictureId: null,
+		pictureUrl: petition.pictureUrl,
 	});
 
 	const steps: { id: Step; title: string; icon: React.ReactNode }[] = [
