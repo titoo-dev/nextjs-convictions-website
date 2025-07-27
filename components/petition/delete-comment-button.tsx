@@ -36,7 +36,7 @@ export function DeleteCommentButton({
 
 	const handleDelete = () => {
 		startTransition(async () => {
-			const result = await deleteComment({ commentId });
+			const result = await deleteComment({ comment_id: commentId });
 			if (result.success) {
 				toast.success(
 					t('deleteSuccess', { defaultValue: 'Comment deleted' })

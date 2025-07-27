@@ -9,14 +9,23 @@ export type AuthTokens = {
 	expiresAt?: string;
 };
 
+// Configuration des durées (en millisecondes)
+const ACCESS_TOKEN_LIFETIME = 60 * 60 * 1000; // 1 heure au lieu de 15 minutes
+const REFRESH_TOKEN_LIFETIME = 7 * 24 * 60 * 60 * 1000; // 7 jours
+const REFRESH_BUFFER_TIME = 5 * 60 * 1000; // 5 minutes avant expiration
+
 export async function saveTokens(tokens: AuthTokens): Promise<void> {
 	try {
 		const cookieStore = await cookies();
 		const now = new Date();
-		const expiresAt = new Date(now.getTime() + 15 * 60 * 1000);
+		const defaultExpiresAt = new Date(
+			now.getTime() + ACCESS_TOKEN_LIFETIME
+		);
 
 		cookieStore.set('access-token', tokens.accessToken, {
-			expires: tokens.expiresAt ? new Date(tokens.expiresAt) : expiresAt,
+			expires: tokens.expiresAt
+				? new Date(tokens.expiresAt)
+				: defaultExpiresAt,
 			httpOnly: true,
 			secure: process.env.NODE_ENV === 'production',
 			sameSite: 'lax',
@@ -24,7 +33,7 @@ export async function saveTokens(tokens: AuthTokens): Promise<void> {
 		});
 
 		const refreshExpiresAt = new Date(
-			now.getTime() + 7 * 24 * 60 * 60 * 1000
+			now.getTime() + REFRESH_TOKEN_LIFETIME
 		);
 		cookieStore.set('refresh-token', tokens.refreshToken, {
 			expires: refreshExpiresAt,
@@ -38,7 +47,7 @@ export async function saveTokens(tokens: AuthTokens): Promise<void> {
 			cookieStore.set('token-expires-at', tokens.expiresAt, {
 				expires: tokens.expiresAt
 					? new Date(tokens.expiresAt)
-					: expiresAt,
+					: defaultExpiresAt,
 				httpOnly: true,
 				secure: process.env.NODE_ENV === 'production',
 				sameSite: 'lax',
@@ -62,18 +71,25 @@ export async function getTokens(): Promise<AuthTokens | null> {
 			return null;
 		}
 
+		// Vérifier si le token doit être rafraîchi (5 minutes avant expiration)
 		if (expiresAt) {
 			const expirationDate = new Date(expiresAt);
 			const now = new Date();
-			const bufferTime = 2 * 60 * 1000;
 
-			if (now.getTime() >= expirationDate.getTime() - bufferTime) {
+			if (
+				now.getTime() >=
+				expirationDate.getTime() - REFRESH_BUFFER_TIME
+			) {
+				console.log('Token will expire soon, attempting refresh...');
 				const refreshedTokens = await refreshAccessToken();
 				if (refreshedTokens) {
 					return refreshedTokens;
 				}
-				await clearTokens();
-				return null;
+				// Si le refresh échoue, on continue avec le token actuel
+				// Il sera géré dans makeAuthenticatedRequest si vraiment expiré
+				console.warn(
+					'Token refresh failed, continuing with current token'
+				);
 			}
 		}
 
@@ -84,7 +100,7 @@ export async function getTokens(): Promise<AuthTokens | null> {
 		};
 	} catch (error) {
 		console.warn('Failed to load auth tokens from cookies:', error);
-		await clearTokens();
+		// Ne pas effacer les tokens ici, laisser une chance à l'API de les utiliser
 		return null;
 	}
 }
@@ -124,7 +140,7 @@ export async function updateAccessToken(
 		const now = new Date();
 		const expiration = expiresAt
 			? new Date(expiresAt)
-			: new Date(now.getTime() + 15 * 60 * 1000);
+			: new Date(now.getTime() + ACCESS_TOKEN_LIFETIME);
 
 		cookieStore.set('access-token', accessToken, {
 			expires: expiration,
@@ -176,12 +192,14 @@ export async function refreshAccessToken(): Promise<AuthTokens | null> {
 				response.status,
 				response.statusText
 			);
-			await clearTokens();
+			// Seulement effacer les tokens si c'est une erreur 401/403 (token invalide)
+			if (response.status === 401 || response.status === 403) {
+				await clearTokens();
+			}
 			return null;
 		}
 
 		const data = await response.json();
-
 		const validatedResponse = authResponseSchema.parse(data);
 
 		if (
@@ -193,9 +211,10 @@ export async function refreshAccessToken(): Promise<AuthTokens | null> {
 			return null;
 		}
 
+		// Utiliser la durée par défaut de 1 heure pour l'expiration
 		const now = new Date();
 		const defaultExpiresAt = new Date(
-			now.getTime() + 15 * 60 * 1000
+			now.getTime() + ACCESS_TOKEN_LIFETIME
 		).toISOString();
 
 		const newTokens: AuthTokens = {
@@ -205,10 +224,11 @@ export async function refreshAccessToken(): Promise<AuthTokens | null> {
 		};
 
 		await saveTokens(newTokens);
+		console.log('Access token refreshed successfully');
 		return newTokens;
 	} catch (error) {
 		console.warn('Error refreshing access token:', error);
-		await clearTokens();
+		// Ne pas effacer automatiquement les tokens en cas d'erreur réseau
 		return null;
 	}
 }

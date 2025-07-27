@@ -1,62 +1,49 @@
 'use server';
 
-import { getAccessToken } from '@/lib/cookies-storage';
-import { revalidatePath } from 'next/cache';
+import { makeAuthenticatedRequest } from '@/lib/api';
 
-type LikeCommentResponse = {
+type LikeCommentPayload = {
+	comment_id: string;
+};
+
+type LikeCommentResult = {
 	success: boolean;
-	message?: string;
+	error?: string;
 };
 
 export async function likeComment(
-	commentId: string
-): Promise<LikeCommentResponse> {
+	payload: LikeCommentPayload
+): Promise<LikeCommentResult> {
 	try {
-		const accessToken = await getAccessToken();
-
-		if (!accessToken) {
-			return {
-				success: false,
-				message: 'Authentication required',
-			};
-		}
-
-		const response = await fetch(
-			`${process.env.NEXT_PUBLIC_API_BASE_URL}/petition/likeComment`,
+		const response = await makeAuthenticatedRequest(
+			`${process.env.NEXT_PUBLIC_API_BASE_URL}/comment/like`,
 			{
 				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					Accept: 'application/json',
-					Authorization: `Bearer ${accessToken}`,
-				},
-				body: JSON.stringify({
-					commentId,
-				}),
+				body: JSON.stringify(payload),
+				requiresAuth: true,
 			}
 		);
 
 		if (response.status !== 201) {
-			throw new Error(`HTTP error! status: ${response.status}`);
+			const errorData = await response.json().catch(() => ({}));
+			return {
+				success: false,
+				error:
+					errorData.message ||
+					`Request failed with status ${response.status}`,
+			};
 		}
-
-		const data = await response.json();
-
-		// Revalidate the page to show updated like count
-		revalidatePath('/');
 
 		return {
 			success: true,
-			message: data.message,
 		};
 	} catch (error) {
-		console.error('Error liking comment:', error);
 		return {
 			success: false,
-			message:
+			error:
 				error instanceof Error
 					? error.message
-					: 'Failed to like comment',
+					: 'An unexpected error occurred',
 		};
 	}
 }

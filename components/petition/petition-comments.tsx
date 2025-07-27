@@ -55,7 +55,7 @@ export function PetitionComments({
 				},
 			}));
 
-			likeComment(commentId)
+			likeComment({ comment_id: commentId })
 				.then((result) => {
 					if (!result.success) {
 						setCommentStates((prev) => ({
@@ -65,7 +65,7 @@ export function PetitionComments({
 								likesNumber: currentLikesNumber,
 							},
 						}));
-						toast.error(result.message || 'Failed to like comment');
+						toast.error(result.error || 'Failed to like comment');
 					}
 				})
 				.catch(() => {

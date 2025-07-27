@@ -18,6 +18,61 @@ type ApiRequestOptions = {
 	maxRetries?: number;
 };
 
+function parseExpiredAt(accessToken: string): Date | null {
+	try {
+		const parts = accessToken.split('.');
+		if (parts.length !== 3) {
+			return null;
+		}
+
+		const payload = parts[1];
+		// Normalize base64 string by adding padding if needed
+		const normalized = payload.replace(/-/g, '+').replace(/_/g, '/');
+		const padded = normalized + '==='.slice((normalized.length + 3) % 4);
+
+		const decoded = atob(padded);
+		const payloadMap = JSON.parse(decoded);
+
+		if (payloadMap.exp) {
+			return new Date(payloadMap.exp * 1000);
+		}
+
+		return null;
+	} catch (error) {
+		console.warn('Error parsing token expiration:', error);
+		return null;
+	}
+}
+
+function isPublicRoute(url: string): boolean {
+	return (
+		url.includes('/public') ||
+		url.includes('/openai') ||
+		url.includes('/auth/signIn') ||
+		url.includes('/auth/register')
+	);
+}
+
+function isRefreshRoute(url: string): boolean {
+	return url.includes('/auth/refreshToken') || url.includes('/refresh');
+}
+
+function isAuthRoute(url: string): boolean {
+	return url.includes('/auth');
+}
+
+function createUnauthorizedResponse(
+	message: string = 'Unauthorized'
+): Response {
+	return new Response(JSON.stringify({ error: message }), {
+		status: 401,
+		headers: { 'Content-Type': 'application/json' },
+	});
+}
+
+// Buffer pour le refresh proactif (10 minutes avant expiration)
+const PROACTIVE_REFRESH_BUFFER = 10 * 60 * 1000;
+
 export async function makeAuthenticatedRequest(
 	url: string,
 	options: ApiRequestOptions = {}
@@ -30,6 +85,25 @@ export async function makeAuthenticatedRequest(
 		maxRetries = 1,
 	} = options;
 
+	// Skip authentication for public routes
+	if (isPublicRoute(url) || isRefreshRoute(url)) {
+		const requestHeaders: Record<string, string> = {
+			'Content-Type': 'application/json',
+			Accept: 'application/json',
+			...headers,
+		};
+
+		if (body instanceof FormData) {
+			delete requestHeaders['Content-Type'];
+		}
+
+		return fetch(url, {
+			method,
+			headers: requestHeaders,
+			body,
+		});
+	}
+
 	let attempt = 0;
 
 	while (attempt <= maxRetries) {
@@ -41,11 +115,45 @@ export async function makeAuthenticatedRequest(
 			};
 
 			if (requiresAuth) {
-				const accessToken = await getAccessToken();
+				let accessToken = await getAccessToken();
+
 				if (!accessToken) {
-					throw new Error('No access token available');
+					if (!isAuthRoute(url)) {
+						console.warn('No access token available');
+						await clearTokens();
+						return createUnauthorizedResponse(
+							'No access token available'
+						);
+					}
+				} else {
+					// Vérification proactive de l'expiration seulement si on peut parser le token
+					const expiredAt = parseExpiredAt(accessToken);
+					if (expiredAt) {
+						const now = new Date();
+						const timeUntilExpiry =
+							expiredAt.getTime() - now.getTime();
+
+						// Refresh proactif si le token expire dans moins de 10 minutes
+						if (
+							timeUntilExpiry <= PROACTIVE_REFRESH_BUFFER &&
+							timeUntilExpiry > 0
+						) {
+							console.log(
+								'Token will expire soon, attempting proactive refresh...'
+							);
+							const refreshedTokens = await refreshAccessToken();
+							if (refreshedTokens) {
+								accessToken = refreshedTokens.accessToken;
+							}
+							// Continuer même si le refresh échoue, on tentera à nouveau si 401
+						}
+						// Ne pas bloquer si le token est expiré, laisser le serveur décider
+					}
 				}
-				requestHeaders.Authorization = `Bearer ${accessToken}`;
+
+				if (accessToken) {
+					requestHeaders.Authorization = `Bearer ${accessToken}`;
+				}
 			}
 
 			if (body instanceof FormData) {
@@ -58,17 +166,20 @@ export async function makeAuthenticatedRequest(
 				body,
 			});
 
+			// Si on reçoit un 401 et qu'on n'a pas encore essayé de refresh
 			if (
 				response.status === 401 &&
 				requiresAuth &&
-				attempt < maxRetries
+				attempt < maxRetries &&
+				!isRefreshRoute(url)
 			) {
-				console.warn('Access token expired, attempting refresh...');
+				console.log('Received 401, attempting token refresh...');
 				const refreshedTokens = await refreshAccessToken();
 
 				if (!refreshedTokens) {
+					// Seulement effacer et retourner erreur si c'est vraiment un échec définitif
 					await clearTokens();
-					throw new Error('Failed to refresh access token');
+					return createUnauthorizedResponse('Authentication failed');
 				}
 
 				attempt++;
@@ -85,6 +196,17 @@ export async function makeAuthenticatedRequest(
 	}
 
 	throw new Error('Max retries exceeded');
+}
+
+export async function makeFormDataRequest(
+	url: string,
+	formData: FormData,
+	options: Omit<ApiRequestOptions, 'body'> = {}
+): Promise<Response> {
+	return makeAuthenticatedRequest(url, {
+		...options,
+		body: formData,
+	});
 }
 
 export async function getTitleSuggestions(

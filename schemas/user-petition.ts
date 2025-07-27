@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { AuthorSchema, CommentSchema } from './petition';
 
-export const UserPetitionSchema = z.object({
+export const userPetitionSchema = z.object({
 	id: z.string(),
 	id_seq: z.number(),
 	category: z.string(),
@@ -29,4 +29,4 @@ export const UserPetitionSchema = z.object({
 	litigationNumber: z.number(),
 });
 
-export type UserPetition = z.infer<typeof UserPetitionSchema>;
+export type UserPetition = z.infer<typeof userPetitionSchema>;

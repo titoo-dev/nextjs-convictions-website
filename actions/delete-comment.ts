@@ -1,51 +1,42 @@
 'use server';
 
-import { revalidatePath } from 'next/cache';
-import { getAccessToken } from '../lib/cookies-storage';
+import { makeAuthenticatedRequest } from '@/lib/api';
 
-type DeleteCommentParams = {
-	commentId: string;
+type DeleteCommentPayload = {
+	comment_id: string;
 };
 
-type DeleteCommentResult =
-	| { success: true }
-	| { success: false; error: string };
+type DeleteCommentResult = {
+	success: boolean;
+	error?: string;
+};
 
-export async function deleteComment({
-	commentId,
-}: DeleteCommentParams): Promise<DeleteCommentResult> {
-	if (!commentId || typeof commentId !== 'string') {
-		return { success: false, error: 'Invalid comment ID' };
-	}
-
-	const accessToken = await getAccessToken();
-	if (!accessToken) {
-		return { success: false, error: 'Unauthorized' };
-	}
-
+export async function deleteComment(
+	payload: DeleteCommentPayload
+): Promise<DeleteCommentResult> {
 	try {
-		const response = await fetch(
-			`${
-				process.env.NEXT_PUBLIC_API_BASE_URL
-			}/petition/comment/${encodeURIComponent(commentId)}`,
+		const response = await makeAuthenticatedRequest(
+			`${process.env.NEXT_PUBLIC_API_BASE_URL}/comment/delete`,
 			{
 				method: 'DELETE',
-				headers: {
-					'Content-Type': 'application/json',
-					Accept: 'application/json',
-					Authorization: `Bearer ${accessToken}`,
-				},
+				body: JSON.stringify(payload),
+				requiresAuth: true,
 			}
 		);
 
 		if (response.status !== 200) {
+			const errorData = await response.json().catch(() => ({}));
 			return {
 				success: false,
-				error: 'Failed to delete comment',
+				error:
+					errorData.message ||
+					`Request failed with status ${response.status}`,
 			};
 		}
 
-		return { success: true };
+		return {
+			success: true,
+		};
 	} catch (error) {
 		return {
 			success: false,

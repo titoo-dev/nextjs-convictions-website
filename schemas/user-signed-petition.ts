@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { UserPetitionSchema } from './user-petition';
+import { userPetitionSchema } from './user-petition';
 
-export const UserSignedPetitionSchema = UserPetitionSchema;
+export const userSignedPetitionSchema = userPetitionSchema;
 
-export type UserSignedPetition = z.infer<typeof UserSignedPetitionSchema>;
+export type UserSignedPetition = z.infer<typeof userSignedPetitionSchema>;

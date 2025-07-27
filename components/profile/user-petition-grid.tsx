@@ -1,13 +1,14 @@
 import { UserPetitionCard } from './user-petition-card';
 import { getUserPetitions } from '@/actions/get-user-petitions';
-import { getTranslations } from 'next-intl/server';
+import { getLocale, getTranslations } from 'next-intl/server';
 import { Button } from '../ui/button';
 import Link from 'next/link';
 
 export async function UserPetitionsGrid() {
+	const locale = await getLocale();
 	const t = await getTranslations('profile.petitions');
 
-	const petitions = await getUserPetitions();
+	const petitions = await getUserPetitions(locale);
 
 	if (!petitions || petitions.length === 0) {
 		return (

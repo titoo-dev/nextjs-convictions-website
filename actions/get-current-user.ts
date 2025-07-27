@@ -14,7 +14,6 @@ export async function getCurrentUser(): Promise<User | null> {
 		);
 
 		if (response.status !== 200) {
-			console.error('Failed to fetch current user:', response.statusText);
 			return null;
 		}
 

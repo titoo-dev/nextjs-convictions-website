@@ -1,5 +1,5 @@
 'use server';
-import { getAccessToken } from '@/lib/cookies-storage';
+import { makeFormDataRequest } from '@/lib/api';
 import {
 	CreatePetitionRequest,
 	createPetitionRequestSchema,
@@ -8,7 +8,6 @@ import {
 	createPetitionResponseSchema,
 	type CreatePetitionResponse,
 } from '@/schemas/create-petition-response';
-import { redirect } from 'next/navigation';
 
 type ActionResult = {
 	success: boolean;
@@ -25,12 +24,6 @@ export async function createPetition(
 	params: CreatePetitionParams
 ): Promise<ActionResult | null> {
 	try {
-		const accessToken = await getAccessToken();
-
-		if (!accessToken) {
-			return null;
-		}
-
 		// Validate form data (excluding file for initial validation)
 		const validatedData = createPetitionRequestSchema.parse(params.data);
 
@@ -48,16 +41,13 @@ export async function createPetition(
 			apiFormData.append('picture', params.picture);
 		}
 
-		// Make API request
-		const response = await fetch(
+		// Make API request using the new makeFormDataRequest function
+		const response = await makeFormDataRequest(
 			`${process.env.NEXT_PUBLIC_API_BASE_URL}/petition`,
+			apiFormData,
 			{
 				method: 'POST',
-				body: apiFormData,
-				headers: {
-					Accept: 'application/json',
-					Authorization: `Bearer ${accessToken}`,
-				},
+				requiresAuth: true,
 			}
 		);
 
