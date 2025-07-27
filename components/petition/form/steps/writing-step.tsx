@@ -218,7 +218,7 @@ export function WritingStep({ formData, updateFormData }: WritingStepProps) {
 	useEffect(() => {
 		if (formData.content && !editorContent) {
 			const deltaFormatted = {
-				ops: JSON.parse(formData.content),
+				ops: JSON.parse(formData.editorOps ?? formData.content),
 			} as DeltaStatic;
 			setEditorContent(deltaFormatted);
 		}
