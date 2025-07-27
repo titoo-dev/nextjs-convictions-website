@@ -90,14 +90,14 @@ export function EditPetitionClient({
 
 	const [currentStep, setCurrentStep] = useState<Step>('title');
 	const [formData, setFormData] = useState<PetitionFormData>({
-		category: petition.category,
+		category: petition.category.toLowerCase(),
 		title: petition.title,
 		objective: petition.objective,
 		content: petition.contentFr ?? '',
 		destination: petition.destination,
 		mediaType: petition.mediaType,
 		signatureGoal: petition.signatureGoal,
-		videoYoutubeUrl: petition.videoYoutubeUrl,
+		videoYoutubeUrl: petition.videoYoutubeUrl ?? '',
 		picture: null,
 		pictureId: null,
 	});

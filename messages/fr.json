@@ -224,6 +224,7 @@
         "form": {
             "page": {
                 "title": "Créer une nouvelle pétition",
+                "editTitle": "Modifier la pétition",
                 "back": "Retour",
                 "previous": "Précédent",
                 "next": "Suivant",
@@ -231,6 +232,10 @@
                 "draftRestored": "Votre brouillon a été restauré d'une session précédente.",
                 "startFresh": "Recommencer",
                 "publishing": "Publication...",
+                "updating": "Mise à jour...",
+                "updatePetition": "Mettre à jour la pétition",
+                "updateSuccess": "Votre pétition a été mise à jour avec succès !",
+                "updateError": "Échec de la mise à jour de la pétition. Veuillez réessayer.",
                 "publishSuccess": "Votre pétition a été publiée avec succès !",
                 "publishError": "Échec de la publication de la pétition. Veuillez réessayer.",
                 "unexpectedError": "Une erreur inattendue s'est produite. Veuillez réessayer.",

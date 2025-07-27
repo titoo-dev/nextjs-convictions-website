@@ -25,7 +25,7 @@ export const petitionToUpdateSchema = z.object({
 	languageOrigin: z.enum(['EN', 'FR', 'ES']),
 	contentFr: z.string().optional(),
 	mediaType: z.enum(['VIDEO_YOUTUBE', 'PICTURE']),
-	videoYoutubeUrl: z.string().url().optional(),
+	videoYoutubeUrl: z.url().nullable(),
 	signatureGoal: z.number().min(1),
 	isPublished: z.boolean(),
 	publishedAt: z.coerce.date().optional(),

@@ -218,15 +218,20 @@
         "form": {
             "page": {
                 "title": "Create New Petition",
+                "editTitle": "Edit Petition",
                 "back": "Back",
                 "previous": "Previous",
                 "next": "Next",
                 "publishPetition": "Publish Petition",
+                "updatePetition": "Update Petition",
                 "draftRestored": "Your draft has been restored from a previous session.",
                 "startFresh": "Start Fresh",
                 "publishing": "Publishing...",
+                "updating": "Updating...",
                 "publishSuccess": "Your petition has been published successfully!",
+                "updateSuccess": "Your petition has been updated successfully!",
                 "publishError": "Failed to publish petition. Please try again.",
+                "updateError": "Failed to update petition. Please try again.",
                 "unexpectedError": "An unexpected error occurred. Please try again.",
                 "authRequired": "You must be logged in to publish a petition."
             },
