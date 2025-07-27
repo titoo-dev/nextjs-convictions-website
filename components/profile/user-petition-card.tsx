@@ -19,14 +19,11 @@ import {
 import { useTransition } from 'react';
 import { deletePetition } from '@/actions/delete-petition';
 import { PetitionMedia } from '../popular-petition-section/petition-media';
+import Link from 'next/link';
 
 export function UserPetitionCard({ petition }: { petition: UserPetition }) {
 	const t = useTranslations('profile.petitions');
 	const [isPending, startTransition] = useTransition();
-
-	const handleEdit = (id: string) => {
-		console.log('Edit petition with ID:', id);
-	};
 
 	const handleDelete = (id: string) => {
 		startTransition(async () => {
@@ -65,11 +62,13 @@ export function UserPetitionCard({ petition }: { petition: UserPetition }) {
 						<Button
 							variant="outline"
 							size="sm"
-							onClick={() => handleEdit(petition.id)}
+							asChild
 							className="h-8 w-8 p-0"
 							disabled={isPending}
 						>
-							<Edit className="h-4 w-4" />
+							<Link href={`/petition/edit/${petition.id}`}>
+								<Edit className="h-4 w-4" />
+							</Link>
 						</Button>
 						<AlertDialog>
 							<AlertDialogTrigger asChild>
