@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Sparkles, Loader2 } from 'lucide-react';
 import 'react-quill-new/dist/quill.snow.css';
 import { generatePetitionContent } from '@/lib/api';
+import { DeltaStatic } from 'react-quill-new';
 
 // Dynamically import ReactQuill to avoid SSR issues
 const ReactQuill = dynamic(() => import('react-quill-new'), {
@@ -39,7 +40,7 @@ type WritingStepProps = {
 
 export function WritingStep({ formData, updateFormData }: WritingStepProps) {
 	const t = useTranslations('petition.form.writingStep');
-	const [editorContent, setEditorContent] = useState(formData.content || '');
+	const [editorContent, setEditorContent] = useState<DeltaStatic>();
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const [, setEditorDelta] = useState<any>(null);
@@ -117,8 +118,12 @@ export function WritingStep({ formData, updateFormData }: WritingStepProps) {
 
 					const newOptFormatted = `[{"insert":"${newContent}"}]`;
 
+					const deltaFormatted = JSON.parse(
+						newOptFormatted
+					) as DeltaStatic;
+
 					// Update editor content progressively
-					setEditorContent(newContent);
+					setEditorContent(deltaFormatted);
 					updateFormData({
 						content: newContent,
 						editorOps: newOptFormatted,
@@ -170,7 +175,7 @@ export function WritingStep({ formData, updateFormData }: WritingStepProps) {
 		};
 
 		const data = {
-			contentInput: editorContent || '',
+			contentInput: JSON.stringify(editorContent) || '',
 			title: formData.title || '',
 			goal: formData.objective || '',
 			category: mapCategoryToAPI(formData.category ?? '') || '',
@@ -191,7 +196,7 @@ export function WritingStep({ formData, updateFormData }: WritingStepProps) {
 		editor: any
 	) => {
 		if (!isGenerating) {
-			setEditorContent(content);
+			setEditorContent(editor.getContents());
 			const editorOps = editor.getContents().ops;
 			setEditorDelta(editor.getContents());
 			updateFormData({
@@ -212,7 +217,10 @@ export function WritingStep({ formData, updateFormData }: WritingStepProps) {
 
 	useEffect(() => {
 		if (formData.content && !editorContent) {
-			setEditorContent(formData.content);
+			const deltaFormatted = {
+				ops: JSON.parse(formData.content),
+			} as DeltaStatic;
+			setEditorContent(deltaFormatted);
 		}
 	}, []);
 
