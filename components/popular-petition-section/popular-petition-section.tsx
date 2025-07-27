@@ -1,6 +1,6 @@
 import {
 	FilteredPetitionParams,
-	getPublicPetitions,
+	getPetitions,
 } from '@/actions/get-public-petitions';
 import { SectionHeader } from './section-header';
 import { PetitionsGrid } from './petition-grid';
@@ -15,7 +15,7 @@ type PetitionContentProps = {
 };
 
 async function PetitionContent({ filter }: PetitionContentProps) {
-	const { petitions: popularPetitions } = await getPublicPetitions({
+	const { petitions: popularPetitions } = await getPetitions({
 		filter,
 	});
 

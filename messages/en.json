@@ -125,7 +125,9 @@
         },
         "card": {
             "signatures": "Signatures",
-            "signButton": "I sign"
+            "signButton": "I sign",
+            "published": "Published",
+            "signed": "Signed"
         },
         "emptyState": {
             "title": "No petitions found",
@@ -216,15 +218,20 @@
         "form": {
             "page": {
                 "title": "Create New Petition",
+                "editTitle": "Edit Petition",
                 "back": "Back",
                 "previous": "Previous",
                 "next": "Next",
                 "publishPetition": "Publish Petition",
+                "updatePetition": "Update Petition",
                 "draftRestored": "Your draft has been restored from a previous session.",
                 "startFresh": "Start Fresh",
                 "publishing": "Publishing...",
+                "updating": "Updating...",
                 "publishSuccess": "Your petition has been published successfully!",
+                "updateSuccess": "Your petition has been updated successfully!",
                 "publishError": "Failed to publish petition. Please try again.",
+                "updateError": "Failed to update petition. Please try again.",
                 "unexpectedError": "An unexpected error occurred. Please try again.",
                 "authRequired": "You must be logged in to publish a petition."
             },
@@ -349,7 +356,12 @@
                 "processing": "Processing image...",
                 "removeImage": "Remove image",
                 "removeVideo": "Remove video",
-                "restoringImage": "Restoring image preview..."
+                "restoringImage": "Restoring image preview...",
+                "generateAI": "Generate AI",
+                "generating": "Generating...",
+                "aiImageGenerated": "AI image generated successfully!",
+                "aiImageError": "Failed to generate AI image. Please try again.",
+                "aiImageRequiredFields": "Please add a title and objective first"
             },
             "signaturesStep": {
                 "title": "Desired number of signatures",

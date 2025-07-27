@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Flag, Calendar } from 'lucide-react';
-import { PublicPetition } from '@/schemas/public-petition';
+import { PublicPetition } from '@/schemas/petition';
 import { useTranslations } from 'next-intl';
 import { User } from '@/schemas/user';
 import { LoginDialog } from '@/components/header/login-dialog';

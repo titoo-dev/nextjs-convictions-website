@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Sparkles, Loader2 } from 'lucide-react';
 import 'react-quill-new/dist/quill.snow.css';
 import { generatePetitionContent } from '@/lib/api';
+import { DeltaStatic } from 'react-quill-new';
 
 // Dynamically import ReactQuill to avoid SSR issues
 const ReactQuill = dynamic(() => import('react-quill-new'), {
@@ -29,6 +30,7 @@ type PetitionData = {
 	title?: string;
 	objective?: string;
 	category?: string;
+	editorOps?: string;
 };
 
 type WritingStepProps = {
@@ -38,7 +40,10 @@ type WritingStepProps = {
 
 export function WritingStep({ formData, updateFormData }: WritingStepProps) {
 	const t = useTranslations('petition.form.writingStep');
-	const [editorContent, setEditorContent] = useState(formData.content || '');
+	const [editorContent, setEditorContent] = useState<DeltaStatic>();
+
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const [, setEditorDelta] = useState<any>(null);
 	const [isGenerating, setIsGenerating] = useState(false);
 	const [sseError, setSseError] = useState<string | null>(null);
 	const eventSourceRef = useRef<EventSource | null>(null);
@@ -111,9 +116,18 @@ export function WritingStep({ formData, updateFormData }: WritingStepProps) {
 					accumulatedContentRef.current += data.response;
 					const newContent = accumulatedContentRef.current;
 
+					const newOptFormatted = `[{"insert":"${newContent}"}]`;
+
+					const deltaFormatted = JSON.parse(
+						newOptFormatted
+					) as DeltaStatic;
+
 					// Update editor content progressively
-					setEditorContent(newContent);
-					updateFormData({ content: newContent });
+					setEditorContent(deltaFormatted);
+					updateFormData({
+						content: newContent,
+						editorOps: newOptFormatted,
+					});
 				}
 			},
 			onComplete: () => {
@@ -161,25 +175,34 @@ export function WritingStep({ formData, updateFormData }: WritingStepProps) {
 		};
 
 		const data = {
-			contentInput: editorContent || '',
+			contentInput: JSON.stringify(editorContent) || '',
 			title: formData.title || '',
 			goal: formData.objective || '',
 			category: mapCategoryToAPI(formData.category ?? '') || '',
 			responseLanguage: locale,
 		};
 
-		console.log('Requesting AI assistance with data:', data);
-
 		subscribeSseStream(data);
 
 		await generatePetitionContent(data);
 	};
 
-	// Handle content changes
-	const handleChange = (content: string) => {
+	const handleChange = (
+		content: string,
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		delta: any,
+		source: string,
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		editor: any
+	) => {
 		if (!isGenerating) {
-			setEditorContent(content);
-			updateFormData({ content });
+			setEditorContent(editor.getContents());
+			const editorOps = editor.getContents().ops;
+			setEditorDelta(editor.getContents());
+			updateFormData({
+				content,
+				editorOps: JSON.stringify(editorOps),
+			});
 		}
 	};
 
@@ -194,7 +217,10 @@ export function WritingStep({ formData, updateFormData }: WritingStepProps) {
 
 	useEffect(() => {
 		if (formData.content && !editorContent) {
-			setEditorContent(formData.content);
+			const deltaFormatted = {
+				ops: JSON.parse(formData.editorOps ?? formData.content),
+			} as DeltaStatic;
+			setEditorContent(deltaFormatted);
 		}
 	}, []);
 

@@ -1,4 +1,4 @@
-import { PetitionFormData } from '@/app/petition/new/page';
+import { PetitionFormData } from '@/app/petition/new/petition-client';
 import { User } from '@/schemas/user';
 
 const PETITION_FORM_KEY = 'petition-form-draft';

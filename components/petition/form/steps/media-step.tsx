@@ -11,6 +11,10 @@ type PetitionData = {
 	picture: File | null;
 	videoYoutubeUrl?: string;
 	pictureId: string | null;
+	title?: string;
+	objective?: string;
+	category: string;
+	pictureUrl?: string;
 };
 
 type MediaStepProps = {
@@ -57,10 +61,14 @@ export function MediaStep({ formData, updateFormData }: MediaStepProps) {
 				<>
 					<ImageUpload
 						pictureUrl={
-							formData.picture
+							formData.pictureUrl ||
+							(formData.picture
 								? URL.createObjectURL(formData.picture)
-								: undefined
+								: undefined)
 						}
+						petitionTitle={formData.title}
+						petitionObjective={formData.objective}
+						category={formData.category}
 						updateFormData={updateFormData}
 					/>
 				</>
@@ -87,10 +95,16 @@ export function MediaStep({ formData, updateFormData }: MediaStepProps) {
 
 // Add validation function for media step
 export function validateMediaStep(
-	formData: Pick<PetitionData, 'mediaType' | 'picture' | 'videoYoutubeUrl'>
+	formData: Pick<
+		PetitionData,
+		'mediaType' | 'picture' | 'videoYoutubeUrl' | 'pictureUrl'
+	>
 ): boolean {
 	if (formData.mediaType === 'PICTURE') {
-		return !!(formData.picture && formData.picture.name.trim().length > 0);
+		return (
+			(formData.picture && formData.picture.name.trim().length > 0) ||
+			!!formData.pictureUrl
+		);
 	} else if (formData.mediaType === 'VIDEO_YOUTUBE') {
 		if (!formData.videoYoutubeUrl?.trim()) return false;
 		const validation = validateYouTubeUrl(formData.videoYoutubeUrl.trim());

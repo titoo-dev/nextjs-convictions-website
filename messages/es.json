@@ -125,7 +125,9 @@
         },
         "card": {
             "signatures": "Firmas",
-            "signButton": "Firmar"
+            "signButton": "Firmar",
+            "published": "Publicada",
+            "signed": "Firmada"
         },
         "emptyState": {
             "title": "No se encontraron peticiones",
@@ -222,6 +224,7 @@
         "form": {
             "page": {
                 "title": "Crear Nueva Petición",
+                "editTitle": "Editar Petición",
                 "back": "Atrás",
                 "previous": "Anterior",
                 "next": "Siguiente",
@@ -229,6 +232,10 @@
                 "draftRestored": "Tu borrador ha sido restaurado de una sesión anterior.",
                 "startFresh": "Empezar de Nuevo",
                 "publishing": "Publicando...",
+                "updating": "Actualizando...",
+                "updatePetition": "Actualizar Petición",
+                "updateSuccess": "¡Tu petición ha sido actualizada exitosamente!",
+                "updateError": "Error al actualizar la petición. Por favor, inténtalo de nuevo.",
                 "publishSuccess": "¡Tu petición ha sido publicada exitosamente!",
                 "publishError": "Error al publicar la petición. Por favor, inténtalo de nuevo.",
                 "unexpectedError": "Ocurrió un error inesperado. Por favor, inténtalo de nuevo.",
@@ -355,7 +362,12 @@
                 "processing": "Procesando imagen...",
                 "removeImage": "Eliminar imagen",
                 "removeVideo": "Eliminar video",
-                "restoringImage": "Restaurando la vista previa de la imagen..."
+                "restoringImage": "Restaurando la vista previa de la imagen...",
+                "generateAI": "Generar con IA",
+                "generating": "Generando...",
+                "aiImageGenerated": "Imagen generada con éxito!",
+                "aiImageError": "Error al generar la imagen con IA. Por favor, inténtalo de nuevo.",
+                "aiImageRequiredFields": "Por favor, añade un título y un objetivo primero"
             },
             "signaturesStep": {
                 "title": "Número deseado de firmas",
