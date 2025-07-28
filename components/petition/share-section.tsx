@@ -96,7 +96,7 @@ export function ShareSection({ petition }: ShareSectionProps) {
 				</div>
 
 				<RenderWhen condition={petition.isMine === true}>
-					<div className="flex gap-2 mt-6">
+					<div className="flex flex-col gap-2 mt-6">
 						<Button
 							asChild
 							type="button"
@@ -105,6 +105,16 @@ export function ShareSection({ petition }: ShareSectionProps) {
 						>
 							<Link href={`/boost-plan/${petition.id}`}>
 								{tBoost('boostButton')}
+							</Link>
+						</Button>
+						<Button
+							asChild
+							type="button"
+							variant="outline"
+							className="flex-1 border-primary-500 text-primary-500 hover:bg-primary-200 font-semibold py-3 sm:py-3 text-sm sm:text-base"
+						>
+							<Link href={`/create-survey/${petition.id}`}>
+								Create Survey
 							</Link>
 						</Button>
 					</div>
