@@ -16,6 +16,7 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Plus, X } from 'lucide-react';
 import { createSurvey } from '@/actions/create-survey';
+import { ZodError } from 'zod';
 
 export default function CreateSurveyPage() {
 	const { id: petitionId } = useParams<{ id: string }>();
@@ -86,8 +87,8 @@ export default function CreateSurveyPage() {
 					setError(result.error || 'Failed to create survey');
 					toast.error(result.error);
 				}
-			} catch (err: any) {
-				if (err.issues) {
+			} catch (err) {
+				if (err instanceof ZodError) {
 					setError(err.issues[0].message);
 					toast.error(err.issues[0].message);
 				} else {

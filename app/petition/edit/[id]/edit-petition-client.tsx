@@ -40,8 +40,6 @@ import {
 	PublishStep,
 	validatePublishStep,
 } from '@/components/petition/form/steps/publish-step';
-import { toast } from 'sonner';
-import { useRouter } from 'next/navigation';
 import { LoginDialog } from '@/components/header/login-dialog';
 import RenderWhen from '@/components/render-when';
 import { User } from '@/schemas/user';
@@ -83,11 +81,10 @@ export function EditPetitionClient({
 	currentUser,
 	petition,
 }: EditPetitionClientProps) {
-	const router = useRouter();
 	const tPage = useTranslations('petition.form.page');
 	const tSteps = useTranslations('petition.form.steps');
 	const locale = useLocale().toUpperCase();
-	const [isPending, startTransition] = useTransition();
+	const [isPending] = useTransition();
 
 	const [currentStep, setCurrentStep] = useState<Step>('title');
 	const [formData, setFormData] = useState<PetitionFormData>({
@@ -194,6 +191,8 @@ export function EditPetitionClient({
 			pictureId: '',
 			signatureGoal: formData.signatureGoal,
 		};
+
+		console.log(dataToSend);
 
 		// startTransition(async () => {
 		// 	try {
