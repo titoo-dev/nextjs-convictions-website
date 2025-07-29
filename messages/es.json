@@ -199,6 +199,12 @@
             "needed": "{count} firmas necesarias para alcanzar {goal}",
             "goalReached": "¡Objetivo de {goal} firmas alcanzado!"
         },
+        "survey": {
+            "vote": "voto",
+            "votes": "votos",
+            "totalVotes": "{count} votos totales",
+            "submitVote": "Enviar Voto"
+        },
         "share": {
             "title": "Comparte con tus amigos",
             "facebook": "Facebook",

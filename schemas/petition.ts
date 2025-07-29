@@ -33,6 +33,7 @@ const PetitionSchema = z.object({
 	mediaType: z.enum(['PICTURE', 'VIDEO_YOUTUBE']),
 	videoYoutubeUrl: z.string().nullable(),
 	signatureGoal: z.number(),
+	surveyId: z.string().nullable().optional(),
 	publishedAt: z.string(),
 	isPublished: z.boolean(),
 	usersSignedNumber: z.number(),
