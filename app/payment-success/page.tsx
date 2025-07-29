@@ -2,8 +2,16 @@ import { CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
+import { redirect } from 'next/navigation';
+import { verifyBoost } from '@/actions/verify-boost';
 
 export default async function DonationSuccessPage() {
+	const { isPaid } = await verifyBoost();
+
+	if (!isPaid) {
+		redirect('/');
+	}
+
 	const t = await getTranslations('donationSuccess');
 
 	return (

@@ -8,6 +8,7 @@ import {
 	CreatePublicBoostResponse,
 	createPublicBoostResponseSchema,
 } from '@/schemas/create-public-boost-response';
+import { cookies } from 'next/headers';
 
 type ActionResult = {
 	success: boolean;
@@ -58,6 +59,16 @@ export async function createPublicBoost(
 		// Validate response data
 		const validatedResponse =
 			createPublicBoostResponseSchema.parse(responseData);
+
+		// Store the boost ID in a cookie for later use
+		const cookieStore = await cookies();
+		cookieStore.set('boost-id', validatedResponse.id, {
+			expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 hours
+			httpOnly: true,
+			secure: process.env.NODE_ENV === 'production',
+			sameSite: 'lax',
+			path: '/',
+		});
 
 		return {
 			success: true,
