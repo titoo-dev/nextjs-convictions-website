@@ -4,7 +4,7 @@ const SurveyOptionSchema = z.object({
 	id: z.string(),
 	option: z.string(),
 	count: z.number(),
-	percentage: z.number(),
+	percentage: z.number().nullable(),
 });
 
 const SurveySchema = z.object({

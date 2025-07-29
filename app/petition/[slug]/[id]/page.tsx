@@ -87,10 +87,12 @@ export default async function PetitionPage(props: {
 								petition={petition}
 							/>
 						</RenderWhen>
-						<RenderWhen condition={survey !== null}>
+						<RenderWhen
+							condition={survey !== null && !petition.isMine}
+						>
 							<SurveyCard survey={survey!} />
 						</RenderWhen>
-						<ShareSection petition={petition} />
+						<ShareSection petition={petition} survey={survey} />
 					</div>
 				</div>
 			</div>
