@@ -32,8 +32,6 @@ export default async function PetitionPage(props: {
 	const survey = petition?.surveyId
 		? await getSurvey(petition.surveyId)
 		: null;
-	console.log(petition);
-	console.log(survey);
 
 	if (!petition) {
 		return (

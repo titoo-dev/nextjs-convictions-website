@@ -203,7 +203,10 @@
             "vote": "vote",
             "votes": "votes",
             "totalVotes": "{count} votes au total",
-            "submitVote": "Voter"
+            "submitVote": "Voter",
+            "voteSubmitted": "Vote soumis avec succès !",
+            "voteFailed": "Échec du vote",
+            "submitting": "Soumission..."
         },
         "share": {
             "title": "Partagez à vos amis",

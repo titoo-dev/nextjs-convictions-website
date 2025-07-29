@@ -203,7 +203,10 @@
             "vote": "voto",
             "votes": "votos",
             "totalVotes": "{count} votos totales",
-            "submitVote": "Enviar Voto"
+            "submitVote": "Enviar Voto",
+            "voteSubmitted": "Voto enviado con éxito!",
+            "voteFailed": "Error al enviar el voto",
+            "submitting": "Enviando..."
         },
         "share": {
             "title": "Comparte con tus amigos",

@@ -11,30 +11,43 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Survey } from '@/schemas/survey';
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
+import { useState, useTransition } from 'react';
+import { createUserAnswer } from '@/actions/create-user-answer';
+import { toast } from 'sonner';
 
 type SurveyCardProps = {
 	survey: Survey;
 };
 
+import { RenderWhen } from '@/components/render-when';
+
 export function SurveyCard({ survey }: SurveyCardProps) {
 	const t = useTranslations('petition.survey');
 	const [selectedOption, setSelectedOption] = useState<string | null>(null);
-
-	const totalVotes = survey.options.reduce(
-		(sum, option) => sum + option.count,
-		0
-	);
+	const [isPending, startTransition] = useTransition();
 
 	const handleVote = (optionId: string) => {
 		if (!survey.isAnswered) {
 			setSelectedOption(optionId);
-			console.log('Voting for:', optionId);
 		}
 	};
 
 	const handleSubmitVote = () => {
-		console.log('Submitting vote for:', selectedOption);
+		if (!selectedOption) return;
+
+		startTransition(async () => {
+			const result = await createUserAnswer({
+				optionSelectedIds: [selectedOption],
+				surveyId: survey.id,
+			});
+
+			if (result.success) {
+				setSelectedOption(null);
+				toast.success(t('voteSubmitted'));
+			} else {
+				toast.error(result.error || t('voteFailed'));
+			}
+		});
 	};
 
 	return (
@@ -60,12 +73,14 @@ export function SurveyCard({ survey }: SurveyCardProps) {
 											isSelected ? 'default' : 'outline'
 										}
 										className={`w-full justify-between text-left h-auto p-3 ${
-											survey.isAnswered
-												? 'cursor-default'
+											survey.isAnswered || isPending
+												? 'cursor-default border-none shadow-none'
 												: 'cursor-pointer'
 										}`}
 										onClick={() => handleVote(option.id)}
-										disabled={survey.isAnswered}
+										disabled={
+											survey.isAnswered || isPending
+										}
 									>
 										<div className="flex-1">
 											<span className="text-xs sm:text-sm">
@@ -73,55 +88,52 @@ export function SurveyCard({ survey }: SurveyCardProps) {
 											</span>
 										</div>
 										<div className="flex items-center gap-2">
-											{survey.isAnswered && (
-												<>
-													<Badge
-														variant="secondary"
-														className="text-xs"
-													>
-														{option.count}{' '}
-														{option.count === 1
-															? t('vote')
-															: t('votes')}
-													</Badge>
-												</>
-											)}
+											<RenderWhen
+												condition={survey.isAnswered}
+											>
+												<Badge
+													variant="secondary"
+													className="text-xs"
+												>
+													{option.count}{' '}
+													{option.count === 1
+														? t('vote')
+														: t('votes')}
+												</Badge>
+											</RenderWhen>
 										</div>
 									</Button>
 
-									{survey.isAnswered && (
+									<RenderWhen condition={survey.isAnswered}>
 										<div className="w-full bg-gray-200 rounded-full h-1">
 											<div
-												className="bg-blue-600 h-1 rounded-full transition-all duration-300"
+												className="bg-green-600 h-1 rounded-full transition-all duration-300"
 												style={{
 													width: `${option.percentage}%`,
 												}}
 											/>
 										</div>
-									)}
+									</RenderWhen>
 								</div>
 							);
 						})}
 					</div>
 
-					{survey.isAnswered && totalVotes > 0 && (
-						<div className="text-center">
-							<p className="text-xs text-gray-500">
-								{t('totalVotes', { count: totalVotes })}
-							</p>
-						</div>
-					)}
-
-					{!survey.isAnswered && selectedOption && (
+					<RenderWhen
+						condition={
+							!survey.isAnswered && selectedOption !== null
+						}
+					>
 						<Button
 							className="w-full hover:bg-gray-300 hover:text-gray-800 hover:cursor-pointer"
 							size="sm"
 							variant="secondary"
-							onClick={() => handleSubmitVote()}
+							onClick={handleSubmitVote}
+							disabled={isPending}
 						>
-							{t('submitVote')}
+							{isPending ? t('submitting') : t('submitVote')}
 						</Button>
-					)}
+					</RenderWhen>
 				</div>
 			</CardContent>
 		</Card>

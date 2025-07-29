@@ -41,7 +41,6 @@ export function SignForm({ petition, currentUser }: SignFormProps) {
 	const router = useRouter();
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-		console.log('Submitting petition sign form', petition);
 		e.preventDefault();
 		if (!petition) return;
 

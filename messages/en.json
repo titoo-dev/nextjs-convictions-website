@@ -197,7 +197,10 @@
             "vote": "vote",
             "votes": "votes",
             "totalVotes": "{count} total votes",
-            "submitVote": "Submit Vote"
+            "submitVote": "Submit Vote",
+            "voteSubmitted": "Vote submitted successfully!",
+            "voteFailed": "Failed to submit vote",
+            "submitting": "Submitting..."
         },
         "share": {
             "title": "Share to your friends",
