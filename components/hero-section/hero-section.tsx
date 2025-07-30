@@ -6,8 +6,10 @@ import { HeroBadge } from './hero-badge';
 import { HeroCTA } from './hero-cta';
 import { HeroHeading } from './hero-heading';
 import { HeroSubheading } from './hero-subheading';
+import { useTranslations } from 'next-intl';
 
 export function HeroSection() {
+	const t = useTranslations('hero');
 	const scrollToNextSection = () => {
 		const nextSection = document.querySelector('section:nth-of-type(2)');
 		if (nextSection) {
@@ -32,7 +34,7 @@ export function HeroSection() {
 					className="flex flex-col items-center p-4 cursor-pointer"
 					aria-label="Scroll to next section"
 				>
-					<span className="text-sm mb-1">Explore the petitions</span>
+					<span className="text-sm mb-1">{t('scroll')}</span>
 					<ChevronDown className="w-5 h-5 animate-bounce" />
 				</button>
 			</div>
