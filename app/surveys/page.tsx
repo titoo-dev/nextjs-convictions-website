@@ -8,6 +8,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { getTranslations } from 'next-intl/server';
 import Image from 'next/image';
+import Link from 'next/link';
 
 async function getSurveys() {
 	const surveys = [
@@ -116,10 +117,13 @@ export default async function SurveysPage() {
 					<h1 className="text-4xl font-bold text-foreground mb-4">
 						{t('surveys')}
 					</h1>
-					<p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+					<p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-6">
 						Share your voice through community surveys and help
 						shape important decisions
 					</p>
+					<Button size="lg" asChild>
+						<Link href="/surveys/new">Create Survey</Link>
+					</Button>
 				</div>
 
 				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
