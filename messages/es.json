@@ -1,6 +1,7 @@
 {
     "navigation": {
         "createPetition": "Crear una petición",
+        "surveys": "Encuestas",
         "supportUs": "Apóyanos",
         "login": "Iniciar sesión"
     },

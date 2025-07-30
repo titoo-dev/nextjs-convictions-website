@@ -16,6 +16,9 @@ export async function DesktopNavigation() {
 			<NavigationButton href="/petition/new">
 				{t('createPetition')}
 			</NavigationButton>
+
+			<NavigationButton href="/surveys">{t('surveys')}</NavigationButton>
+
 			<NavigationButton href="/support-us">
 				{t('supportUs')}
 			</NavigationButton>
@@ -31,5 +34,3 @@ export async function DesktopNavigation() {
 		</nav>
 	);
 }
-
-
