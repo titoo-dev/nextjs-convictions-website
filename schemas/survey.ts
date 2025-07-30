@@ -14,8 +14,8 @@ const SurveySchema = z.object({
 	options: z.array(SurveyOptionSchema),
 	isMultipleChoice: z.boolean(),
 	isAnswered: z.boolean(),
-	petitionId: z.string(),
 	createdAt: z.string(),
+	image: z.instanceof(File).nullable().optional(),
 });
 
 export { SurveySchema, SurveyOptionSchema };

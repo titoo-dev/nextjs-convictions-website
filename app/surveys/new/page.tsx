@@ -12,18 +12,21 @@ import {
 	createSurveyPayloadSchema,
 	CreateSurveyPayload,
 } from '@/schemas/create-survey-payload';
-import { useParams } from 'next/navigation';
+
 import Link from 'next/link';
 import { ArrowLeft, Plus, X } from 'lucide-react';
 import { createSurvey } from '@/actions/create-survey';
 import { ZodError } from 'zod';
+import { SurveyImageUpload } from '@/components/survey/survey-image-upload';
 
 export default function CreateSurveyPage() {
-	const { id: petitionId } = useParams<{ id: string }>();
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 	const [isPending, startTransition] = useTransition();
 	const [options, setOptions] = useState<string[]>(['', '']);
+	const [image, setImage] = useState<File | null>(null);
+	const [formTitle, setFormTitle] = useState<string>('');
+	const [formDescription, setFormDescription] = useState<string>('');
 
 	const addOption = () => {
 		setOptions([...options, '']);
@@ -43,15 +46,10 @@ export default function CreateSurveyPage() {
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		if (!petitionId) {
-			setError('Petition ID is required');
-			toast.error('Petition ID is required');
-			return;
-		}
 
 		const formData = new FormData(e.currentTarget);
-		const title = formData.get('title') as string;
-		const description = formData.get('description') as string;
+		const title = formTitle;
+		const description = formDescription;
 		const isMultipleChoice = formData.get('isMultipleChoice') === 'on';
 		const filteredOptions = options.filter(
 			(option) => option.trim() !== ''
@@ -73,7 +71,7 @@ export default function CreateSurveyPage() {
 					description: description.trim(),
 					options: filteredOptions,
 					isMultipleChoice,
-					petitionId,
+					image,
 				};
 
 				const validatedPayload =
@@ -123,14 +121,18 @@ export default function CreateSurveyPage() {
 					<CardContent>
 						<form onSubmit={handleSubmit} className="space-y-6">
 							<div className="space-y-2">
-								<Label htmlFor="title">Survey Title</Label>
+								<Label htmlFor="title">Ask your question</Label>
 								<Input
 									id="title"
 									name="title"
 									type="text"
-									placeholder="Enter survey title"
+									placeholder="What is your question?"
 									required
 									disabled={isLoading}
+									value={formTitle}
+									onChange={(e) =>
+										setFormTitle(e.target.value)
+									}
 								/>
 							</div>
 
@@ -143,6 +145,19 @@ export default function CreateSurveyPage() {
 									rows={4}
 									required
 									disabled={isLoading}
+									value={formDescription}
+									onChange={(e) =>
+										setFormDescription(e.target.value)
+									}
+								/>
+							</div>
+
+							<div className="space-y-2">
+								<Label>Survey Image (Optional)</Label>
+								<SurveyImageUpload
+									question={formTitle}
+									description={formDescription}
+									onImageChange={setImage}
 								/>
 							</div>
 
