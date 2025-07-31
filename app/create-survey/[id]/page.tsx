@@ -12,14 +12,12 @@ import {
 	createSurveyPayloadSchema,
 	CreateSurveyPayload,
 } from '@/schemas/create-survey-payload';
-import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Plus, X } from 'lucide-react';
 import { createSurvey } from '@/actions/create-survey';
 import { ZodError } from 'zod';
 
 export default function CreateSurveyPage() {
-	const { id: petitionId } = useParams<{ id: string }>();
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 	const [isPending, startTransition] = useTransition();
@@ -43,14 +41,9 @@ export default function CreateSurveyPage() {
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		if (!petitionId) {
-			setError('Petition ID is required');
-			toast.error('Petition ID is required');
-			return;
-		}
 
 		const formData = new FormData(e.currentTarget);
-		const title = formData.get('title') as string;
+		const question = formData.get('question') as string;
 		const description = formData.get('description') as string;
 		const isMultipleChoice = formData.get('isMultipleChoice') === 'on';
 		const filteredOptions = options.filter(
@@ -69,11 +62,10 @@ export default function CreateSurveyPage() {
 
 			try {
 				const payload: CreateSurveyPayload = {
-					title: title.trim(),
+					question: question.trim(),
 					description: description.trim(),
 					options: filteredOptions,
 					isMultipleChoice,
-					petitionId,
 				};
 
 				const validatedPayload =
@@ -123,10 +115,10 @@ export default function CreateSurveyPage() {
 					<CardContent>
 						<form onSubmit={handleSubmit} className="space-y-6">
 							<div className="space-y-2">
-								<Label htmlFor="title">Survey Title</Label>
+								<Label htmlFor="question">Survey Title</Label>
 								<Input
-									id="title"
-									name="title"
+									id="question"
+									name="question"
 									type="text"
 									placeholder="Enter survey title"
 									required

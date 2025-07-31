@@ -25,7 +25,7 @@ export default function CreateSurveyPage() {
 	const [isPending, startTransition] = useTransition();
 	const [options, setOptions] = useState<string[]>(['', '']);
 	const [image, setImage] = useState<File | null>(null);
-	const [formTitle, setFormTitle] = useState<string>('');
+	const [formQuestion, setFormQuestion] = useState<string>('');
 	const [formDescription, setFormDescription] = useState<string>('');
 
 	const addOption = () => {
@@ -48,7 +48,7 @@ export default function CreateSurveyPage() {
 		e.preventDefault();
 
 		const formData = new FormData(e.currentTarget);
-		const title = formTitle;
+		const question = formQuestion;
 		const description = formDescription;
 		const isMultipleChoice = formData.get('isMultipleChoice') === 'on';
 		const filteredOptions = options.filter(
@@ -67,17 +67,14 @@ export default function CreateSurveyPage() {
 
 			try {
 				const payload: CreateSurveyPayload = {
-					title: title.trim(),
+					question: question.trim(),
 					description: description.trim(),
 					options: filteredOptions,
 					isMultipleChoice,
 					image,
 				};
 
-				const validatedPayload =
-					createSurveyPayloadSchema.parse(payload);
-
-				const result = await createSurvey(validatedPayload);
+				const result = await createSurvey(payload);
 
 				if (result.success) {
 					toast.success('Survey created successfully!');
@@ -121,17 +118,19 @@ export default function CreateSurveyPage() {
 					<CardContent>
 						<form onSubmit={handleSubmit} className="space-y-6">
 							<div className="space-y-2">
-								<Label htmlFor="title">Ask your question</Label>
+								<Label htmlFor="question">
+									Ask your question
+								</Label>
 								<Input
-									id="title"
-									name="title"
+									id="question"
+									name="question"
 									type="text"
 									placeholder="What is your question?"
 									required
 									disabled={isLoading}
-									value={formTitle}
+									value={formQuestion}
 									onChange={(e) =>
-										setFormTitle(e.target.value)
+										setFormQuestion(e.target.value)
 									}
 								/>
 							</div>
@@ -155,7 +154,7 @@ export default function CreateSurveyPage() {
 							<div className="space-y-2">
 								<Label>Survey Image (Optional)</Label>
 								<SurveyImageUpload
-									question={formTitle}
+									question={formQuestion}
 									description={formDescription}
 									onImageChange={setImage}
 								/>

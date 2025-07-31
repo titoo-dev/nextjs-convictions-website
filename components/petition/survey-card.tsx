@@ -54,7 +54,7 @@ export function SurveyCard({ survey }: SurveyCardProps) {
 		<Card className="shadow-none">
 			<CardHeader className="pb-3">
 				<CardTitle className="text-base sm:text-lg flex items-center">
-					{survey.title}
+					{survey.question}
 				</CardTitle>
 				<CardDescription className="text-xs sm:text-sm text-gray-600 leading-relaxed">
 					{survey.description}
