@@ -18,6 +18,7 @@ import { ArrowLeft, Plus, X } from 'lucide-react';
 import { createSurvey } from '@/actions/create-survey';
 import { ZodError } from 'zod';
 import { SurveyImageUpload } from '@/components/survey/survey-image-upload';
+import RenderWhen from '@/components/render-when';
 
 export default function CreateSurveyPage() {
 	const [isLoading, setIsLoading] = useState(false);
@@ -71,7 +72,7 @@ export default function CreateSurveyPage() {
 					description: description.trim(),
 					options: filteredOptions,
 					isMultipleChoice,
-					image,
+					picture: image,
 				};
 
 				const result = await createSurvey(payload);
@@ -240,9 +241,17 @@ export default function CreateSurveyPage() {
 								disabled={isLoading || isPending}
 								className="w-full"
 							>
-								{isLoading
-									? 'Creating Survey...'
-									: 'Create Survey'}
+								<RenderWhen condition={isLoading || isPending}>
+									<div className="flex items-center gap-2">
+										<div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+										Creating Survey...
+									</div>
+								</RenderWhen>
+								<RenderWhen
+									condition={!isLoading && !isPending}
+								>
+									Create Survey
+								</RenderWhen>
 							</Button>
 						</form>
 					</CardContent>

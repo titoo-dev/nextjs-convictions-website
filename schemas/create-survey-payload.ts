@@ -5,7 +5,7 @@ export const createSurveyPayloadSchema = z.object({
 	description: z.string().min(1, 'Description is required'),
 	options: z.array(z.string()).min(2, 'At least two options are required'),
 	isMultipleChoice: z.boolean(),
-	image: z.instanceof(File).nullable().optional(),
+	picture: z.instanceof(File).nullable().optional(),
 });
 
 export type CreateSurveyPayload = z.infer<typeof createSurveyPayloadSchema>;

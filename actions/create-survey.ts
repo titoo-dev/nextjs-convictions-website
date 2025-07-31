@@ -8,42 +8,69 @@ import { getAccessToken } from '../lib/cookies-storage';
 
 export async function createSurvey(payload: CreateSurveyPayload) {
 	try {
-		const validatedPayload = createSurveyPayloadSchema.parse(payload);
-
 		const accessToken = await getAccessToken();
 
 		if (!accessToken) {
-			throw new Error('Authentication required');
+			return {
+				success: false,
+				error: 'Authentication required',
+			};
 		}
+
+		const validatedPayload = createSurveyPayloadSchema.parse(payload);
+
+		const apiFormData = new FormData();
+
+		Object.entries(validatedPayload).forEach(([key, value]) => {
+			if (key === 'picture') {
+				if (value && value instanceof File && value.size > 0) {
+					apiFormData.append('picture', value);
+				}
+			} else if (key === 'options') {
+				if (Array.isArray(value)) {
+					apiFormData.append('options', JSON.stringify(value));
+				}
+			} else if (value !== undefined && value !== '') {
+				apiFormData.append(key, String(value));
+			}
+		});
 
 		const response = await fetch(
 			`${process.env.NEXT_PUBLIC_API_BASE_URL}/survey`,
 			{
 				method: 'POST',
+				body: apiFormData,
 				headers: {
-					'Content-Type': 'application/json',
 					Accept: 'application/json',
 					Authorization: `Bearer ${accessToken}`,
 				},
-				body: JSON.stringify(validatedPayload),
 			}
 		);
 
 		if (response.status !== 201) {
-			const errorData = await response.json().catch(() => ({}));
-			throw new Error(errorData.message || 'Failed to create survey');
+			return {
+				success: false,
+				error: `Request failed with status ${response.status}`,
+			};
 		}
 
-		const data = await response.json();
-		return { success: true, data };
+		const responseData = await response.json();
+
+		return {
+			success: true,
+			data: responseData,
+		};
 	} catch (error) {
-		console.error('Error creating survey:', error);
+		if (error instanceof Error) {
+			return {
+				success: false,
+				error: error.message,
+			};
+		}
+
 		return {
 			success: false,
-			error:
-				error instanceof Error
-					? error.message
-					: 'Failed to create survey',
+			error: 'An unexpected error occurred',
 		};
 	}
 }
