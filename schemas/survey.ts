@@ -9,13 +9,18 @@ const SurveyOptionSchema = z.object({
 
 const SurveySchema = z.object({
 	id: z.string(),
-	title: z.string(),
+	question: z.string(),
 	description: z.string(),
 	options: z.array(SurveyOptionSchema),
 	isMultipleChoice: z.boolean(),
 	isAnswered: z.boolean(),
+	isMine: z.boolean(),
+	surveyUserAnswersTotal: z.number(),
 	createdAt: z.string(),
-	image: z.instanceof(File).nullable().optional(),
+	pictureUrl: z.string().nullable(),
+	urlSurvey: z.string(),
+	author: z.string(),
+	idSeq: z.number(),
 });
 
 export { SurveySchema, SurveyOptionSchema };

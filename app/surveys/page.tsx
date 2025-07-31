@@ -9,12 +9,13 @@ import { Button } from '@/components/ui/button';
 import { getTranslations } from 'next-intl/server';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Survey } from '@/schemas/survey';
 
-async function getSurveys() {
-	const surveys = [
+async function getSurveys(): Promise<Survey[]> {
+	const surveys: Survey[] = [
 		{
 			id: '1',
-			title: 'Climate Change Awareness',
+			question: 'Climate Change Awareness',
 			description:
 				'How important is environmental protection in your daily decisions? Share your perspective on climate action.',
 			options: [
@@ -39,12 +40,17 @@ async function getSurveys() {
 			],
 			isMultipleChoice: false,
 			isAnswered: false,
-			petitionId: 'petition-1',
+			isMine: false,
+			surveyUserAnswersTotal: 542,
 			createdAt: '2024-01-15T10:30:00Z',
+			pictureUrl: null,
+			urlSurvey: '/surveys/climate-change-awareness',
+			author: 'Environmental Coalition',
+			idSeq: 1,
 		},
 		{
 			id: '2',
-			title: 'Education System Reform',
+			question: 'Education System Reform',
 			description:
 				'What aspects of education need the most improvement? Help us understand community priorities.',
 			options: [
@@ -69,12 +75,17 @@ async function getSurveys() {
 			],
 			isMultipleChoice: true,
 			isAnswered: true,
-			petitionId: 'petition-2',
+			isMine: true,
+			surveyUserAnswersTotal: 811,
 			createdAt: '2024-01-10T14:20:00Z',
+			pictureUrl: null,
+			urlSurvey: '/surveys/education-system-reform',
+			author: 'Education Reform Group',
+			idSeq: 2,
 		},
 		{
 			id: '3',
-			title: 'Public Transportation Priorities',
+			question: 'Public Transportation Priorities',
 			description:
 				'Which transportation improvements would benefit your community most? Your input shapes future infrastructure.',
 			options: [
@@ -99,8 +110,13 @@ async function getSurveys() {
 			],
 			isMultipleChoice: false,
 			isAnswered: false,
-			petitionId: 'petition-3',
+			isMine: false,
+			surveyUserAnswersTotal: 555,
 			createdAt: '2024-01-08T09:45:00Z',
+			pictureUrl: null,
+			urlSurvey: '/surveys/public-transportation-priorities',
+			author: 'Transit Authority',
+			idSeq: 3,
 		},
 	];
 	return surveys;
@@ -152,9 +168,14 @@ export default async function SurveysPage() {
 											Answered
 										</span>
 									)}
+									{survey.isMine && (
+										<span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+											My Survey
+										</span>
+									)}
 								</div>
 								<CardTitle className="text-xl leading-tight">
-									{survey.title}
+									{survey.question}
 								</CardTitle>
 								<CardDescription className="text-sm leading-relaxed">
 									{survey.description}
@@ -178,12 +199,17 @@ export default async function SurveysPage() {
 														<div
 															className="bg-primary h-2 rounded-full transition-all duration-500"
 															style={{
-																width: `${option.percentage}%`,
+																width: `${
+																	option.percentage ||
+																	0
+																}%`,
 															}}
 														/>
 													</div>
 													<span className="text-xs text-muted-foreground min-w-fit">
-														{option.percentage}%
+														{option.percentage
+															? `${option.percentage}%`
+															: '0%'}
 													</span>
 												</div>
 											</div>
@@ -198,18 +224,17 @@ export default async function SurveysPage() {
 
 								<div className="flex items-center justify-between">
 									<div className="text-xs text-muted-foreground">
-										{survey.options.reduce(
-											(total, option) =>
-												total + option.count,
-											0
-										)}{' '}
+										{survey.surveyUserAnswersTotal}{' '}
 										responses
 									</div>
 									<Button
 										size="sm"
 										className="bg-primary hover:bg-primary/90"
+										asChild
 									>
-										View More
+										<Link href={survey.urlSurvey}>
+											View More
+										</Link>
 									</Button>
 								</div>
 							</CardContent>
