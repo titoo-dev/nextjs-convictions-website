@@ -22,23 +22,35 @@ async function SurveysContent() {
 				{surveys.map((survey) => (
 					<Card
 						key={survey.id}
-						className="hover:shadow-lg transition-shadow duration-300"
+						className="hover:shadow-lg transition-shadow duration-300 overflow-hidden pt-0"
 					>
-						<CardHeader>
-							<div className="flex items-center gap-3 mb-3">
-								<div className="relative w-10 h-10 rounded-full bg-primary flex items-center justify-center">
+						<div className="relative w-full h-48">
+							{survey.pictureUrl ? (
+								<Image
+									src={survey.pictureUrl}
+									alt={survey.question}
+									fill
+									className="object-cover"
+								/>
+							) : (
+								<div className="w-full h-full bg-gray-50 flex items-center justify-center">
 									<svg
-										className="w-5 h-5 text-primary-foreground"
+										className="w-16 h-16 text-gray-300"
 										fill="currentColor"
 										viewBox="0 0 20 20"
 									>
 										<path
 											fillRule="evenodd"
-											d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z"
+											d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
 											clipRule="evenodd"
 										/>
 									</svg>
 								</div>
+							)}
+						</div>
+
+						<CardHeader>
+							<div className="flex items-center gap-3 mb-3">
 								{survey.isAnswered && (
 									<span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
 										Answered
