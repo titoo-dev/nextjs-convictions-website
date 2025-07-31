@@ -55,7 +55,7 @@ export async function SurveyDetail({ id }: { id: string }) {
 			<div className="container mx-auto px-4 py-6 max-w-4xl">
 				<div className="mb-6">
 					<Link
-						href="/"
+						href="/surveys"
 						className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors group"
 					>
 						<ArrowLeft className="w-3 h-3 group-hover:-translate-x-1 transition-transform" />

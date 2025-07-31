@@ -117,8 +117,8 @@ async function SurveysContent() {
 									className="bg-primary hover:bg-primary/90"
 									asChild
 								>
-									<Link href={survey.urlSurvey}>
-										View More
+									<Link href={`/surveys/${survey.id}`}>
+										View Details
 									</Link>
 								</Button>
 							</div>
