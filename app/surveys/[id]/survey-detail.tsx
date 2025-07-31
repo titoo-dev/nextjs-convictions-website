@@ -22,8 +22,8 @@ export async function SurveyDetail({ id }: { id: string }) {
 							Survey Not Found
 						</h2>
 						<p className="text-muted-foreground mb-6 text-sm">
-							The survey you're looking for doesn't exist or has
-							been removed.
+							The survey you&apos;re looking for doesn&apos;t
+							exist or has been removed.
 						</p>
 						<Link href="/">
 							<Button size="sm" className="gap-2">
@@ -164,7 +164,7 @@ export async function SurveyDetail({ id }: { id: string }) {
 
 								{totalVotes > 0 ? (
 									<div className="grid gap-3">
-										{survey.options.map((option, index) => (
+										{survey.options.map((option) => (
 											<Card
 												key={option.id}
 												className="p-4 border-0 bg-muted/30 hover:bg-muted/50 transition-all duration-200 hover:shadow-md"

@@ -45,7 +45,14 @@ async function getSurveys(): Promise<Survey[]> {
 			createdAt: '2024-01-15T10:30:00Z',
 			pictureUrl: null,
 			urlSurvey: '/surveys/climate-change-awareness',
-			author: 'Environmental Coalition',
+			author: {
+				id: '1',
+				name: 'Environmental Coalition',
+				picture: {
+					id: '1',
+				},
+				pictureUrl: 'https://via.placeholder.com/40',
+			},
 			idSeq: 1,
 		},
 		{
@@ -80,7 +87,14 @@ async function getSurveys(): Promise<Survey[]> {
 			createdAt: '2024-01-10T14:20:00Z',
 			pictureUrl: null,
 			urlSurvey: '/surveys/education-system-reform',
-			author: 'Education Reform Group',
+			author: {
+				id: '2',
+				name: 'Education Reform Group',
+				picture: {
+					id: '2',
+				},
+				pictureUrl: 'https://via.placeholder.com/40',
+			},
 			idSeq: 2,
 		},
 		{
@@ -115,7 +129,14 @@ async function getSurveys(): Promise<Survey[]> {
 			createdAt: '2024-01-08T09:45:00Z',
 			pictureUrl: null,
 			urlSurvey: '/surveys/public-transportation-priorities',
-			author: 'Transit Authority',
+			author: {
+				id: '3',
+				name: 'Transit Authority',
+				picture: {
+					id: '3',
+				},
+				pictureUrl: 'https://via.placeholder.com/40',
+			},
 			idSeq: 3,
 		},
 	];
