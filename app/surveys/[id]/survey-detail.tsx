@@ -10,6 +10,8 @@ import { Progress } from '@/components/ui/progress';
 export async function SurveyDetail({ id }: { id: string }) {
 	const survey = await getSurvey(id);
 
+	console.log(survey);
+
 	if (!survey) {
 		return (
 			<div className="min-h-screen bg-background flex items-center justify-center px-4">

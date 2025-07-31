@@ -16,6 +16,8 @@ import { SurveysGridSkeleton } from '@/components/survey/surveys-grid-skeleton';
 async function SurveysContent() {
 	const surveys = await getSurveys();
 
+	console.log(surveys);
+
 	return (
 		<>
 			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
