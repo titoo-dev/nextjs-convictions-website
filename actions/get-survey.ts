@@ -32,6 +32,8 @@ export async function getSurvey(surveyId: string): Promise<Survey | null> {
 
 		const data = await response.json();
 
+		console.log(data);
+
 		const parsedSurvey = SurveySchema.parse(data);
 
 		return parsedSurvey;
