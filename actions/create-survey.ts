@@ -5,6 +5,7 @@ import {
 	createSurveyPayloadSchema,
 } from '../schemas/create-survey-payload';
 import { getAccessToken } from '../lib/cookies-storage';
+import { createSurveyResponseSchema } from '@/schemas/create-survey-response';
 
 export async function createSurvey(payload: CreateSurveyPayload) {
 	try {
@@ -56,9 +57,12 @@ export async function createSurvey(payload: CreateSurveyPayload) {
 
 		const responseData = await response.json();
 
+		const validatedResponse =
+			createSurveyResponseSchema.parse(responseData);
+
 		return {
 			success: true,
-			data: responseData,
+			data: validatedResponse,
 		};
 	} catch (error) {
 		if (error instanceof Error) {

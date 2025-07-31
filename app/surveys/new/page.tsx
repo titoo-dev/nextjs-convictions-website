@@ -19,8 +19,10 @@ import { createSurvey } from '@/actions/create-survey';
 import { ZodError } from 'zod';
 import { SurveyImageUpload } from '@/components/survey/survey-image-upload';
 import RenderWhen from '@/components/render-when';
+import { useRouter } from 'next/navigation';
 
 export default function CreateSurveyPage() {
+	const router = useRouter();
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 	const [isPending, startTransition] = useTransition();
@@ -79,6 +81,7 @@ export default function CreateSurveyPage() {
 
 				if (result.success) {
 					toast.success('Survey created successfully!');
+					router.push(`/surveys/${result.data?.id}`);
 				} else {
 					setError(result.error || 'Failed to create survey');
 					toast.error(result.error);
