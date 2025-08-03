@@ -13,6 +13,7 @@ import { getSurveys } from '@/actions/get-surveys';
 import { Suspense } from 'react';
 import { SurveysGridSkeleton } from '@/components/survey/surveys-grid-skeleton';
 import { slugify } from '@/lib/utils';
+import RenderWhen from '@/components/render-when';
 
 async function SurveysContent() {
 	const surveys = await getSurveys();
@@ -118,10 +119,16 @@ async function SurveysContent() {
 								</div>
 
 								<div className="flex items-center justify-between">
-									<div className="text-xs text-muted-foreground">
-										{survey.surveyUserAnswersTotal}{' '}
-										responses
-									</div>
+									<RenderWhen
+										condition={
+											survey.surveyUserAnswersTotal > 0
+										}
+									>
+										<div className="text-xs text-muted-foreground">
+											{survey.surveyUserAnswersTotal}{' '}
+											responses
+										</div>
+									</RenderWhen>
 									<Button
 										size="sm"
 										className="bg-primary hover:bg-primary/90 group-hover:scale-105 transition-transform"
