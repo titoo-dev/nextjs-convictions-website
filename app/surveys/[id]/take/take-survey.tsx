@@ -1,4 +1,5 @@
 import { getSurvey } from '@/actions/get-survey';
+import { getCurrentUser } from '@/actions/get-current-user';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { ArrowLeft, BarChart3 } from 'lucide-react';
@@ -6,7 +7,10 @@ import Link from 'next/link';
 import { TakeSurveyClient } from './take-survey-client';
 
 export async function TakeSurvey({ id }: { id: string }) {
-	const survey = await getSurvey(id);
+	const [survey, currentUser] = await Promise.all([
+		getSurvey(id),
+		getCurrentUser(),
+	]);
 
 	if (!survey) {
 		return (
@@ -35,5 +39,5 @@ export async function TakeSurvey({ id }: { id: string }) {
 		);
 	}
 
-	return <TakeSurveyClient survey={survey} />;
+	return <TakeSurveyClient survey={survey} currentUser={currentUser} />;
 }

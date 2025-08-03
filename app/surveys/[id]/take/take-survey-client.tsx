@@ -17,12 +17,18 @@ import { toast } from 'sonner';
 import { RenderWhen } from '@/components/render-when';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { LoginDialog } from '@/components/header/login-dialog';
+import { User } from '@/schemas/user';
 
 type TakeSurveyClientProps = {
 	survey: Survey;
+	currentUser: User | null;
 };
 
-export function TakeSurveyClient({ survey }: TakeSurveyClientProps) {
+export function TakeSurveyClient({
+	survey,
+	currentUser,
+}: TakeSurveyClientProps) {
 	const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
 	const [isPending, startTransition] = useTransition();
 	const router = useRouter();
@@ -239,7 +245,28 @@ export function TakeSurveyClient({ survey }: TakeSurveyClientProps) {
 								<RenderWhen
 									condition={
 										!survey.isAnswered &&
-										selectedOptions.length > 0
+										selectedOptions.length > 0 &&
+										!currentUser
+									}
+								>
+									<LoginDialog
+										trigger={
+											<Button
+												className="w-full"
+												size="lg"
+												disabled={isPending}
+											>
+												Submit Vote
+											</Button>
+										}
+									/>
+								</RenderWhen>
+
+								<RenderWhen
+									condition={
+										!survey.isAnswered &&
+										selectedOptions.length > 0 &&
+										!!currentUser
 									}
 								>
 									<Button
