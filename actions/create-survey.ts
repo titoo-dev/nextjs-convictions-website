@@ -29,7 +29,7 @@ export async function createSurvey(payload: CreateSurveyPayload) {
 				}
 			} else if (key === 'options') {
 				if (Array.isArray(value)) {
-					apiFormData.append('options', value.join(','));
+					apiFormData.append('options', value.join('&'));
 				}
 			} else if (value !== undefined && value !== '') {
 				apiFormData.append(key, String(value));
