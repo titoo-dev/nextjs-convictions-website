@@ -220,12 +220,12 @@ export async function SurveyDetail({ id }: { id: string }) {
 								)}
 							</div>
 							<div className="text-center">
-								<Link href={survey.urlSurvey}>
+								<Link href={`/surveys/${survey.id}/take`}>
 									<Button
 										size="default"
 										className="px-6 py-2 font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
 									>
-										Vote on Survey
+										Take Survey
 									</Button>
 								</Link>
 							</div>
