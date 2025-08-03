@@ -143,7 +143,6 @@ export default function CreateSurveyPage() {
 									name="description"
 									placeholder="Enter survey description"
 									rows={4}
-									required
 									disabled={isLoading}
 									value={formDescription}
 									onChange={(e) =>
