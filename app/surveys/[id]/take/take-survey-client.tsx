@@ -205,7 +205,7 @@ export function TakeSurveyClient({ survey }: TakeSurveyClientProps) {
 											<RenderWhen
 												condition={survey.isAnswered}
 											>
-												<div className="w-full bg-gray-200 rounded-full h-2 ml-7">
+												<div className="w-full bg-gray-200 rounded-sm h-2">
 													<div
 														className="bg-primary h-2 rounded-full transition-all duration-500"
 														style={{
