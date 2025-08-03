@@ -12,9 +12,12 @@ import Link from 'next/link';
 import { getSurveys } from '@/actions/get-surveys';
 import { Suspense } from 'react';
 import { SurveysGridSkeleton } from '@/components/survey/surveys-grid-skeleton';
+import { slugify } from '@/lib/utils';
 
 async function SurveysContent() {
 	const surveys = await getSurveys();
+
+	console.log(surveys);
 
 	return (
 		<>
@@ -117,7 +120,11 @@ async function SurveysContent() {
 									className="bg-primary hover:bg-primary/90"
 									asChild
 								>
-									<Link href={`/surveys/${survey.id}`}>
+									<Link
+										href={`/surveys/${slugify(
+											survey.question
+										)}/${survey.id_seq}`}
+									>
 										View Details
 									</Link>
 								</Button>

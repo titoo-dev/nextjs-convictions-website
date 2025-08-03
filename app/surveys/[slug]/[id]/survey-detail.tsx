@@ -6,6 +6,7 @@ import { ArrowLeft, BarChart3, Calendar, User, Users } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Progress } from '@/components/ui/progress';
+import { slugify } from '@/lib/utils';
 
 export async function SurveyDetail({ id }: { id: string }) {
 	const survey = await getSurvey(id);
@@ -220,7 +221,11 @@ export async function SurveyDetail({ id }: { id: string }) {
 								)}
 							</div>
 							<div className="text-center">
-								<Link href={`/surveys/${survey.id}/take`}>
+								<Link
+									href={`/surveys/${slugify(
+										survey.question
+									)}/${survey.id_seq}/take`}
+								>
 									<Button
 										size="default"
 										className="px-6 py-2 font-semibold shadow-lg hover:shadow-xl transition-all duration-200"

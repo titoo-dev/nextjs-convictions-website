@@ -29,7 +29,7 @@ const SurveySchema = z.object({
 	pictureUrl: z.string().nullable(),
 	urlSurvey: z.string(),
 	author: AuthorSchema.optional(),
-	idSeq: z.number().optional(),
+	id_seq: z.number().optional(),
 });
 
 export { SurveySchema, SurveyOptionSchema, AuthorSchema };
