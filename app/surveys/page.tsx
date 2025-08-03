@@ -23,114 +23,115 @@ async function SurveysContent() {
 		<>
 			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 				{surveys.map((survey) => (
-					<Card
+					<Link
 						key={survey.id}
-						className="hover:shadow-lg transition-shadow duration-300 overflow-hidden pt-0"
+						href={`/surveys/${slugify(survey.question)}/${
+							survey.id_seq
+						}`}
+						className="group"
 					>
-						<div className="relative w-full h-48">
-							{survey.pictureUrl ? (
-								<Image
-									src={survey.pictureUrl}
-									alt={survey.question}
-									fill
-									className="object-cover"
-								/>
-							) : (
-								<div className="w-full h-full bg-gray-50 flex items-center justify-center">
-									<svg
-										className="w-16 h-16 text-gray-300"
-										fill="currentColor"
-										viewBox="0 0 20 20"
-									>
-										<path
-											fillRule="evenodd"
-											d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
-											clipRule="evenodd"
-										/>
-									</svg>
-								</div>
-							)}
-						</div>
-
-						<CardHeader>
-							<div className="flex items-center gap-3 mb-3">
-								{survey.isAnswered && (
-									<span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-										Answered
-									</span>
-								)}
-								{survey.isMine && (
-									<span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-										My Survey
-									</span>
-								)}
-							</div>
-							<CardTitle className="text-xl leading-tight">
-								{survey.question}
-							</CardTitle>
-							<CardDescription className="text-sm leading-relaxed">
-								{survey.description}
-							</CardDescription>
-						</CardHeader>
-
-						<CardContent>
-							<div className="space-y-3 mb-6">
-								{survey.options.slice(0, 2).map((option) => (
-									<div
-										key={option.id}
-										className="flex items-center justify-between"
-									>
-										<span className="text-sm text-foreground truncate flex-1">
-											{option.option}
-										</span>
-										<div className="flex items-center gap-2 ml-3">
-											<div className="w-16 bg-muted rounded-full h-2">
-												<div
-													className="bg-primary h-2 rounded-full transition-all duration-500"
-													style={{
-														width: `${
-															option.percentage ||
-															0
-														}%`,
-													}}
-												/>
-											</div>
-											<span className="text-xs text-muted-foreground min-w-fit">
-												{option.percentage
-													? `${option.percentage}%`
-													: '0%'}
-											</span>
-										</div>
+						<Card className="hover:shadow-lg transition-shadow duration-300 overflow-hidden pt-0 cursor-pointer">
+							<div className="relative w-full h-48">
+								{survey.pictureUrl ? (
+									<Image
+										src={survey.pictureUrl}
+										alt={survey.question}
+										fill
+										className="object-cover"
+									/>
+								) : (
+									<div className="w-full h-full bg-gray-50 flex items-center justify-center">
+										<svg
+											className="w-16 h-16 text-gray-300"
+											fill="currentColor"
+											viewBox="0 0 20 20"
+										>
+											<path
+												fillRule="evenodd"
+												d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
+												clipRule="evenodd"
+											/>
+										</svg>
 									</div>
-								))}
-								{survey.options.length > 2 && (
-									<p className="text-xs text-muted-foreground">
-										+{survey.options.length - 2} more
-										options
-									</p>
 								)}
 							</div>
 
-							<div className="flex items-center justify-between">
-								<div className="text-xs text-muted-foreground">
-									{survey.surveyUserAnswersTotal} responses
+							<CardHeader>
+								<div className="flex items-center gap-3 mb-3">
+									{survey.isAnswered && (
+										<span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+											Answered
+										</span>
+									)}
+									{survey.isMine && (
+										<span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+											My Survey
+										</span>
+									)}
 								</div>
-								<Button
-									size="sm"
-									className="bg-primary hover:bg-primary/90"
-									asChild
-								>
-									<Link
-										href={`/surveys/${slugify(
-											survey.question
-										)}/${survey.id_seq}`}
+								<CardTitle className="text-xl leading-tight line-clamp-2">
+									{survey.question}
+								</CardTitle>
+								<CardDescription className="text-sm leading-relaxed line-clamp-3">
+									{survey.description}
+								</CardDescription>
+							</CardHeader>
+
+							<CardContent>
+								<div className="space-y-3 mb-6">
+									{survey.options
+										.slice(0, 2)
+										.map((option) => (
+											<div
+												key={option.id}
+												className="flex items-center justify-between"
+											>
+												<span className="text-sm text-foreground truncate flex-1">
+													{option.option}
+												</span>
+												<div className="flex items-center gap-2 ml-3">
+													<div className="w-16 bg-muted rounded-full h-2">
+														<div
+															className="bg-primary h-2 rounded-full transition-all duration-500"
+															style={{
+																width: `${
+																	option.percentage ||
+																	0
+																}%`,
+															}}
+														/>
+													</div>
+													<span className="text-xs text-muted-foreground min-w-fit">
+														{option.percentage
+															? `${option.percentage}%`
+															: '0%'}
+													</span>
+												</div>
+											</div>
+										))}
+									{survey.options.length > 2 && (
+										<p className="text-xs text-muted-foreground">
+											+{survey.options.length - 2} more
+											options
+										</p>
+									)}
+								</div>
+
+								<div className="flex items-center justify-between">
+									<div className="text-xs text-muted-foreground">
+										{survey.surveyUserAnswersTotal}{' '}
+										responses
+									</div>
+									<Button
+										size="sm"
+										className="bg-primary hover:bg-primary/90 group-hover:scale-105 transition-transform"
 									>
-										View Details
-									</Link>
-								</Button>
-							</div>
-						</CardContent>
-					</Card>
+										Vote
+									</Button>
+								</div>
+							</CardContent>
+						</Card>
+					</Link>
 				))}
 			</div>
 
