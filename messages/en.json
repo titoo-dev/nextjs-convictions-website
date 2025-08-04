@@ -629,5 +629,84 @@
         "errorMessage": "We are sorry, but an error occurred during payment.",
         "contactMessage": "If the problem persists, please contact us.",
         "continue": "Continue"
+    },
+    "surveys": {
+        "page": {
+            "title": "Surveys",
+            "description": "Share your voice through community surveys and help shape important decisions",
+            "createSurvey": "Create Survey",
+            "back": "Back",
+            "backToSurveys": "Back to Surveys",
+            "backToHome": "Back to Home"
+        },
+        "card": {
+            "answered": "Answered",
+            "mySurvey": "My Survey",
+            "vote": "Vote",
+            "responses": "responses",
+            "moreOptions": "more options"
+        },
+        "emptyState": {
+            "title": "No surveys available",
+            "description": "Check back later for new community surveys"
+        },
+        "create": {
+            "title": "Create Survey",
+            "loginRequired": "You need to be logged in to create a survey",
+            "question": "Ask your question",
+            "questionPlaceholder": "What is your question?",
+            "description": "Description",
+            "descriptionPlaceholder": "Enter survey description",
+            "image": "Survey Image (Optional)",
+            "options": "Survey Options",
+            "optionPlaceholder": "Option {number}",
+            "addOption": "Add Option",
+            "allowMultipleChoice": "Allow multiple choice",
+            "createButton": "Create Survey",
+            "creating": "Creating Survey...",
+            "errors": {
+                "minOptionsRequired": "At least two options are required",
+                "failedToCreate": "Failed to create survey. Please try again.",
+                "failedToCreateGeneric": "Failed to create survey"
+            },
+            "success": "Survey created successfully!"
+        },
+        "detail": {
+            "notFound": {
+                "title": "Survey Not Found",
+                "description": "The survey you're looking for doesn't exist or has been removed."
+            },
+            "pollResults": "Poll Results",
+            "noResponses": {
+                "title": "No responses yet",
+                "description": "Be the first to share your opinion!"
+            },
+            "takeSurvey": "Take Survey",
+            "responses": "responses",
+            "vote": "vote",
+            "votes": "votes",
+            "created": "Created",
+            "answered": "Answered",
+            "notAnswered": "Not Answered",
+            "multipleChoice": "Multiple Choice",
+            "yourSurvey": "Your Survey"
+        },
+        "take": {
+            "answered": "Answered",
+            "mySurvey": "My Survey",
+            "multipleChoice": "Multiple Choice",
+            "by": "by",
+            "vote": "vote",
+            "votes": "votes",
+            "totalResponses": "total responses",
+            "created": "Created",
+            "submitVote": "Submit Vote",
+            "submitting": "Submitting...",
+            "alreadyAnswered": "You have already answered this survey",
+            "selectOption": "Select an option to vote",
+            "selectOptions": "Select one or more options to vote",
+            "voteSubmitted": "Vote submitted successfully",
+            "voteFailed": "Failed to submit vote"
+        }
     }
 }

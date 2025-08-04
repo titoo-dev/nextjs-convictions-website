@@ -7,11 +7,11 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Progress } from '@/components/ui/progress';
 import { slugify } from '@/lib/utils';
+import { getTranslations } from 'next-intl/server';
 
 export async function SurveyDetail({ id }: { id: string }) {
 	const survey = await getSurvey(id);
-
-	console.log(survey);
+	const t = await getTranslations('surveys');
 
 	if (!survey) {
 		return (
@@ -22,16 +22,15 @@ export async function SurveyDetail({ id }: { id: string }) {
 							<BarChart3 className="w-6 h-6 text-muted-foreground" />
 						</div>
 						<h2 className="text-lg font-bold text-foreground mb-2">
-							Survey Not Found
+							{t('detail.notFound.title')}
 						</h2>
 						<p className="text-muted-foreground mb-6 text-sm">
-							The survey you&apos;re looking for doesn&apos;t
-							exist or has been removed.
+							{t('detail.notFound.description')}
 						</p>
 						<Link href="/">
 							<Button size="sm" className="gap-2">
 								<ArrowLeft className="w-3 h-3" />
-								Back to Home
+								{t('page.backToHome')}
 							</Button>
 						</Link>
 					</CardContent>
@@ -63,7 +62,7 @@ export async function SurveyDetail({ id }: { id: string }) {
 					>
 						<ArrowLeft className="w-3 h-3 group-hover:-translate-x-1 transition-transform" />
 						<span className="text-sm font-medium">
-							Back to Surveys
+							{t('page.backToSurveys')}
 						</span>
 					</Link>
 				</div>
@@ -97,7 +96,8 @@ export async function SurveyDetail({ id }: { id: string }) {
 										<div className="flex items-center gap-2">
 											<Users className="w-3 h-3" />
 											<span className="font-medium">
-												{totalVotes} responses
+												{totalVotes}{' '}
+												{t('detail.responses')}
 											</span>
 										</div>
 									</div>
@@ -119,15 +119,15 @@ export async function SurveyDetail({ id }: { id: string }) {
 										className="text-xs"
 									>
 										{survey.isAnswered
-											? 'Answered'
-											: 'Not Answered'}
+											? t('detail.answered')
+											: t('detail.notAnswered')}
 									</Badge>
 									{survey.isMultipleChoice && (
 										<Badge
 											variant="outline"
 											className="text-xs"
 										>
-											Multiple Choice
+											{t('detail.multipleChoice')}
 										</Badge>
 									)}
 									{survey.isMine && (
@@ -135,7 +135,7 @@ export async function SurveyDetail({ id }: { id: string }) {
 											variant="outline"
 											className="text-xs bg-primary/5"
 										>
-											Your Survey
+											{t('detail.yourSurvey')}
 										</Badge>
 									)}
 								</div>
@@ -160,7 +160,7 @@ export async function SurveyDetail({ id }: { id: string }) {
 										<BarChart3 className="w-4 h-4 text-primary" />
 									</div>
 									<h3 className="text-lg font-bold">
-										Poll Results
+										{t('detail.pollResults')}
 									</h3>
 									<div className="flex-1 h-px bg-border"></div>
 								</div>
@@ -182,8 +182,12 @@ export async function SurveyDetail({ id }: { id: string }) {
 																{option.count}{' '}
 																{option.count ===
 																1
-																	? 'vote'
-																	: 'votes'}
+																	? t(
+																			'detail.vote'
+																	  )
+																	: t(
+																			'detail.votes'
+																	  )}
 															</span>
 															<span className="text-xs text-muted-foreground font-medium">
 																{option.percentage?.toFixed(
@@ -212,10 +216,12 @@ export async function SurveyDetail({ id }: { id: string }) {
 											<Users className="w-8 h-8 text-muted-foreground" />
 										</div>
 										<h4 className="text-lg font-semibold text-foreground mb-2">
-											No responses yet
+											{t('detail.noResponses.title')}
 										</h4>
 										<p className="text-muted-foreground text-sm">
-											Be the first to share your opinion!
+											{t(
+												'detail.noResponses.description'
+											)}
 										</p>
 									</div>
 								)}
@@ -230,7 +236,7 @@ export async function SurveyDetail({ id }: { id: string }) {
 										size="default"
 										className="px-6 py-2 font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
 									>
-										Take Survey
+										{t('detail.takeSurvey')}
 									</Button>
 								</Link>
 							</div>

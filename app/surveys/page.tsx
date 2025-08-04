@@ -17,8 +17,7 @@ import RenderWhen from '@/components/render-when';
 
 async function SurveysContent() {
 	const surveys = await getSurveys();
-
-	console.log(surveys);
+	const t = await getTranslations('surveys');
 
 	return (
 		<>
@@ -61,12 +60,12 @@ async function SurveysContent() {
 								<div className="flex items-center gap-3 mb-3">
 									{survey.isAnswered && (
 										<span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-											Answered
+											{t('card.answered')}
 										</span>
 									)}
 									{survey.isMine && (
 										<span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-											My Survey
+											{t('card.mySurvey')}
 										</span>
 									)}
 								</div>
@@ -112,8 +111,8 @@ async function SurveysContent() {
 										))}
 									{survey.options.length > 2 && (
 										<p className="text-xs text-muted-foreground">
-											+{survey.options.length - 2} more
-											options
+											+{survey.options.length - 2}{' '}
+											{t('card.moreOptions')}
 										</p>
 									)}
 								</div>
@@ -126,14 +125,14 @@ async function SurveysContent() {
 									>
 										<div className="text-xs text-muted-foreground">
 											{survey.surveyUserAnswersTotal}{' '}
-											responses
+											{t('card.responses')}
 										</div>
 									</RenderWhen>
 									<Button
 										size="sm"
 										className="bg-primary hover:bg-primary/90 group-hover:scale-105 transition-transform"
 									>
-										Vote
+										{t('card.vote')}
 									</Button>
 								</div>
 							</CardContent>
@@ -153,10 +152,10 @@ async function SurveysContent() {
 						/>
 					</div>
 					<h3 className="text-lg font-medium text-foreground mb-2">
-						No surveys available
+						{t('emptyState.title')}
 					</h3>
 					<p className="text-muted-foreground">
-						Check back later for new community surveys
+						{t('emptyState.description')}
 					</p>
 				</div>
 			)}
@@ -165,21 +164,22 @@ async function SurveysContent() {
 }
 
 export default async function SurveysPage() {
-	const t = await getTranslations('navigation');
+	const t = await getTranslations('surveys');
 
 	return (
 		<div className="min-h-screen bg-background">
 			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 				<div className="text-center mb-12">
 					<h1 className="text-4xl font-bold text-foreground mb-4">
-						{t('surveys')}
+						{t('page.title')}
 					</h1>
 					<p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-6">
-						Share your voice through community surveys and help
-						shape important decisions
+						{t('page.description')}
 					</p>
 					<Button size="lg" asChild>
-						<Link href="/surveys/new">Create Survey</Link>
+						<Link href="/surveys/new">
+							{t('page.createSurvey')}
+						</Link>
 					</Button>
 				</div>
 
