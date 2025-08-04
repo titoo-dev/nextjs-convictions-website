@@ -7,8 +7,6 @@ import { SignatureCounter } from '@/components/petition/signature-counter';
 import { SignForm } from '@/components/petition/sign-form';
 import { ShareSection } from '@/components/petition/share-section';
 import { getUniquePublicPetition } from '@/actions/get-unique-public-petition';
-import { ArrowLeft } from 'lucide-react';
-import Link from 'next/link';
 import RenderWhen from '@/components/render-when';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { getCurrentUser } from '@/actions/get-current-user';
@@ -42,17 +40,6 @@ export default async function PetitionPage(props: {
 	return (
 		<div className="min-h-screen bg-gray-50">
 			<div className="container mx-auto px-3 sm:px-4 py-4 sm:py-8 max-w-7xl">
-				{/* Back Navigation */}
-				<div className="mb-4 sm:mb-6">
-					<Link
-						href="/"
-						className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 group"
-					>
-						<ArrowLeft className="w-4 h-4" />
-						<span className="text-sm font-medium">{t('back')}</span>
-					</Link>
-				</div>
-
 				<div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
 					{/* Main Content */}
 					<div className="lg:col-span-2 space-y-3 sm:space-y-4">

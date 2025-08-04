@@ -12,10 +12,8 @@ import {
 	Image as ImageIcon,
 	Users,
 	Globe,
-	ArrowLeft,
 	RotateCcw,
 } from 'lucide-react';
-import Link from 'next/link';
 
 import { StepIndicator } from '@/components/petition/form/step-indicator';
 import {
@@ -412,19 +410,6 @@ export function NewPetitionClient({ currentUser }: NewPetitionClientProps) {
 	return (
 		<div className="min-h-screen bg-gray-50 py-8">
 			<div className="container mx-auto px-4 max-w-4xl">
-				{/* Back Navigation */}
-				<div className="mb-6">
-					<Link
-						href="/"
-						className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 group"
-					>
-						<ArrowLeft className="w-4 h-4" />
-						<span className="text-sm font-medium">
-							{tPage('back')}
-						</span>
-					</Link>
-				</div>
-
 				{/* Draft Restored Notification */}
 				{showDraftRestored && (
 					<Alert className="flex items-center mb-6 bg-blue-50 border-blue-200">
