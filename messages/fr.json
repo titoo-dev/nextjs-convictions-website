@@ -629,5 +629,84 @@
         "errorMessage": "Nous sommes désolés, mais une erreur est survenue lors du paiement.",
         "contactMessage": "Si le problème persiste, veuillez nous contacter.",
         "continue": "Continuer"
+    },
+    "surveys": {
+        "page": {
+            "title": "Sondages",
+            "description": "Faites entendre votre voix à travers les sondages communautaires et aidez à façonner des décisions importantes",
+            "createSurvey": "Créer un sondage",
+            "back": "Retour",
+            "backToSurveys": "Retour aux sondages",
+            "backToHome": "Retour à l'accueil"
+        },
+        "card": {
+            "answered": "Répondu",
+            "mySurvey": "Mon sondage",
+            "vote": "Voter",
+            "responses": "réponses",
+            "moreOptions": "options supplémentaires"
+        },
+        "emptyState": {
+            "title": "Aucun sondage disponible",
+            "description": "Revenez plus tard pour de nouveaux sondages communautaires"
+        },
+        "create": {
+            "title": "Créer un sondage",
+            "loginRequired": "Vous devez être connecté pour créer un sondage",
+            "question": "Posez votre question",
+            "questionPlaceholder": "Quelle est votre question ?",
+            "description": "Description",
+            "descriptionPlaceholder": "Entrez la description du sondage",
+            "image": "Image du sondage (Optionnel)",
+            "options": "Options du sondage",
+            "optionPlaceholder": "Option {number}",
+            "addOption": "Ajouter une option",
+            "allowMultipleChoice": "Autoriser le choix multiple",
+            "createButton": "Créer le sondage",
+            "creating": "Création du sondage...",
+            "errors": {
+                "minOptionsRequired": "Au moins deux options sont requises",
+                "failedToCreate": "Échec de la création du sondage. Veuillez réessayer.",
+                "failedToCreateGeneric": "Échec de la création du sondage"
+            },
+            "success": "Sondage créé avec succès !"
+        },
+        "detail": {
+            "notFound": {
+                "title": "Sondage introuvable",
+                "description": "Le sondage que vous recherchez n'existe pas ou a été supprimé."
+            },
+            "pollResults": "Résultats du sondage",
+            "noResponses": {
+                "title": "Aucune réponse pour le moment",
+                "description": "Soyez le premier à partager votre opinion !"
+            },
+            "takeSurvey": "Participer au sondage",
+            "responses": "réponses",
+            "vote": "vote",
+            "votes": "votes",
+            "created": "Créé",
+            "answered": "Répondu",
+            "notAnswered": "Non répondu",
+            "multipleChoice": "Choix multiple",
+            "yourSurvey": "Votre sondage"
+        },
+        "take": {
+            "answered": "Répondu",
+            "mySurvey": "Mon sondage",
+            "multipleChoice": "Choix multiple",
+            "by": "par",
+            "vote": "vote",
+            "votes": "votes",
+            "totalResponses": "réponses totales",
+            "created": "Créé",
+            "submitVote": "Soumettre le vote",
+            "submitting": "Soumission...",
+            "alreadyAnswered": "Vous avez déjà répondu à ce sondage",
+            "selectOption": "Sélectionnez une option pour voter",
+            "selectOptions": "Sélectionnez une ou plusieurs options pour voter",
+            "voteSubmitted": "Vote soumis avec succès",
+            "voteFailed": "Échec de la soumission du vote"
+        }
     }
 }

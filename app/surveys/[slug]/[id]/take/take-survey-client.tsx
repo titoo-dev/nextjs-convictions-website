@@ -19,6 +19,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { LoginDialog } from '@/components/header/login-dialog';
 import { User } from '@/schemas/user';
+import { useTranslations } from 'next-intl';
 
 type TakeSurveyClientProps = {
 	survey: Survey;
@@ -29,6 +30,7 @@ export function TakeSurveyClient({
 	survey,
 	currentUser,
 }: TakeSurveyClientProps) {
+	const t = useTranslations('surveys');
 	const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
 	const [isPending, startTransition] = useTransition();
 	const router = useRouter();
@@ -58,10 +60,10 @@ export function TakeSurveyClient({
 
 			if (result.success) {
 				setSelectedOptions([]);
-				toast.success('Vote submitted successfully');
+				toast.success(t('take.voteSubmitted'));
 				router.refresh();
 			} else {
-				toast.error(result.error || 'Failed to submit vote');
+				toast.error(result.error || t('take.voteFailed'));
 			}
 		});
 	};
@@ -88,7 +90,7 @@ export function TakeSurveyClient({
 									variant="secondary"
 									className="bg-green-100 text-green-800"
 								>
-									Answered
+									{t('take.answered')}
 								</Badge>
 							</RenderWhen>
 							<RenderWhen condition={survey.isMine}>
@@ -96,11 +98,13 @@ export function TakeSurveyClient({
 									variant="secondary"
 									className="bg-blue-100 text-blue-800"
 								>
-									My Survey
+									{t('take.mySurvey')}
 								</Badge>
 							</RenderWhen>
 							<RenderWhen condition={survey.isMultipleChoice}>
-								<Badge variant="outline">Multiple Choice</Badge>
+								<Badge variant="outline">
+									{t('take.multipleChoice')}
+								</Badge>
 							</RenderWhen>
 						</div>
 
@@ -122,7 +126,7 @@ export function TakeSurveyClient({
 									/>
 								</div>
 								<span className="text-sm text-muted-foreground">
-									by {survey.author?.name}
+									{t('take.by')} {survey.author?.name}
 								</span>
 							</div>
 						</RenderWhen>
@@ -198,8 +202,10 @@ export function TakeSurveyClient({
 														>
 															{option.count}{' '}
 															{option.count === 1
-																? 'vote'
-																: 'votes'}
+																? t('take.vote')
+																: t(
+																		'take.votes'
+																  )}
 														</Badge>
 														<span className="text-xs text-muted-foreground">
 															{option.percentage}%
@@ -231,11 +237,11 @@ export function TakeSurveyClient({
 							<div className="pt-4 border-t">
 								<div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
 									<span>
-										{survey.surveyUserAnswersTotal} total
-										responses
+										{survey.surveyUserAnswersTotal}{' '}
+										{t('take.totalResponses')}
 									</span>
 									<span>
-										Created{' '}
+										{t('take.created')}{' '}
 										{new Date(
 											survey.createdAt
 										).toLocaleDateString()}
@@ -256,7 +262,7 @@ export function TakeSurveyClient({
 												size="lg"
 												disabled={isPending}
 											>
-												Submit Vote
+												{t('take.submitVote')}
 											</Button>
 										}
 									/>
@@ -276,16 +282,15 @@ export function TakeSurveyClient({
 										disabled={isPending}
 									>
 										{isPending
-											? 'Submitting...'
-											: 'Submit Vote'}
+											? t('take.submitting')
+											: t('take.submitVote')}
 									</Button>
 								</RenderWhen>
 
 								<RenderWhen condition={survey.isAnswered}>
 									<div className="text-center p-4 bg-green-50 rounded-lg">
 										<p className="text-green-800 font-medium">
-											You have already answered this
-											survey
+											{t('take.alreadyAnswered')}
 										</p>
 									</div>
 								</RenderWhen>
@@ -298,11 +303,9 @@ export function TakeSurveyClient({
 								>
 									<div className="text-center p-4 bg-gray-50 rounded-lg">
 										<p className="text-gray-600">
-											Select{' '}
 											{survey.isMultipleChoice
-												? 'one or more options'
-												: 'an option'}{' '}
-											to vote
+												? t('take.selectOptions')
+												: t('take.selectOption')}
 										</p>
 									</div>
 								</RenderWhen>

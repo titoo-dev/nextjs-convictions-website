@@ -19,12 +19,14 @@ import RenderWhen from '@/components/render-when';
 import { useRouter } from 'next/navigation';
 import { LoginDialog } from '@/components/header/login-dialog';
 import { User } from '@/schemas/user';
+import { useTranslations } from 'next-intl';
 
 type CreateSurveyClientProps = {
 	currentUser: User | null;
 };
 
 export function CreateSurveyClient({ currentUser }: CreateSurveyClientProps) {
+	const t = useTranslations('surveys');
 	const router = useRouter();
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
@@ -62,8 +64,8 @@ export function CreateSurveyClient({ currentUser }: CreateSurveyClientProps) {
 		);
 
 		if (filteredOptions.length < 2) {
-			setError('At least two options are required');
-			toast.error('At least two options are required');
+			setError(t('create.errors.minOptionsRequired'));
+			toast.error(t('create.errors.minOptionsRequired'));
 			return;
 		}
 
@@ -83,10 +85,12 @@ export function CreateSurveyClient({ currentUser }: CreateSurveyClientProps) {
 				const result = await createSurvey(payload);
 
 				if (result.success) {
-					toast.success('Survey created successfully!');
+					toast.success(t('create.success'));
 					router.push(`/surveys/${result.data?.id}`);
 				} else {
-					setError(result.error || 'Failed to create survey');
+					setError(
+						result.error || t('create.errors.failedToCreateGeneric')
+					);
 					toast.error(result.error);
 				}
 			} catch (err) {
@@ -94,8 +98,8 @@ export function CreateSurveyClient({ currentUser }: CreateSurveyClientProps) {
 					setError(err.issues[0].message);
 					toast.error(err.issues[0].message);
 				} else {
-					setError('Failed to create survey. Please try again.');
-					toast.error('Failed to create survey. Please try again.');
+					setError(t('create.errors.failedToCreate'));
+					toast.error(t('create.errors.failedToCreate'));
 				}
 			} finally {
 				setIsLoading(false);
@@ -112,18 +116,20 @@ export function CreateSurveyClient({ currentUser }: CreateSurveyClientProps) {
 						className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 group"
 					>
 						<ArrowLeft className="w-4 h-4" />
-						<span className="text-sm font-medium">Back</span>
+						<span className="text-sm font-medium">
+							{t('page.back')}
+						</span>
 					</Link>
 				</div>
 
 				<Card className="shadow-none">
 					<CardHeader>
 						<CardTitle className="text-xl sm:text-2xl">
-							Create Survey
+							{t('create.title')}
 						</CardTitle>
 						<RenderWhen condition={!currentUser}>
 							<p className="text-sm text-muted-foreground">
-								You need to be logged in to create a survey
+								{t('create.loginRequired')}
 							</p>
 						</RenderWhen>
 					</CardHeader>
@@ -131,13 +137,15 @@ export function CreateSurveyClient({ currentUser }: CreateSurveyClientProps) {
 						<form onSubmit={handleSubmit} className="space-y-6">
 							<div className="space-y-2">
 								<Label htmlFor="question">
-									Ask your question
+									{t('create.question')}
 								</Label>
 								<Input
 									id="question"
 									name="question"
 									type="text"
-									placeholder="What is your question?"
+									placeholder={t(
+										'create.questionPlaceholder'
+									)}
 									required
 									disabled={isLoading}
 									value={formQuestion}
@@ -148,11 +156,15 @@ export function CreateSurveyClient({ currentUser }: CreateSurveyClientProps) {
 							</div>
 
 							<div className="space-y-2">
-								<Label htmlFor="description">Description</Label>
+								<Label htmlFor="description">
+									{t('create.description')}
+								</Label>
 								<Textarea
 									id="description"
 									name="description"
-									placeholder="Enter survey description"
+									placeholder={t(
+										'create.descriptionPlaceholder'
+									)}
 									rows={4}
 									disabled={isLoading}
 									value={formDescription}
@@ -163,7 +175,7 @@ export function CreateSurveyClient({ currentUser }: CreateSurveyClientProps) {
 							</div>
 
 							<div className="space-y-2">
-								<Label>Survey Image (Optional)</Label>
+								<Label>{t('create.image')}</Label>
 								<SurveyImageUpload
 									question={formQuestion}
 									description={formDescription}
@@ -173,7 +185,7 @@ export function CreateSurveyClient({ currentUser }: CreateSurveyClientProps) {
 
 							<div className="space-y-4">
 								<div className="flex items-center justify-between">
-									<Label>Survey Options</Label>
+									<Label>{t('create.options')}</Label>
 								</div>
 
 								<div className="space-y-3">
@@ -184,9 +196,10 @@ export function CreateSurveyClient({ currentUser }: CreateSurveyClientProps) {
 										>
 											<div className="flex items-center gap-3">
 												<Input
-													placeholder={`Option ${
-														index + 1
-													}`}
+													placeholder={t(
+														'create.optionPlaceholder',
+														{ number: index + 1 }
+													)}
 													value={option}
 													onChange={(e) =>
 														updateOption(
@@ -225,7 +238,7 @@ export function CreateSurveyClient({ currentUser }: CreateSurveyClientProps) {
 									className="flex items-center gap-2"
 								>
 									<Plus className="w-4 h-4" />
-									Add Option
+									{t('create.addOption')}
 								</Button>
 							</div>
 
@@ -236,7 +249,7 @@ export function CreateSurveyClient({ currentUser }: CreateSurveyClientProps) {
 									disabled={isLoading}
 								/>
 								<Label htmlFor="isMultipleChoice">
-									Allow multiple choice
+									{t('create.allowMultipleChoice')}
 								</Label>
 							</div>
 
@@ -259,13 +272,13 @@ export function CreateSurveyClient({ currentUser }: CreateSurveyClientProps) {
 										>
 											<div className="flex items-center gap-2">
 												<div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-												Creating Survey...
+												{t('create.creating')}
 											</div>
 										</RenderWhen>
 										<RenderWhen
 											condition={!isLoading && !isPending}
 										>
-											Create Survey
+											{t('create.createButton')}
 										</RenderWhen>
 									</Button>
 								}
@@ -277,7 +290,7 @@ export function CreateSurveyClient({ currentUser }: CreateSurveyClientProps) {
 											disabled={isLoading || isPending}
 											className="w-full"
 										>
-											Create Survey
+											{t('create.createButton')}
 										</Button>
 									}
 								/>

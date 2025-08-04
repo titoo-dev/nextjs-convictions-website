@@ -629,5 +629,84 @@
         "errorMessage": "Lo sentimos, pero ocurrió un error durante el pago.",
         "contactMessage": "Si el problema persiste, por favor contáctanos.",
         "continue": "Continuar"
+    },
+    "surveys": {
+        "page": {
+            "title": "Encuestas",
+            "description": "Comparte tu voz a través de encuestas comunitarias y ayuda a dar forma a decisiones importantes",
+            "createSurvey": "Crear encuesta",
+            "back": "Atrás",
+            "backToSurveys": "Volver a las encuestas",
+            "backToHome": "Volver al inicio"
+        },
+        "card": {
+            "answered": "Respondida",
+            "mySurvey": "Mi encuesta",
+            "vote": "Votar",
+            "responses": "respuestas",
+            "moreOptions": "opciones más"
+        },
+        "emptyState": {
+            "title": "No hay encuestas disponibles",
+            "description": "Vuelve más tarde para nuevas encuestas comunitarias"
+        },
+        "create": {
+            "title": "Crear encuesta",
+            "loginRequired": "Necesitas iniciar sesión para crear una encuesta",
+            "question": "Haz tu pregunta",
+            "questionPlaceholder": "¿Cuál es tu pregunta?",
+            "description": "Descripción",
+            "descriptionPlaceholder": "Ingresa la descripción de la encuesta",
+            "image": "Imagen de la encuesta (Opcional)",
+            "options": "Opciones de la encuesta",
+            "optionPlaceholder": "Opción {number}",
+            "addOption": "Agregar opción",
+            "allowMultipleChoice": "Permitir selección múltiple",
+            "createButton": "Crear encuesta",
+            "creating": "Creando encuesta...",
+            "errors": {
+                "minOptionsRequired": "Se requieren al menos dos opciones",
+                "failedToCreate": "Error al crear la encuesta. Por favor, inténtalo de nuevo.",
+                "failedToCreateGeneric": "Error al crear la encuesta"
+            },
+            "success": "¡Encuesta creada exitosamente!"
+        },
+        "detail": {
+            "notFound": {
+                "title": "Encuesta no encontrada",
+                "description": "La encuesta que buscas no existe o ha sido eliminada."
+            },
+            "pollResults": "Resultados de la encuesta",
+            "noResponses": {
+                "title": "Aún no hay respuestas",
+                "description": "¡Sé el primero en compartir tu opinión!"
+            },
+            "takeSurvey": "Participar en la encuesta",
+            "responses": "respuestas",
+            "vote": "voto",
+            "votes": "votos",
+            "created": "Creada",
+            "answered": "Respondida",
+            "notAnswered": "No respondida",
+            "multipleChoice": "Selección múltiple",
+            "yourSurvey": "Tu encuesta"
+        },
+        "take": {
+            "answered": "Respondida",
+            "mySurvey": "Mi encuesta",
+            "multipleChoice": "Selección múltiple",
+            "by": "por",
+            "vote": "voto",
+            "votes": "votos",
+            "totalResponses": "respuestas totales",
+            "created": "Creada",
+            "submitVote": "Enviar voto",
+            "submitting": "Enviando...",
+            "alreadyAnswered": "Ya has respondido esta encuesta",
+            "selectOption": "Selecciona una opción para votar",
+            "selectOptions": "Selecciona una o más opciones para votar",
+            "voteSubmitted": "Voto enviado exitosamente",
+            "voteFailed": "Error al enviar el voto"
+        }
     }
 }
