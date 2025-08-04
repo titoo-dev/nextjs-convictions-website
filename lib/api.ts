@@ -194,3 +194,71 @@ export async function generatePetitionContent(
 		throw errorObj;
 	}
 }
+
+// Authentication utilities
+import { getTokens, refreshAccessToken } from './cookies-storage';
+
+interface ApiOptions extends RequestInit {
+	requireAuth?: boolean;
+}
+
+export async function apiCall(
+	url: string,
+	options: ApiOptions = {}
+): Promise<Response> {
+	const { requireAuth = true, ...fetchOptions } = options;
+
+	if (!requireAuth) {
+		return fetch(url, fetchOptions);
+	}
+
+	const tokens = await getTokens();
+	if (!tokens) {
+		throw new Error('No authentication tokens available');
+	}
+
+	const headers = {
+		'Content-Type': 'application/json',
+		Authorization: `Bearer ${tokens.accessToken}`,
+		...fetchOptions.headers,
+	};
+
+	try {
+		const response = await fetch(url, {
+			...fetchOptions,
+			headers,
+		});
+
+		if (response.status === 401) {
+			const refreshedTokens = await refreshAccessToken();
+			if (refreshedTokens) {
+				const retryResponse = await fetch(url, {
+					...fetchOptions,
+					headers: {
+						...headers,
+						Authorization: `Bearer ${refreshedTokens.accessToken}`,
+					},
+				});
+				return retryResponse;
+			}
+		}
+
+		return response;
+	} catch (error) {
+		throw new Error(`API call failed: ${error}`);
+	}
+}
+
+export async function authenticatedFetch(
+	url: string,
+	options: RequestInit = {}
+): Promise<Response> {
+	return apiCall(url, { ...options, requireAuth: true });
+}
+
+export async function publicFetch(
+	url: string,
+	options: RequestInit = {}
+): Promise<Response> {
+	return apiCall(url, { ...options, requireAuth: false });
+}
