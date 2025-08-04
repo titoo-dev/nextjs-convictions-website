@@ -17,18 +17,12 @@ export async function signInWithEmail(formData: FormData): Promise<{
 	error?: string;
 }> {
 	try {
-		// Extract form data
 		const email = formData.get('email') as string;
 		const password = formData.get('password') as string;
 
-		// Validate request data
 		const validatedData: SignInWithEmailRequest =
-			signInWithEmailRequestSchema.parse({
-				email,
-				password,
-			});
+			signInWithEmailRequestSchema.parse({ email, password });
 
-		// Make API call to sign in endpoint
 		const response = await fetch(
 			`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/signIn`,
 			{
@@ -41,13 +35,11 @@ export async function signInWithEmail(formData: FormData): Promise<{
 			}
 		);
 
-		if (response.status !== 201) {
+		if (!response.ok) {
 			throw new Error(`Sign in failed: ${response.statusText}`);
 		}
 
 		const responseData = await response.json();
-
-		// Validate response data
 		const validatedResponse: SignInWithEmailResponse =
 			signInWithEmailResponseSchema.parse(responseData);
 
@@ -57,7 +49,6 @@ export async function signInWithEmail(formData: FormData): Promise<{
 		});
 
 		revalidatePath('/');
-
 		return { success: true, data: validatedResponse };
 	} catch (error) {
 		console.error('Sign in error:', error);

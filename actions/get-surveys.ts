@@ -3,16 +3,22 @@
 import { Survey, SurveySchema } from '../schemas/survey';
 import { getAccessToken } from '../lib/cookies-storage';
 import { z } from 'zod';
+import { getLocale } from 'next-intl/server';
 
 const SurveysArraySchema = z.array(SurveySchema);
 
 export async function getSurveys(): Promise<Survey[]> {
 	try {
+		const locale = await getLocale();
 		const accessToken = await getAccessToken();
 
 		const endpoint = accessToken
-			? `${process.env.NEXT_PUBLIC_API_BASE_URL}/survey/all`
-			: `${process.env.NEXT_PUBLIC_API_BASE_URL}/survey/all/public`;
+			? `${
+					process.env.NEXT_PUBLIC_API_BASE_URL
+			  }/survey/all/${locale.toLocaleUpperCase()}`
+			: `${
+					process.env.NEXT_PUBLIC_API_BASE_URL
+			  }/survey/all/public/${locale.toLocaleUpperCase()}`;
 
 		const headers: Record<string, string> = {
 			'Content-Type': 'application/json',
