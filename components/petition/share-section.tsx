@@ -8,14 +8,12 @@ import { Facebook, Twitter, MessageCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import RenderWhen from '../render-when';
-import { Survey } from '@/schemas/survey';
 
 type ShareSectionProps = {
 	petition: PublicPetition;
-	survey: Survey | null;
 };
 
-export function ShareSection({ petition, survey }: ShareSectionProps) {
+export function ShareSection({ petition }: ShareSectionProps) {
 	const t = useTranslations('petition.share');
 	const tBoost = useTranslations('petition.signForm');
 
@@ -109,18 +107,6 @@ export function ShareSection({ petition, survey }: ShareSectionProps) {
 								{tBoost('boostButton')}
 							</Link>
 						</Button>
-						<RenderWhen condition={survey === null}>
-							<Button
-								asChild
-								type="button"
-								variant="outline"
-								className="flex-1 border-primary-500 text-primary-500 hover:bg-primary-200 font-semibold py-3 sm:py-3 text-sm sm:text-base"
-							>
-								<Link href={`/create-survey/${petition.id}`}>
-									Create Survey
-								</Link>
-							</Button>
-						</RenderWhen>
 					</div>
 				</RenderWhen>
 			</CardContent>

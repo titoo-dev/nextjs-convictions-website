@@ -6,9 +6,7 @@ import { PetitionComments } from '@/components/petition/petition-comments';
 import { SignatureCounter } from '@/components/petition/signature-counter';
 import { SignForm } from '@/components/petition/sign-form';
 import { ShareSection } from '@/components/petition/share-section';
-import { SurveyCard } from '@/components/petition/survey-card';
 import { getUniquePublicPetition } from '@/actions/get-unique-public-petition';
-import { getSurvey } from '@/actions/get-survey';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import RenderWhen from '@/components/render-when';
@@ -27,11 +25,6 @@ export default async function PetitionPage(props: {
 		id: params.id,
 		language: locale.toUpperCase() as 'FR' | 'EN' | 'ES',
 	});
-
-	// Fetch survey data if petition has a survey
-	const survey = petition?.surveyId
-		? await getSurvey(petition.surveyId)
-		: null;
 
 	if (!petition) {
 		return (
@@ -87,12 +80,7 @@ export default async function PetitionPage(props: {
 								petition={petition}
 							/>
 						</RenderWhen>
-						<RenderWhen
-							condition={survey !== null && !petition.isMine}
-						>
-							<SurveyCard survey={survey!} />
-						</RenderWhen>
-						<ShareSection petition={petition} survey={survey} />
+						<ShareSection petition={petition} />
 					</div>
 				</div>
 			</div>
