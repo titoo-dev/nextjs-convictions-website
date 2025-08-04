@@ -23,7 +23,7 @@ export async function POST() {
 
 		// Fetch updated user data
 		const response = await fetch(
-			`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/me`,
+			`${process.env.NEXT_PUBLIC_API_BASE_URL}/user`,
 			{
 				headers: {
 					Authorization: `Bearer ${newTokens.accessToken}`,
@@ -31,7 +31,7 @@ export async function POST() {
 			}
 		);
 
-		if (!response.ok) {
+		if (response.status !== 200) {
 			return NextResponse.json(
 				{ error: 'Failed to fetch user data' },
 				{ status: 401 }
