@@ -2,14 +2,20 @@
 
 import { Survey, SurveySchema } from '../schemas/survey';
 import { getAccessToken } from '../lib/cookies-storage';
+import { getLocale } from 'next-intl/server';
 
 export async function getSurvey(surveyId: string): Promise<Survey | null> {
 	try {
+		const locale = await getLocale();
 		const accessToken = await getAccessToken();
 
 		const endpoint = accessToken
-			? `${process.env.NEXT_PUBLIC_API_BASE_URL}/survey/${surveyId}`
-			: `${process.env.NEXT_PUBLIC_API_BASE_URL}/survey/public/${surveyId}`;
+			? `${
+					process.env.NEXT_PUBLIC_API_BASE_URL
+			  }/survey/${surveyId}/${locale.toLocaleUpperCase()}`
+			: `${
+					process.env.NEXT_PUBLIC_API_BASE_URL
+			  }/survey/public/${surveyId}/${locale.toLocaleUpperCase()}`;
 
 		const headers: Record<string, string> = {
 			'Content-Type': 'application/json',
