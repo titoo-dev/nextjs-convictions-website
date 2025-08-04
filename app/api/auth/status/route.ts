@@ -1,7 +1,7 @@
-import { getTokens } from '@/lib/cookies-storage';
-import { NextRequest, NextResponse } from 'next/server';
+import { getTokens, refreshAccessToken } from '@/lib/cookies-storage';
+import { NextResponse } from 'next/server';
 
-export async function GET(request: NextRequest) {
+export async function GET() {
 	try {
 		const tokens = await getTokens();
 
@@ -9,9 +9,9 @@ export async function GET(request: NextRequest) {
 			return NextResponse.json({ authenticated: false }, { status: 401 });
 		}
 
-		// Optionally fetch user data from your API
-		const response = await fetch(
-			`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/me`,
+		// Try to fetch user data with current access token
+		let response = await fetch(
+			`${process.env.NEXT_PUBLIC_API_BASE_URL}/user`,
 			{
 				headers: {
 					Authorization: `Bearer ${tokens.accessToken}`,
@@ -19,7 +19,24 @@ export async function GET(request: NextRequest) {
 			}
 		);
 
-		if (!response.ok) {
+		// If access token is expired, try to refresh it
+		if (response.status === 401) {
+			const newTokens = await refreshAccessToken();
+
+			if (newTokens) {
+				// Retry with new access token
+				response = await fetch(
+					`${process.env.NEXT_PUBLIC_API_BASE_URL}/user`,
+					{
+						headers: {
+							Authorization: `Bearer ${newTokens.accessToken}`,
+						},
+					}
+				);
+			}
+		}
+
+		if (response.status !== 200) {
 			return NextResponse.json({ authenticated: false }, { status: 401 });
 		}
 
@@ -29,6 +46,7 @@ export async function GET(request: NextRequest) {
 			user: userData,
 		});
 	} catch (error) {
+		console.error('Auth status error:', error);
 		return NextResponse.json({ authenticated: false }, { status: 401 });
 	}
 }

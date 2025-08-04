@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState, useRef } from 'react';
 
 interface AuthContextType {
 	isAuthenticated: boolean;
@@ -13,15 +13,50 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
 	const [user, setUser] = useState<any | null>(null);
 	const router = useRouter();
+	const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
 	useEffect(() => {
 		checkAuthStatus();
+		setupTokenRefresh();
+
+		return () => {
+			if (intervalRef.current) {
+				clearInterval(intervalRef.current);
+			}
+		};
 	}, []);
+
+	const setupTokenRefresh = () => {
+		// Check token every 5 minutes
+		intervalRef.current = setInterval(async () => {
+			try {
+				const response = await fetch('/api/auth/status');
+				if (!response.ok) {
+					// Token is invalid, try to refresh
+					const refreshResponse = await fetch('/api/auth/refresh', {
+						method: 'POST',
+					});
+
+					if (!refreshResponse.ok) {
+						// Refresh failed, logout user
+						setIsAuthenticated(false);
+						setUser(null);
+						router.refresh();
+					} else {
+						// Refresh successful, update user data
+						await checkAuthStatus();
+					}
+				}
+			} catch (error) {
+				console.error('Token refresh check failed:', error);
+			}
+		}, 5 * 60 * 1000); // 5 minutes
+	};
 
 	const checkAuthStatus = async () => {
 		try {
@@ -77,23 +112,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
 	return (
 		<AuthContext.Provider
-			value={{
-				isAuthenticated,
-				isLoading,
-				user,
-				login,
-				logout,
-			}}
+			value={{ isAuthenticated, isLoading, user, login, logout }}
 		>
 			{children}
 		</AuthContext.Provider>
 	);
-}
+};
 
-export function useAuth() {
+export const useAuth = () => {
 	const context = useContext(AuthContext);
 	if (context === undefined) {
 		throw new Error('useAuth must be used within an AuthProvider');
 	}
 	return context;
-}
+};

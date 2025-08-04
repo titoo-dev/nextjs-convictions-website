@@ -50,7 +50,7 @@ export async function getTokens(): Promise<AuthTokens | null> {
 		const refreshToken = cookieStore.get('refresh-token')?.value;
 		const expiresAt = cookieStore.get('token-expires-at')?.value;
 
-		if (!accessToken || !refreshToken) {
+		if (!refreshToken) {
 			return null;
 		}
 
@@ -60,7 +60,7 @@ export async function getTokens(): Promise<AuthTokens | null> {
 			return refreshedTokens;
 		}
 
-		return { accessToken, refreshToken, expiresAt };
+		return { accessToken: accessToken || '', refreshToken, expiresAt };
 	} catch (error) {
 		console.warn('Failed to get auth tokens:', error);
 		return null;
