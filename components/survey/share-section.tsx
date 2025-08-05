@@ -6,7 +6,6 @@ import { Survey } from '@/schemas/survey';
 import { Mail, Share2 } from 'lucide-react';
 import { Facebook, Twitter, MessageCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import RenderWhen from '../render-when';
 
 type ShareSectionProps = {
 	survey: Survey;
