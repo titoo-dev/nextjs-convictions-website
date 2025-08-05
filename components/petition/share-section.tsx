@@ -44,15 +44,14 @@ export function ShareSection({ petition }: ShareSectionProps) {
 	};
 
 	return (
-		<Card className="shadow-none">
+		<Card className="shadow-none gap-2">
 			<CardHeader>
 				<CardTitle className="text-base sm:text-lg flex items-center">
-					<Share2 className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
 					{t('title')}
 				</CardTitle>
 			</CardHeader>
 			<CardContent>
-				<div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3">
+				<div className="grid grid-cols-4 sm:grid-cols-3 gap-2 sm:gap-3">
 					<Button
 						variant="outline"
 						size="sm"
@@ -60,7 +59,6 @@ export function ShareSection({ petition }: ShareSectionProps) {
 						onClick={() => handleShare('facebook')}
 					>
 						<Facebook className="h-3 w-3 sm:h-4 sm:w-4" />
-						{t('facebook')}
 					</Button>
 					<Button
 						variant="outline"
@@ -69,7 +67,6 @@ export function ShareSection({ petition }: ShareSectionProps) {
 						onClick={() => handleShare('twitter')}
 					>
 						<Twitter className="h-3 w-3 sm:h-4 sm:w-4" />
-						{t('twitter')}
 					</Button>
 					<Button
 						variant="outline"
@@ -80,7 +77,6 @@ export function ShareSection({ petition }: ShareSectionProps) {
 						onClick={() => handleShare('whatsapp')}
 					>
 						<MessageCircle className="h-3 w-3 sm:h-4 sm:w-4" />
-						{t('whatsapp')}
 					</Button>
 					<Button
 						variant="outline"
@@ -91,7 +87,6 @@ export function ShareSection({ petition }: ShareSectionProps) {
 						onClick={() => handleShare('email')}
 					>
 						<Mail className="h-3 w-3 sm:h-4 sm:w-4" />
-						{t('email')}
 					</Button>
 				</div>
 

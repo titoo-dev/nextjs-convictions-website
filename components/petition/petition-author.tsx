@@ -1,34 +1,18 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Flag, Calendar } from 'lucide-react';
+import { Calendar } from 'lucide-react';
 import { PublicPetition } from '@/schemas/petition';
 import { useTranslations } from 'next-intl';
 import { User } from '@/schemas/user';
-import { LoginDialog } from '@/components/header/login-dialog';
-import RenderWhen from '@/components/render-when';
-import { ReportDialog } from './report-dialog';
 
 type PetitionAuthorProps = {
 	petition: PublicPetition;
-	currentUser: User | null;
 };
 
-export function PetitionAuthor({ petition, currentUser }: PetitionAuthorProps) {
+export function PetitionAuthor({ petition }: PetitionAuthorProps) {
 	const t = useTranslations('petition.author');
-
-	const ReportButton = (
-		<Button
-			variant="outline"
-			size="sm"
-			className="w-full md:w-max md:ml-auto self-end sm:self-auto text-xs sm:text-sm whitespace-nowrap"
-		>
-			<Flag className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
-			{t('reportPolicy')}
-		</Button>
-	);
 
 	return (
 		<Card className="shadow-none">
@@ -48,7 +32,6 @@ export function PetitionAuthor({ petition, currentUser }: PetitionAuthorProps) {
 							{petition.author.name}
 						</p>
 						<div className="flex items-center text-xs sm:text-sm text-gray-500 mt-1">
-							<Calendar className="h-3 w-3 sm:h-4 sm:w-4 mr-1 shrink-0" />
 							<span className="truncate">
 								{new Date(
 									petition.publishedAt
@@ -61,16 +44,6 @@ export function PetitionAuthor({ petition, currentUser }: PetitionAuthorProps) {
 						</div>
 					</div>
 				</div>
-
-				<RenderWhen condition={!!currentUser}>
-					<ReportDialog petitionId={petition.id}>
-						{ReportButton}
-					</ReportDialog>
-				</RenderWhen>
-
-				<RenderWhen condition={!currentUser}>
-					<LoginDialog trigger={ReportButton} />
-				</RenderWhen>
 			</CardContent>
 		</Card>
 	);

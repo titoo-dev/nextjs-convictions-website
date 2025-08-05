@@ -45,12 +45,16 @@ export default async function PetitionPage(props: {
 					{/* Main Content */}
 					<div className="lg:col-span-2 space-y-3 sm:space-y-4">
 						<PetitionHero petition={petition} />
-						<PetitionAuthor
-							currentUser={currentUser}
-							petition={petition}
-						/>
+						<PetitionAuthor petition={petition} />
 						<PetitionDetails petition={petition} />
-						<PetitionContent petition={petition} />
+						{/* Show ShareSection below PetitionDetails on mobile, hide on lg+ */}
+						<div className="block lg:hidden">
+							<ShareSection petition={petition} />
+						</div>
+						<PetitionContent
+							petition={petition}
+							currentUser={currentUser}
+						/>
 						<PetitionComments
 							currentUser={currentUser}
 							petition={petition}
@@ -68,12 +72,14 @@ export default async function PetitionPage(props: {
 								petition={petition}
 							/>
 						</RenderWhen>
-						<ShareSection petition={petition} />
+						{/* Show ShareSection only on lg+ screens in sidebar */}
+						<div className="hidden lg:block">
+							<ShareSection petition={petition} />
+						</div>
 					</div>
 				</div>
 			</div>
 
-			{/* Owner Empty Dialog */}
 			<OwnerEmptyClient
 				petitionId={petition.id}
 				isOwner={petition.isMine}
