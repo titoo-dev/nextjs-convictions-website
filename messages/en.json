@@ -466,7 +466,10 @@
                 "title": "Petition Not Found",
                 "description": "The petition you're looking for doesn't exist or has been removed."
             },
-            "back": "Back"
+            "back": "Back",
+            "signPetition": "I Sign",
+            "boostPetition": "Boost this petition",
+            "alreadySigned": "Already signed"
         },
         "report": {
             "title": "Report policy",

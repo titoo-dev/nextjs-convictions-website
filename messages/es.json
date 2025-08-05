@@ -466,7 +466,10 @@
                 "title": "Petición No Encontrada",
                 "description": "La petición que buscas no existe o ha sido eliminada."
             },
-            "back": "Atrás"
+            "back": "Atrás",
+            "signPetition": "Firmo",
+            "boostPetition": "Impulsar esta petición",
+            "alreadySigned": "Ya firmada"
         },
         "report": {
             "title": "Política de reportes",

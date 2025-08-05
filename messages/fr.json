@@ -466,7 +466,10 @@
                 "title": "Pétition introuvable",
                 "description": "La pétition que vous cherchez n'existe pas ou a été supprimée."
             },
-            "back": "Retour"
+            "back": "Retour",
+            "signPetition": "Je signe",
+            "boostPetition": "Booster cette pétition",
+            "alreadySigned": "Déjà signée"
         },
         "report": {
             "title": "Politique de signalement",

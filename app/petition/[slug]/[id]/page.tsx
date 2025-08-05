@@ -7,6 +7,7 @@ import { SignatureCounter } from '@/components/petition/signature-counter';
 import { SignForm } from '@/components/petition/sign-form';
 import { ShareSection } from '@/components/petition/share-section';
 import { OwnerEmptyClient } from '@/components/petition/owner-empty-client';
+import { MobileActionCard } from '@/components/petition/mobile-action-card';
 import { getUniquePublicPetition } from '@/actions/get-unique-public-petition';
 import RenderWhen from '@/components/render-when';
 import { getLocale, getTranslations } from 'next-intl/server';
@@ -46,6 +47,14 @@ export default async function PetitionPage(props: {
 					<div className="lg:col-span-2 space-y-3 sm:space-y-4">
 						<PetitionHero petition={petition} />
 						<PetitionAuthor petition={petition} />
+						<RenderWhen condition={petition.isMine === false}>
+							<div className="block lg:hidden">
+								<MobileActionCard
+									petition={petition}
+									currentUser={currentUser}
+								/>
+							</div>
+						</RenderWhen>
 						<PetitionDetails petition={petition} />
 						{/* Show ShareSection below PetitionDetails on mobile, hide on lg+ */}
 						<div className="block lg:hidden">
