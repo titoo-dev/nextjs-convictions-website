@@ -7,6 +7,7 @@ import { PublicPetition } from '@/schemas/petition';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import RenderWhen from '../render-when';
+import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html';
 
 type PetitionCardProps = {
 	petition: PublicPetition;
@@ -14,6 +15,20 @@ type PetitionCardProps = {
 
 export function PetitionCard({ petition }: PetitionCardProps) {
 	const t = useTranslations('petitions.card');
+
+	const parseContentToText = (content: string) => {
+		const deltaOps = JSON.parse(content);
+		const converter = new QuillDeltaToHtmlConverter(deltaOps, {});
+		return converter.convert();
+	};
+
+	const removeHtmlTags = (text: string) => {
+		return text.replace(/<[^>]*>?/g, '');
+	};
+
+	const replaceQuotes = (text: string) => {
+		return text.replace(/&quot;/g, '"');
+	};
 
 	return (
 		<Link href={`/petition/${slugify(petition.title)}/${petition.id_seq}`}>
@@ -29,7 +44,9 @@ export function PetitionCard({ petition }: PetitionCardProps) {
 						{petition.title}
 					</CardTitle>
 					<p className="text-muted-foreground line-clamp-3">
-						{petition.objective}
+						{replaceQuotes(
+							removeHtmlTags(parseContentToText(petition.content))
+						)}
 					</p>
 					<div className="flex items-center gap-2 mt-2">
 						{petition.author.picture && (
