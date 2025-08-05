@@ -52,10 +52,8 @@ export function CreateSurveyClient({ currentUser }: CreateSurveyClientProps) {
 		setOptions(newOptions);
 	};
 
-	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-
-		const formData = new FormData(e.currentTarget);
+	const handleSubmit = async () => {
+		const formData = new FormData();
 		const question = formQuestion;
 		const description = formDescription;
 		const isMultipleChoice = formData.get('isMultipleChoice') === 'on';
@@ -284,6 +282,7 @@ export function CreateSurveyClient({ currentUser }: CreateSurveyClientProps) {
 								}
 							>
 								<LoginDialog
+									onLoginSuccess={handleSubmit}
 									trigger={
 										<Button
 											type="submit"
