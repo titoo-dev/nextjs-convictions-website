@@ -270,9 +270,9 @@ export function PetitionSummary({
 								key={step.id}
 								className={`p-3 lg:p-3 rounded-lg border transition-colors ${
 									status === 'current'
-										? 'border-orange-300'
+										? 'border-orange-300 bg-orange-50'
 										: isCompleted || status === 'completed'
-										? 'border-green-200'
+										? 'border-green-200 bg-green-50'
 										: 'border-gray-200'
 								}`}
 							>
