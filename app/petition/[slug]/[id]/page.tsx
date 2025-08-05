@@ -6,6 +6,7 @@ import { PetitionComments } from '@/components/petition/petition-comments';
 import { SignatureCounter } from '@/components/petition/signature-counter';
 import { SignForm } from '@/components/petition/sign-form';
 import { ShareSection } from '@/components/petition/share-section';
+import { OwnerEmptyClient } from '@/components/petition/owner-empty-client';
 import { getUniquePublicPetition } from '@/actions/get-unique-public-petition';
 import RenderWhen from '@/components/render-when';
 import { getLocale, getTranslations } from 'next-intl/server';
@@ -71,6 +72,13 @@ export default async function PetitionPage(props: {
 					</div>
 				</div>
 			</div>
+
+			{/* Owner Empty Dialog */}
+			<OwnerEmptyClient
+				petitionId={petition.id}
+				isOwner={petition.isMine}
+				signatureCount={petition.usersSignedNumber}
+			/>
 		</div>
 	);
 }

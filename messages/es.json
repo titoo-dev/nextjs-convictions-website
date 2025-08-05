@@ -228,6 +228,17 @@
                 "description": "¡Difunde la palabra! Comparte esta petición en tus plataformas favoritas para ayudarla a obtener más apoyo."
             }
         },
+        "ownerEmpty": {
+            "title": "¡Dale un impulso a tu petición!",
+            "description": "¡Tu petición está lista! Para que sea visible y pueda recoger firmas, puedes impulsarla o compartirla con tu red.",
+            "boostQuestion": "¿Qué te gustaría hacer?",
+            "boostButton": "Impulsar mi petición",
+            "shareButton": "Compartir mi petición",
+            "share": {
+                "title": "Comparte con tus amigos",
+                "description": "¡Difunde la palabra! Comparte esta peticion en tus plataformes favoritas para ayudarla a obtener más apoyo."
+            }
+        },
         "signed": {
             "badge": "✓ Firmado",
             "thankYou": "¡Gracias por tu apoyo!"

@@ -222,6 +222,17 @@
                 "description": "Spread the word! Share this petition on your favorite platforms to help it gain more support."
             }
         },
+        "ownerEmpty": {
+            "title": "Give your petition a boost!",
+            "description": "Your petition is ready! To make it visible and collect signatures, you can boost it or share it with your network.",
+            "boostQuestion": "What would you like to do?",
+            "boostButton": "Boost my petition",
+            "shareButton": "Share my petition",
+            "share": {
+                "title": "Share with your friends",
+                "description": "Spread the word! Share this petition on your favorite platforms to help it gain more support."
+            }
+        },
         "signed": {
             "badge": "✓ Signed",
             "thankYou": "Thank you for your support!"

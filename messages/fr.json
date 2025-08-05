@@ -228,6 +228,17 @@
                 "description": "Faites passer le mot ! Partagez cette pétition sur vos plateformes préférées pour l'aider à obtenir plus de soutien."
             }
         },
+        "ownerEmpty": {
+            "title": "Donnez un coup de pouce à votre pétition !",
+            "description": "Votre pétition est prête ! Pour qu'elle soit visible et puisse recueillir des signatures, vous pouvez la booster ou la partager avec votre réseau.",
+            "boostQuestion": "Que souhaitez-vous faire ?",
+            "boostButton": "Booster ma pétition",
+            "shareButton": "Partager ma pétition",
+            "share": {
+                "title": "Partagez avec vos amis",
+                "description": "Faites passer le mot ! Partagez cette pétition sur vos plateformes préférées pour l'aider à obtenir plus de soutien."
+            }
+        },
         "signed": {
             "badge": "✓ Signé",
             "thankYou": "Merci pour votre soutien !"
