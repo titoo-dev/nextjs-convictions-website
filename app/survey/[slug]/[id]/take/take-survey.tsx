@@ -27,7 +27,7 @@ export async function TakeSurvey({ id }: { id: string }) {
 							The survey you&apos;re looking for doesn&apos;t
 							exist or has been removed.
 						</p>
-						<Link href="/surveys">
+						<Link href="/survey">
 							<Button size="sm" className="gap-2">
 								<ArrowLeft className="w-3 h-3" />
 								Back to Surveys

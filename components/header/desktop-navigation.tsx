@@ -15,7 +15,7 @@ export async function DesktopNavigation() {
 		<nav className="hidden md:flex items-center space-x-4">
 			<NavigationButton href="/">{t('createPetition')}</NavigationButton>
 
-			<NavigationButton href="/surveys">{t('surveys')}</NavigationButton>
+			<NavigationButton href="/survey">{t('surveys')}</NavigationButton>
 
 			<NavigationButton href="/support-us">
 				{t('supportUs')}

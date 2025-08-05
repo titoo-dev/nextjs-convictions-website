@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 const createSurveyResponseSchema = z.object({
 	id: z.string(),
+	urlSurvey: z.string(),
 });
 
 export { createSurveyResponseSchema };

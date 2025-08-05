@@ -25,7 +25,7 @@ async function SurveysContent() {
 				{surveys.map((survey) => (
 					<Link
 						key={survey.id}
-						href={`/surveys/${slugify(survey.question)}/${
+						href={`/survey/${slugify(survey.question)}/${
 							survey.id_seq
 						}`}
 						className="group"
@@ -177,9 +177,7 @@ export default async function SurveysPage() {
 						{t('page.description')}
 					</p>
 					<Button size="lg" asChild>
-						<Link href="/surveys/new">
-							{t('page.createSurvey')}
-						</Link>
+						<Link href="/survey/new">{t('page.createSurvey')}</Link>
 					</Button>
 				</div>
 
