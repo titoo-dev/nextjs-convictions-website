@@ -10,8 +10,7 @@ import { Switch } from '@/components/ui/switch';
 import { toast } from 'sonner';
 import { CreateSurveyPayload } from '@/schemas/create-survey-payload';
 
-import Link from 'next/link';
-import { ArrowLeft, Plus, X } from 'lucide-react';
+import { Plus, X } from 'lucide-react';
 import { createSurvey } from '@/actions/create-survey';
 import { ZodError } from 'zod';
 import { SurveyImageUpload } from '@/components/survey/survey-image-upload';
@@ -107,18 +106,6 @@ export function CreateSurveyClient({ currentUser }: CreateSurveyClientProps) {
 	return (
 		<div className="min-h-screen bg-gray-50">
 			<div className="container mx-auto px-3 sm:px-4 py-4 sm:py-8 max-w-4xl">
-				<div className="mb-4 sm:mb-6">
-					<Link
-						href="/"
-						className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 group"
-					>
-						<ArrowLeft className="w-4 h-4" />
-						<span className="text-sm font-medium">
-							{t('page.back')}
-						</span>
-					</Link>
-				</div>
-
 				<Card className="shadow-none">
 					<CardHeader>
 						<CardTitle className="text-xl sm:text-2xl">
