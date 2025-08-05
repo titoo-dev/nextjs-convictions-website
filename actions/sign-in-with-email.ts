@@ -35,7 +35,7 @@ export async function signInWithEmail(formData: FormData): Promise<{
 			}
 		);
 
-		if (!response.ok) {
+		if (response.status !== 200) {
 			throw new Error(`Sign in failed: ${response.statusText}`);
 		}
 
