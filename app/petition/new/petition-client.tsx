@@ -488,6 +488,7 @@ export function NewPetitionClient({ currentUser }: NewPetitionClientProps) {
 								}
 							>
 								<LoginDialog
+									onLoginSuccess={handlePublish}
 									trigger={
 										<Button
 											disabled={

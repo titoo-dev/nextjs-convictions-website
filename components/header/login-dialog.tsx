@@ -21,20 +21,29 @@ type LoginDialogProps = {
 	 * Optional custom trigger component. If not provided, a default login button is used.
 	 */
 	trigger?: ReactNode;
+	/**
+	 * Optional callback to execute after successful login
+	 */
+	onLoginSuccess?: () => void | Promise<void>;
 };
 
-export function LoginDialog({ trigger }: LoginDialogProps) {
+export function LoginDialog({ trigger, onLoginSuccess }: LoginDialogProps) {
 	const tNavigation = useTranslations('navigation');
 	const tDialog = useTranslations('loginDialog');
 	const [isLoginOpen, setIsLoginOpen] = useState(false);
 	const queryClient = useQueryClient();
 	const router = useRouter();
 
-	const handleSuccess = () => {
+	const handleSuccess = async () => {
 		setIsLoginOpen(false);
-		queryClient.invalidateQueries({
+		await queryClient.invalidateQueries({
 			queryKey: ['currentUser'],
 		});
+
+		// Execute the callback if provided
+		if (onLoginSuccess) {
+			await onLoginSuccess();
+		}
 	};
 
 	const handleRegister = () => {
