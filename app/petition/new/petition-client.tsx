@@ -48,6 +48,7 @@ import { useRouter } from 'next/navigation';
 import { LoginDialog } from '@/components/header/login-dialog';
 import RenderWhen from '@/components/render-when';
 import { User } from '@/schemas/user';
+import { PetitionSummary } from '@/components/petition/form/petition-summary';
 
 type Step =
 	| 'title'
@@ -409,7 +410,7 @@ export function NewPetitionClient({ currentUser }: NewPetitionClientProps) {
 
 	return (
 		<div className="min-h-screen bg-gray-50 py-8">
-			<div className="container mx-auto px-4 max-w-4xl">
+			<div className="container mx-auto px-4 max-w-7xl">
 				{/* Draft Restored Notification */}
 				{showDraftRestored && (
 					<Alert className="flex items-center mb-6 bg-blue-50 border-blue-200">
@@ -441,63 +442,91 @@ export function NewPetitionClient({ currentUser }: NewPetitionClientProps) {
 					/>
 				</div>
 
-				{/* Navigation */}
-				<div className="flex justify-between mb-6">
-					<Button
-						variant="outline"
-						onClick={handlePrevious}
-						disabled={currentStepIndex === 0 || isPending}
-						className="flex items-center gap-2"
-					>
-						{tPage('previous')}
-					</Button>
-
-					<RenderWhen
-						condition={currentStep === 'publish' && !currentUser}
-						fallback={
+				{/* Main Content with Summary */}
+				<div className="flex gap-8">
+					{/* Left Column - Form Content */}
+					<div className="flex-1">
+						{/* Navigation */}
+						<div className="flex justify-between mb-6">
 							<Button
-								onClick={
-									currentStep === 'publish'
-										? handlePublish
-										: handleNext
-								}
-								disabled={!isCurrentStepValid() || isPending}
-								className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed"
+								variant="outline"
+								onClick={handlePrevious}
+								disabled={currentStepIndex === 0 || isPending}
+								className="flex items-center gap-2"
 							>
-								{isPending && currentStep === 'publish' ? (
-									<>
-										<div className="w-4 h-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
-										{tPage('publishing')}
-									</>
-								) : currentStep === 'publish' ? (
-									tPage('publishPetition')
-								) : (
-									tPage('next')
-								)}
+								{tPage('previous')}
 							</Button>
-						}
-					>
-						<LoginDialog
-							trigger={
-								<Button
-									disabled={
-										!isCurrentStepValid() || isPending
+
+							<RenderWhen
+								condition={
+									currentStep === 'publish' && !currentUser
+								}
+								fallback={
+									<Button
+										onClick={
+											currentStep === 'publish'
+												? handlePublish
+												: handleNext
+										}
+										disabled={
+											!isCurrentStepValid() || isPending
+										}
+										className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed"
+									>
+										{isPending &&
+										currentStep === 'publish' ? (
+											<>
+												<div className="w-4 h-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+												{tPage('publishing')}
+											</>
+										) : currentStep === 'publish' ? (
+											tPage('publishPetition')
+										) : (
+											tPage('next')
+										)}
+									</Button>
+								}
+							>
+								<LoginDialog
+									trigger={
+										<Button
+											disabled={
+												!isCurrentStepValid() ||
+												isPending
+											}
+											className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed"
+										>
+											{tPage('publishPetition')}
+										</Button>
 									}
-									className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed"
-								>
-									{tPage('publishPetition')}
-								</Button>
-							}
+								/>
+							</RenderWhen>
+						</div>
+
+						{/* Step Content */}
+						<Card className="mb-8 shadow-none">
+							<CardContent className="p-6">
+								{renderStepContent()}
+							</CardContent>
+						</Card>
+					</div>
+
+					{/* Right Column - Summary */}
+					<div className="hidden lg:block">
+						<PetitionSummary
+							formData={formData}
+							currentStep={currentStep}
 						/>
-					</RenderWhen>
+					</div>
 				</div>
 
-				{/* Step Content */}
-				<Card className="mb-8 shadow-none">
-					<CardContent className="p-6">
-						{renderStepContent()}
-					</CardContent>
-				</Card>
+				{/* Mobile Summary */}
+				<div className="lg:hidden mt-8">
+					<PetitionSummary
+						formData={formData}
+						currentStep={currentStep}
+					/>
+				</div>
 			</div>
 		</div>
 	);

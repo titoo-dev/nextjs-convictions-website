@@ -418,6 +418,36 @@
                     "atTime": " à {time}",
                     "description": "Une fois publiée, vous pouvez la partager sur les réseaux sociaux et commencer à collecter des signatures."
                 }
+            },
+            "summary": {
+                "title": "Résumé de la pétition",
+                "steps": {
+                    "title": "Titre",
+                    "objective": "Objectif",
+                    "writing": "Rédaction",
+                    "media": "Média",
+                    "signatures": "Signatures",
+                    "publish": "Publication"
+                },
+                "destination": "Destination",
+                "signatures": "signatures",
+                "publishNow": "Publier maintenant",
+                "categories": {
+                    "culture": "Culture",
+                    "religion": "Religion",
+                    "womenRights": "Droits des femmes",
+                    "menRights": "Droits des hommes",
+                    "education": "Éducation",
+                    "environment": "Environnement",
+                    "racism": "Racisme",
+                    "politics": "Politique",
+                    "handicap": "Handicap",
+                    "health": "Santé",
+                    "transport": "Transport",
+                    "immigration": "Immigration",
+                    "justice": "Justice",
+                    "animals": "Animaux"
+                }
             }
         },
         "page": {

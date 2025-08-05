@@ -109,6 +109,8 @@ export async function refreshAccessToken(): Promise<AuthTokens | null> {
 			}
 		);
 
+		console.log('Refresh token response:', response);
+
 		if (response.status !== 201) {
 			await clearTokens();
 			return null;

@@ -6,6 +6,7 @@ export async function GET() {
 		const tokens = await getTokens();
 
 		if (!tokens) {
+			console.log('No tokens found');
 			return NextResponse.json({ authenticated: false }, { status: 401 });
 		}
 
@@ -21,6 +22,7 @@ export async function GET() {
 
 		// If access token is expired, try to refresh it
 		if (response.status === 401) {
+			console.log('Access token is expired');
 			const newTokens = await refreshAccessToken();
 
 			if (newTokens) {
@@ -37,6 +39,7 @@ export async function GET() {
 		}
 
 		if (response.status !== 200) {
+			console.log('User not found');
 			return NextResponse.json({ authenticated: false }, { status: 401 });
 		}
 
