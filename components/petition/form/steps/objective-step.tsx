@@ -106,7 +106,7 @@ export function ObjectiveStep({
 										<button
 											key={index}
 											type="button"
-											className="block w-full text-left p-3 rounded-md border border-orange-200 bg-white hover:bg-orange-50 transition-colors text-gray-700"
+											className="block w-full text-left p-3 rounded-md border border-orange-200 bg-white hover:bg-blue-100 transition-colors text-gray-700"
 											onClick={() =>
 												updateFormData({
 													objective: suggestion,

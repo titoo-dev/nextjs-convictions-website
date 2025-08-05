@@ -256,7 +256,7 @@ export function PetitionSummary({
 
 	return (
 		<div className="w-full lg:w-80 lg:flex-shrink-0">
-			<Card className="lg:sticky lg:top-8">
+			<Card className="lg:sticky lg:top-8 shadow-none">
 				<CardHeader>
 					<CardTitle className="text-lg">{t('title')}</CardTitle>
 				</CardHeader>
@@ -273,7 +273,7 @@ export function PetitionSummary({
 										? 'border-orange-300'
 										: isCompleted || status === 'completed'
 										? 'border-green-200'
-										: 'border-gray-200 bg-gray-50'
+										: 'border-gray-200'
 								}`}
 							>
 								<div className="flex items-start gap-3">
