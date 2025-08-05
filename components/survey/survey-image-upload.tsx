@@ -242,8 +242,8 @@ export function SurveyImageUpload({
 							src={previewUrl!}
 							alt="Survey Image Preview"
 							width={400}
-							height={200}
-							className="w-full h-48 object-cover"
+							height={300}
+							className="w-full h-72 object-cover"
 							unoptimized
 						/>
 						<Button
