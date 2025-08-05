@@ -1,9 +1,10 @@
 import { Button } from '@/components/ui/button';
 import { Image as ImageIcon, Upload, X, Wand2 } from 'lucide-react';
-import { useState, useRef, useTransition } from 'react';
+import { useState, useRef, useTransition, useEffect } from 'react';
 import Image from 'next/image';
 import { toast } from 'sonner';
 import { getOpenaiSurveyImage } from '@/actions/get-openai-survey-image';
+import { Progress } from '@/components/ui/progress';
 
 type SurveyImageUploadProps = {
 	question?: string;
@@ -23,7 +24,10 @@ export function SurveyImageUpload({
 		externalPreviewUrl || null
 	);
 	const [isPending, startTransition] = useTransition();
+	const [progressValue, setProgressValue] = useState(0);
+	const [isGenerating, setIsGenerating] = useState(false);
 	const fileInputRef = useRef<HTMLInputElement>(null);
+	const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
 	const handleFile = (file: File) => {
 		if (!file.type.startsWith('image/')) return;
@@ -64,6 +68,39 @@ export function SurveyImageUpload({
 		}
 	};
 
+	// Fonction pour calculer la progression avec une courbe d'accélération
+	const calculateProgress = (elapsedTime: number, totalDuration: number) => {
+		// Courbe d'accélération : rapide au début, ralentit vers la fin
+		const progress = Math.min(elapsedTime / totalDuration, 0.95);
+		// Appliquer une courbe d'easing pour ralentir vers la fin
+		return Math.pow(progress, 0.7) * 95; // 95% max pour laisser de la marge
+	};
+
+	// Effet pour gérer l'animation de progression
+	useEffect(() => {
+		if (isGenerating) {
+			const startTime = Date.now();
+			const totalDuration = 20000; // 20 secondes
+
+			progressIntervalRef.current = setInterval(() => {
+				const elapsedTime = Date.now() - startTime;
+				const newProgress = calculateProgress(
+					elapsedTime,
+					totalDuration
+				);
+				setProgressValue(newProgress);
+			}, 100);
+
+			return () => {
+				if (progressIntervalRef.current) {
+					clearInterval(progressIntervalRef.current);
+				}
+			};
+		} else {
+			setProgressValue(0);
+		}
+	}, [isGenerating]);
+
 	const handleGenerateAISurveyImage = (e: React.MouseEvent) => {
 		e.preventDefault();
 		e.stopPropagation();
@@ -72,6 +109,9 @@ export function SurveyImageUpload({
 			toast.error('Please add a title and description first');
 			return;
 		}
+
+		setIsGenerating(true);
+		setProgressValue(0);
 
 		startTransition(async () => {
 			try {
@@ -101,8 +141,17 @@ export function SurveyImageUpload({
 					setPreviewUrl(previewImageUrl);
 					onImageChange(file);
 
+					// Terminer la progression à 100%
+					setProgressValue(100);
+					setTimeout(() => {
+						setIsGenerating(false);
+						setProgressValue(0);
+					}, 500);
+
 					toast.success('AI survey image generated successfully!');
 				} else {
+					setIsGenerating(false);
+					setProgressValue(0);
 					toast.error(
 						result.error ||
 							'Failed to generate AI survey image. Please try again.'
@@ -110,6 +159,8 @@ export function SurveyImageUpload({
 				}
 			} catch (error) {
 				console.error('Error generating AI survey image:', error);
+				setIsGenerating(false);
+				setProgressValue(0);
 				toast.error(
 					'Failed to generate AI survey image. Please try again.'
 				);
@@ -142,7 +193,7 @@ export function SurveyImageUpload({
 									type="button"
 									variant="outline"
 									className="flex items-center gap-2"
-									disabled={isPending}
+									disabled={isPending || isGenerating}
 									onClick={(e) => {
 										e.stopPropagation();
 										fileInputRef.current?.click();
@@ -156,7 +207,7 @@ export function SurveyImageUpload({
 									variant="outline"
 									className="flex items-center gap-2 border-blue-200 text-blue-600 hover:bg-blue-50"
 									onClick={handleGenerateAISurveyImage}
-									disabled={isPending}
+									disabled={isPending || isGenerating}
 								>
 									{isPending ? (
 										<div className="w-4 h-4 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />
@@ -188,7 +239,7 @@ export function SurveyImageUpload({
 				<div className="space-y-3">
 					<div className="relative rounded-lg border overflow-hidden">
 						<Image
-							src={previewUrl}
+							src={previewUrl!}
 							alt="Survey Image Preview"
 							width={400}
 							height={200}
@@ -205,6 +256,24 @@ export function SurveyImageUpload({
 							<X className="w-4 h-4" />
 						</Button>
 					</div>
+				</div>
+			)}
+
+			{/* Barre de progression pour la génération AI */}
+			{isGenerating && (
+				<div className="space-y-2">
+					<div className="flex items-center justify-between text-sm">
+						<span className="text-blue-600 font-medium">
+							Generating AI image...
+						</span>
+						<span className="text-gray-500">
+							{Math.round(progressValue)}%
+						</span>
+					</div>
+					<Progress
+						value={progressValue}
+						className="h-2 bg-gray-100"
+					/>
 				</div>
 			)}
 		</div>
