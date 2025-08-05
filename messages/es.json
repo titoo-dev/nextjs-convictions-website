@@ -748,6 +748,13 @@
             "selectOptions": "Selecciona una o más opciones para votar",
             "voteSubmitted": "Voto enviado exitosamente",
             "voteFailed": "Error al enviar el voto"
+        },
+        "share": {
+            "title": "Compartir esta encuesta",
+            "facebook": "Facebook",
+            "twitter": "Twitter",
+            "whatsapp": "WhatsApp",
+            "email": "Email"
         }
     }
 }

@@ -748,6 +748,13 @@
             "selectOptions": "Select one or more options to vote",
             "voteSubmitted": "Vote submitted successfully",
             "voteFailed": "Failed to submit vote"
+        },
+        "share": {
+            "title": "Share this survey",
+            "facebook": "Facebook",
+            "twitter": "Twitter",
+            "whatsapp": "WhatsApp",
+            "email": "Email"
         }
     }
 }

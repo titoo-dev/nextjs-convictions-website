@@ -748,6 +748,13 @@
             "selectOptions": "Sélectionnez une ou plusieurs options pour voter",
             "voteSubmitted": "Vote soumis avec succès",
             "voteFailed": "Échec de la soumission du vote"
+        },
+        "share": {
+            "title": "Partager ce sondage",
+            "facebook": "Facebook",
+            "twitter": "Twitter",
+            "whatsapp": "WhatsApp",
+            "email": "Email"
         }
     }
 }
