@@ -3,7 +3,6 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { PublicPetition } from '@/schemas/petition';
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html';
-import { Button } from '../ui/button';
 import { Flag } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import RenderWhen from '../render-when';

@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { PublicPetition } from '@/schemas/petition';
-import { Mail, Share2 } from 'lucide-react';
+import { Mail } from 'lucide-react';
 import { Facebook, Twitter, MessageCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';

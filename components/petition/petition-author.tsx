@@ -2,18 +2,13 @@
 
 import { Card, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Calendar } from 'lucide-react';
 import { PublicPetition } from '@/schemas/petition';
-import { useTranslations } from 'next-intl';
-import { User } from '@/schemas/user';
 
 type PetitionAuthorProps = {
 	petition: PublicPetition;
 };
 
 export function PetitionAuthor({ petition }: PetitionAuthorProps) {
-	const t = useTranslations('petition.author');
-
 	return (
 		<Card className="shadow-none">
 			<CardContent className="flex flex-col gap-6">
