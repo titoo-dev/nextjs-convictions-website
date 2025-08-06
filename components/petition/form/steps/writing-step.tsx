@@ -244,7 +244,7 @@ export function WritingStep({ formData, updateFormData }: WritingStepProps) {
 
 				if (parsed) {
 					const deltaFormatted = {
-						ops: Array.isArray(parsed.ops) ? parsed.ops : [parsed],
+						ops: Array.isArray(parsed) ? parsed : [parsed],
 					} as DeltaStatic;
 					setEditorContent(deltaFormatted);
 				}
