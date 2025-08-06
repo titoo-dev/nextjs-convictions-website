@@ -41,9 +41,6 @@ type WritingStepProps = {
 export function WritingStep({ formData, updateFormData }: WritingStepProps) {
 	const t = useTranslations('petition.form.writingStep');
 	const [editorContent, setEditorContent] = useState<DeltaStatic>();
-
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const [, setEditorDelta] = useState<any>(null);
 	const [isGenerating, setIsGenerating] = useState(false);
 	const [sseError, setSseError] = useState<string | null>(null);
 	const eventSourceRef = useRef<EventSource | null>(null);
@@ -92,6 +89,27 @@ export function WritingStep({ formData, updateFormData }: WritingStepProps) {
 		'align',
 	];
 
+	// Helper function to create a simple Delta from plain text
+	const createDeltaFromText = (text: string): DeltaStatic => {
+		return {
+			ops: [
+				{
+					insert: text,
+				},
+			],
+		} as DeltaStatic;
+	};
+
+	// Helper function to safely parse JSON
+	const safeJsonParse = (jsonString: string) => {
+		try {
+			return JSON.parse(jsonString);
+		} catch (error) {
+			console.error('JSON parsing error:', error);
+			return null;
+		}
+	};
+
 	// SSE subscription function
 	const subscribeSseStream = (data: {
 		contentInput: string;
@@ -114,19 +132,18 @@ export function WritingStep({ formData, updateFormData }: WritingStepProps) {
 				if (data.response) {
 					// Accumulate content progressively
 					accumulatedContentRef.current += data.response;
-					const newContent = accumulatedContentRef.current;
+					const plainText = accumulatedContentRef.current;
 
-					const newOptFormatted = `[{"insert":"${newContent}"}]`;
-
-					const deltaFormatted = JSON.parse(
-						newOptFormatted
-					) as DeltaStatic;
+					// Create Delta from plain text for display
+					const deltaFormatted = createDeltaFromText(plainText);
 
 					// Update editor content progressively
 					setEditorContent(deltaFormatted);
+
+					// Store the Delta format for server communication
 					updateFormData({
-						content: newContent,
-						editorOps: newOptFormatted,
+						content: plainText,
+						editorOps: JSON.stringify(deltaFormatted.ops),
 					});
 				}
 			},
@@ -174,8 +191,12 @@ export function WritingStep({ formData, updateFormData }: WritingStepProps) {
 			return categoryMap[category] || 'CULTURE';
 		};
 
+		// Get current editor content as plain text for AI input
+		const currentContent =
+			(editorContent?.ops?.[0]?.insert as string) || '';
+
 		const data = {
-			contentInput: JSON.stringify(editorContent) || '',
+			contentInput: currentContent,
 			title: formData.title || '',
 			goal: formData.objective || '',
 			category: mapCategoryToAPI(formData.category ?? '') || '',
@@ -183,8 +204,6 @@ export function WritingStep({ formData, updateFormData }: WritingStepProps) {
 		};
 
 		subscribeSseStream(data);
-
-		await generatePetitionContent(data);
 	};
 
 	const handleChange = (
@@ -196,12 +215,12 @@ export function WritingStep({ formData, updateFormData }: WritingStepProps) {
 		editor: any
 	) => {
 		if (!isGenerating) {
-			setEditorContent(editor.getContents());
-			const editorOps = editor.getContents().ops;
-			setEditorDelta(editor.getContents());
+			const editorContents = editor.getContents();
+			setEditorContent(editorContents);
+
 			updateFormData({
 				content,
-				editorOps: JSON.stringify(editorOps),
+				editorOps: JSON.stringify(editorContents.ops),
 			});
 		}
 	};
@@ -215,14 +234,27 @@ export function WritingStep({ formData, updateFormData }: WritingStepProps) {
 		};
 	}, []);
 
+	// Initialize editor content from form data
 	useEffect(() => {
 		if (formData.content && !editorContent) {
-			const deltaFormatted = {
-				ops: JSON.parse(formData.editorOps ?? formData.content),
-			} as DeltaStatic;
-			setEditorContent(deltaFormatted);
+			try {
+				// Try to parse from editorOps first, then content
+				const opsData = formData.editorOps || formData.content;
+				const parsed = safeJsonParse(opsData);
+
+				if (parsed) {
+					const deltaFormatted = {
+						ops: Array.isArray(parsed.ops) ? parsed.ops : [parsed],
+					} as DeltaStatic;
+					setEditorContent(deltaFormatted);
+				}
+			} catch (error) {
+				console.error('Error initializing editor content:', error);
+				// Fallback to empty content
+				setEditorContent({ ops: [{ insert: '' }] } as DeltaStatic);
+			}
 		}
-	}, []);
+	}, [formData.content, formData.editorOps, editorContent]);
 
 	return (
 		<div className="space-y-6">
