@@ -1,4 +1,5 @@
 import { refreshAccessToken, getTokens } from '@/lib/cookies-storage';
+import { revalidatePath } from 'next/cache';
 import { NextResponse } from 'next/server';
 
 export async function POST() {
@@ -39,6 +40,7 @@ export async function POST() {
 		}
 
 		const userData = await response.json();
+		revalidatePath('/');
 		return NextResponse.json({
 			authenticated: true,
 			user: userData,
