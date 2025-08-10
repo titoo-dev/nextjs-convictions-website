@@ -71,7 +71,7 @@ export default async function PetitionPage(props: {
 					</div>
 
 					{/* Sidebar */}
-					<div className="sticky top-14 space-y-4 sm:space-y-6 h-fit">
+					<div className="sticky top-14 space-y-3 sm:space-y-4 h-fit">
 						<RenderWhen condition={petition.usersSignedNumber > 0}>
 							<SignatureCounter petition={petition} />
 						</RenderWhen>

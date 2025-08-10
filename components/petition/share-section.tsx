@@ -45,58 +45,54 @@ export function ShareSection({ petition }: ShareSectionProps) {
 
 	return (
 		<Card className="shadow-none gap-2">
-			<CardHeader>
-				<CardTitle className="text-base sm:text-lg flex items-center">
+			<CardHeader className="pb-3">
+				<CardTitle className="text-sm sm:text-base flex items-center">
 					{t('title')}
 				</CardTitle>
 			</CardHeader>
-			<CardContent>
-				<div className="grid grid-cols-4 sm:grid-cols-3 gap-2 sm:gap-3">
+			<CardContent className="pt-0">
+				<div className="grid grid-cols-4 sm:grid-cols-3 gap-1.5 sm:gap-2">
 					<Button
 						variant="outline"
 						size="sm"
-						className="flex items-center justify-center gap-2 text-xs sm:text-sm"
+						className="flex items-center justify-center gap-1 text-xs h-8"
 						onClick={() => handleShare('facebook')}
 					>
-						<Facebook className="h-3 w-3 sm:h-4 sm:w-4" />
+						<Facebook className="h-3 w-3" />
 					</Button>
 					<Button
 						variant="outline"
 						size="sm"
-						className="flex items-center justify-center gap-2 text-xs sm:text-sm"
+						className="flex items-center justify-center gap-1 text-xs h-8"
 						onClick={() => handleShare('twitter')}
 					>
-						<Twitter className="h-3 w-3 sm:h-4 sm:w-4" />
+						<Twitter className="h-3 w-3" />
 					</Button>
 					<Button
 						variant="outline"
 						size="sm"
-						className={
-							'flex items-center justify-center gap-2 text-xs sm:text-sm'
-						}
+						className="flex items-center justify-center gap-1 text-xs h-8"
 						onClick={() => handleShare('whatsapp')}
 					>
-						<MessageCircle className="h-3 w-3 sm:h-4 sm:w-4" />
+						<MessageCircle className="h-3 w-3" />
 					</Button>
 					<Button
 						variant="outline"
 						size="sm"
-						className={
-							'flex items-center justify-center gap-2 text-xs sm:text-sm'
-						}
+						className="flex items-center justify-center gap-1 text-xs h-8"
 						onClick={() => handleShare('email')}
 					>
-						<Mail className="h-3 w-3 sm:h-4 sm:w-4" />
+						<Mail className="h-3 w-3" />
 					</Button>
 				</div>
 
 				<RenderWhen condition={petition.isMine === true}>
-					<div className="flex flex-col gap-2 mt-6">
+					<div className="flex flex-col gap-2 mt-4">
 						<Button
 							asChild
 							type="button"
 							variant="outline"
-							className="flex-1 border-orange-500 text-orange-500 hover:bg-orange-50 font-semibold py-3 sm:py-3 text-sm sm:text-base"
+							className="flex-1 border-orange-500 text-orange-500 hover:bg-orange-50 font-semibold py-2.5 text-sm"
 						>
 							<Link href={`/boost-plan/${petition.id}`}>
 								{tBoost('boostButton')}

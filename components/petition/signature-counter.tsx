@@ -20,23 +20,23 @@ export function SignatureCounter({ petition }: SignatureCounterProps) {
 
 	return (
 		<Card className="shadow-none">
-			<CardContent className="p-4 sm:p-6 text-center">
+			<CardContent className="p-3 text-center">
 				<div className="relative">
-					<div className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2">
+					<div className="text-xl sm:text-2xl font-bold mb-1">
 						{petition.usersSignedNumber.toLocaleString()}
 					</div>
-					<Badge variant="secondary" className="mb-3 sm:mb-4 text-xs">
+					<Badge variant="secondary" className="mb-2 text-xs">
 						{t('verified')}
 					</Badge>
-					<div className="w-full bg-gray-200 rounded-full h-2 mb-3 sm:mb-4">
+					<div className="w-full bg-gray-200 rounded-full h-1.5 mb-2">
 						<div
-							className="bg-green-600 h-2 rounded-full transition-all duration-300"
+							className="bg-green-600 h-1.5 rounded-full transition-all duration-300"
 							style={{
 								width: `${progressPercentage}%`,
 							}}
 						/>
 					</div>
-					<p className="text-xs sm:text-sm text-gray-500 leading-relaxed px-2">
+					<p className="text-xs text-gray-500 leading-tight">
 						{signaturesNeeded > 0
 							? t('needed', {
 									count: signaturesNeeded.toLocaleString(),

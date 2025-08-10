@@ -115,26 +115,26 @@ export function SignForm({ petition, currentUser }: SignFormProps) {
 	return (
 		<>
 			<Card className="shadow-none gap-0">
-				<CardHeader>
-					<CardTitle className="text-lg sm:text-xl">
+				<CardHeader className="pb-3">
+					<CardTitle className="text-base sm:text-lg">
 						{isAlreadySigned ? t('alreadySigned') : t('title')}
 					</CardTitle>
 				</CardHeader>
-				<CardContent>
+				<CardContent className="pt-0">
 					<div className="transition-all duration-300 ease-in-out">
 						<form
 							ref={formRef}
 							onSubmit={handleSubmit}
-							className="space-y-4"
+							className="space-y-3"
 						>
 							{error && (
-								<div className="p-3 text-xs sm:text-sm text-red-600 bg-red-50 border border-red-200 rounded-md animate-in fade-in-0 slide-in-from-top-2 duration-200">
+								<div className="p-2 text-xs sm:text-sm text-red-600 bg-red-50 border border-red-200 rounded-md animate-in fade-in-0 slide-in-from-top-2 duration-200">
 									{error}
 								</div>
 							)}
 
 							<RenderWhen condition={petition.isISign === true}>
-								<div className="p-4 mt-2 text-sm  bg-green-50 border border-green-200 rounded-md">
+								<div className="p-3 text-sm bg-green-50 border border-green-200 rounded-md">
 									{t('thankYouMessage', { signaturesLeft })}
 								</div>
 							</RenderWhen>
@@ -150,12 +150,12 @@ export function SignForm({ petition, currentUser }: SignFormProps) {
 								<Button
 									type="submit"
 									disabled={isSubmitting || isAlreadySigned}
-									className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 sm:py-3 text-sm sm:text-base disabled:opacity-50"
+									className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2.5 text-sm disabled:opacity-50"
 								>
 									{isSubmitting ? (
 										<div className="flex items-center justify-center">
-											<div className="animate-spin rounded-full h-3 w-3 sm:h-4 sm:w-4 border-2 border-white border-t-transparent mr-2"></div>
-											<span className="text-sm sm:text-base">
+											<div className="animate-spin rounded-full h-3 w-3 border-2 border-white border-t-transparent mr-2"></div>
+											<span className="text-sm">
 												{t('signing')}
 											</span>
 										</div>
@@ -170,7 +170,7 @@ export function SignForm({ petition, currentUser }: SignFormProps) {
 							<RenderWhen condition={petition.isISign}>
 								<Button
 									type="button"
-									className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 sm:py-3 text-sm sm:text-base disabled:opacity-50"
+									className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2.5 text-sm disabled:opacity-50"
 									onClick={() => setShowSuccessDialog(true)}
 								>
 									{t('nextStepButton')}
@@ -183,7 +183,7 @@ export function SignForm({ petition, currentUser }: SignFormProps) {
 									type="button"
 									variant="outline"
 									disabled={isSubmitting}
-									className="flex-1 bg-indigo-50 text-blue-800 hover:bg-indigo-100 font-semibold py-3 sm:py-3 text-sm sm:text-base"
+									className="flex-1 bg-indigo-50 text-blue-800 hover:bg-indigo-100 font-semibold py-2.5 text-sm"
 								>
 									<Link href={`/boost-plan/${petition.id}`}>
 										{t('boostButton')}
