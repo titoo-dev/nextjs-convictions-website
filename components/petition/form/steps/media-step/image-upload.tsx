@@ -1,10 +1,11 @@
 import { Button } from '@/components/ui/button';
 import { Image as ImageIcon, Upload, X, Wand2 } from 'lucide-react';
-import { useState, useRef, useTransition } from 'react';
+import { useState, useRef, useTransition, useEffect } from 'react';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 import { getOpenaiImage } from '@/actions/get-openai-image';
+import { Progress } from '@/components/ui/progress';
 
 type PetitionData = {
 	mediaType: 'PICTURE' | 'VIDEO_YOUTUBE';
@@ -33,7 +34,10 @@ export function ImageUpload({
 		pictureUrl || null
 	);
 	const [isPending, startTransition] = useTransition();
+	const [progressValue, setProgressValue] = useState(0);
+	const [isGenerating, setIsGenerating] = useState(false);
 	const fileInputRef = useRef<HTMLInputElement>(null);
+	const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
 	const handleFile = (file: File) => {
 		if (!file.type.startsWith('image/')) return;
@@ -74,6 +78,39 @@ export function ImageUpload({
 		}
 	};
 
+	// Fonction pour calculer la progression avec une courbe d'accélération
+	const calculateProgress = (elapsedTime: number, totalDuration: number) => {
+		// Courbe d'accélération : rapide au début, ralentit vers la fin
+		const progress = Math.min(elapsedTime / totalDuration, 0.95);
+		// Appliquer une courbe d'easing pour ralentir vers la fin
+		return Math.pow(progress, 0.7) * 95; // 95% max pour laisser de la marge
+	};
+
+	// Effet pour gérer l'animation de progression
+	useEffect(() => {
+		if (isGenerating) {
+			const startTime = Date.now();
+			const totalDuration = 20000; // 20 secondes
+
+			progressIntervalRef.current = setInterval(() => {
+				const elapsedTime = Date.now() - startTime;
+				const newProgress = calculateProgress(
+					elapsedTime,
+					totalDuration
+				);
+				setProgressValue(newProgress);
+			}, 100);
+
+			return () => {
+				if (progressIntervalRef.current) {
+					clearInterval(progressIntervalRef.current);
+				}
+			};
+		} else {
+			setProgressValue(0);
+		}
+	}, [isGenerating]);
+
 	const handleGenerateAIImage = (e: React.MouseEvent) => {
 		e.preventDefault();
 		e.stopPropagation();
@@ -85,6 +122,9 @@ export function ImageUpload({
 			);
 			return;
 		}
+
+		setIsGenerating(true);
+		setProgressValue(0);
 
 		startTransition(async () => {
 			try {
@@ -113,11 +153,20 @@ export function ImageUpload({
 						picture: file,
 					});
 
+					// Terminer la progression à 100%
+					setProgressValue(100);
+					setTimeout(() => {
+						setIsGenerating(false);
+						setProgressValue(0);
+					}, 500);
+
 					toast.success(
 						t('aiImageGenerated') ||
 							'AI image generated successfully!'
 					);
 				} else {
+					setIsGenerating(false);
+					setProgressValue(0);
 					toast.error(
 						t('aiImageError') ||
 							'Failed to generate AI image. Please try again.'
@@ -125,6 +174,8 @@ export function ImageUpload({
 				}
 			} catch (error) {
 				console.error('Error generating AI image:', error);
+				setIsGenerating(false);
+				setProgressValue(0);
 				toast.error(
 					t('aiImageError') ||
 						'Failed to generate AI image. Please try again.'
@@ -158,7 +209,7 @@ export function ImageUpload({
 									type="button"
 									variant="outline"
 									className="flex items-center gap-2"
-									disabled={isPending}
+									disabled={isPending || isGenerating}
 									onClick={(e) => {
 										e.stopPropagation();
 										fileInputRef.current?.click();
@@ -172,7 +223,7 @@ export function ImageUpload({
 									variant="outline"
 									className="flex items-center gap-2 border-purple-200 text-purple-600 hover:bg-purple-50"
 									onClick={handleGenerateAIImage}
-									disabled={isPending}
+									disabled={isPending || isGenerating}
 								>
 									{isPending ? (
 										<div className="w-4 h-4 animate-spin rounded-full border-2 border-purple-600 border-t-transparent" />
@@ -221,6 +272,24 @@ export function ImageUpload({
 							<X className="w-4 h-4" />
 						</Button>
 					</div>
+				</div>
+			)}
+
+			{/* Barre de progression pour la génération AI */}
+			{isGenerating && (
+				<div className="space-y-2">
+					<div className="flex items-center justify-between text-sm">
+						<span className="text-purple-600 font-medium">
+							{t('generating') || 'Generating AI image...'}
+						</span>
+						<span className="text-gray-500">
+							{Math.round(progressValue)}%
+						</span>
+					</div>
+					<Progress
+						value={progressValue}
+						className="h-2 bg-gray-100"
+					/>
 				</div>
 			)}
 		</div>
