@@ -631,7 +631,13 @@
             "emailError": "Por favor, introduce una dirección de correo electrónico válida",
             "emailRequired": "La dirección de correo electrónico es obligatoria",
             "cancel": "Cancelar",
-            "confirm": "Confirmar y continuar"
+            "confirm": "Confirmar y continuar",
+            "processing": "Procesando...",
+            "successTitle": "Boost activado!",
+            "successDescription": "Tu boost ha sido activado con éxito. Serás redirigido pronto.",
+            "errorTitle": "Error",
+            "genericError": "Ocurrió un error. Por favor, inténtalo de nuevo.",
+            "invalidEmail": "Por favor, introduce una dirección de correo electrónico válida"
         }
     },
     "auth": {

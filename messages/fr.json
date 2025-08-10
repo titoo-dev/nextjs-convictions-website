@@ -631,7 +631,13 @@
             "emailError": "Veuillez entrer une adresse email valide",
             "emailRequired": "L'adresse email est requise",
             "cancel": "Annuler",
-            "confirm": "Confirmer et continuer"
+            "confirm": "Confirmer et continuer",
+            "processing": "Traitement...",
+            "successTitle": "Boost activé !",
+            "successDescription": "Votre boost a été activé avec succès. Vous allez être redirigé bientôt.",
+            "errorTitle": "Erreur",
+            "genericError": "Une erreur est survenue. Veuillez réessayer.",
+            "invalidEmail": "Veuillez entrer une adresse email valide"
         }
     },
     "auth": {

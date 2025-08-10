@@ -77,45 +77,33 @@ export default function BoostPlanPage({
 
 	const handlePlanSelect = (type: string) => {
 		setSelectedPlan(type);
-		setIsDialogOpen(true);
 		setError(null);
+
+		// If user is logged in, execute directly without showing dialog
+		if (user) {
+			executeBoost(type, user.email || '');
+		} else {
+			// Show email dialog for non-logged-in users
+			setIsDialogOpen(true);
+		}
 	};
 
-	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-		if (!selectedPlan || !petitionId) return;
-
-		const formData = new FormData(e.currentTarget);
-		const email = formData.get('email') as string;
-
-		if (!email?.trim()) {
-			setError(t('dialog.emailRequired'));
-			return;
-		}
-
-		// Validate email format
-		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-		if (!emailRegex.test(email.trim())) {
-			setError(t('dialog.invalidEmail'));
-			return;
-		}
-
-		// Add required fields to FormData
-		formData.append('type', selectedPlan);
-		formData.append('petitionId', petitionId);
+	const executeBoost = async (type: string, email: string) => {
+		if (!type || !petitionId) return;
 
 		startTransition(async () => {
 			setIsLoading(true);
 			setError(null);
 
 			try {
+				const formData = new FormData();
+				formData.append('type', type);
+				formData.append('petitionId', petitionId);
+				formData.append('email', email);
+
 				const result = await createPublicBoost(formData);
 
 				if (result.success) {
-					setIsDialogOpen(false);
-					formRef.current?.reset();
-					setSelectedPlan(null);
-
 					// Show success toast
 					toast.success(t('dialog.successTitle'), {
 						description: t('dialog.successDescription'),
@@ -144,6 +132,34 @@ export default function BoostPlanPage({
 				setIsLoading(false);
 			}
 		});
+	};
+
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		if (!selectedPlan || !petitionId) return;
+
+		const formData = new FormData(e.currentTarget);
+		const email = formData.get('email') as string;
+
+		if (!email?.trim()) {
+			setError(t('dialog.emailRequired'));
+			return;
+		}
+
+		// Validate email format
+		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		if (!emailRegex.test(email.trim())) {
+			setError(t('dialog.invalidEmail'));
+			return;
+		}
+
+		// Execute boost with email from form
+		await executeBoost(selectedPlan, email.trim());
+
+		// Close dialog and reset form
+		setIsDialogOpen(false);
+		formRef.current?.reset();
+		setSelectedPlan(null);
 	};
 
 	const isSubmitting = isLoading || isPending;
