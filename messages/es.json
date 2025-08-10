@@ -713,7 +713,13 @@
                 "failedToCreate": "Error al crear la encuesta. Por favor, inténtalo de nuevo.",
                 "failedToCreateGeneric": "Error al crear la encuesta"
             },
-            "success": "¡Encuesta creada exitosamente!"
+            "success": "¡Encuesta creada exitosamente!",
+            "descriptionSuggestions": "Sugerencias AI",
+            "suggestionsError": "Error al cargar las sugerencias",
+            "suggestionsEmpty": "No hay sugerencias disponibles",
+            "suggestionsPrompt": "Escribe una pregunta para obtener sugerencias AI",
+            "descriptionAdvice": "Consejos de redacción",
+            "descriptionAdviceText": "Proporciona una descripción clara y detallada para ayudar a los participantes a comprender mejor tu encuesta."
         },
         "detail": {
             "notFound": {

@@ -713,7 +713,13 @@
                 "failedToCreate": "Failed to create survey. Please try again.",
                 "failedToCreateGeneric": "Failed to create survey"
             },
-            "success": "Survey created successfully!"
+            "success": "Survey created successfully!",
+            "descriptionSuggestions": "AI Suggestions",
+            "suggestionsError": "Failed to load suggestions",
+            "suggestionsEmpty": "No suggestions available",
+            "suggestionsPrompt": "Type a question to get AI suggestions",
+            "descriptionAdvice": "Writing Tips",
+            "descriptionAdviceText": "Provide a clear and detailed description to help participants understand your survey better."
         },
         "detail": {
             "notFound": {

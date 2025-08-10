@@ -5,6 +5,48 @@ import {
 	SuggestionsResponseSchema,
 } from '@/schemas/suggestions-response';
 
+type SurveyDescriptionSuggestionPayload = {
+	question: string;
+	responseLanguage: string;
+};
+
+export async function getSurveyDescriptionSuggestions(
+	payload: SurveyDescriptionSuggestionPayload
+): Promise<SuggestionsResponse> {
+	try {
+		const response = await fetch(
+			`${process.env.NEXT_PUBLIC_API_BASE_URL}/openai/survey-description`,
+			{
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(payload),
+			}
+		);
+
+		if (response.status !== 201) {
+			throw new Error(
+				`Failed to fetch survey description suggestions: ${response.status} ${response.statusText}`
+			);
+		}
+
+		const data = await response.json();
+		const validatedData = SuggestionsResponseSchema.parse(data);
+
+		return validatedData;
+	} catch (error) {
+		if (error instanceof Error) {
+			throw new Error(
+				`Error fetching survey description suggestions: ${error.message}`
+			);
+		}
+		throw new Error(
+			'Unknown error occurred while fetching survey description suggestions'
+		);
+	}
+}
+
 export async function getTitleSuggestions(
 	payload: TitleSuggestionPayload
 ): Promise<SuggestionsResponse> {

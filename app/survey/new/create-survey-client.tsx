@@ -18,7 +18,11 @@ import RenderWhen from '@/components/render-when';
 import { useRouter } from 'next/navigation';
 import { LoginDialog } from '@/components/header/login-dialog';
 import { User } from '@/schemas/user';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
+import { useGetSurveyDescriptionSuggestion } from '@/hooks/use-get-survey-description-suggestion';
+import { useDebounce } from 'use-debounce';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 type CreateSurveyClientProps = {
 	currentUser: User | null;
@@ -26,6 +30,7 @@ type CreateSurveyClientProps = {
 
 export function CreateSurveyClient({ currentUser }: CreateSurveyClientProps) {
 	const t = useTranslations('surveys');
+	const locale = useLocale();
 	const router = useRouter();
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
@@ -35,6 +40,27 @@ export function CreateSurveyClient({ currentUser }: CreateSurveyClientProps) {
 	const [formQuestion, setFormQuestion] = useState<string>('');
 	const [formDescription, setFormDescription] = useState<string>('');
 	const [isMultipleChoice, setIsMultipleChoice] = useState<boolean>(false);
+
+	// Debounce the question input for API calls
+	const [debouncedQuestion] = useDebounce(formQuestion, 5 * 1000);
+
+	// Create payload for description suggestions API call
+	const descriptionSuggestionPayload = {
+		question: debouncedQuestion,
+		responseLanguage: locale.toUpperCase() as 'FR' | 'EN' | 'ES',
+	};
+
+	// Use the API hook for getting description suggestions
+	const {
+		data: descriptionSuggestionsData,
+		isLoading: isLoadingDescriptionSuggestions,
+		error: descriptionSuggestionsError,
+	} = useGetSurveyDescriptionSuggestion(descriptionSuggestionPayload, {
+		enabled: Boolean(debouncedQuestion.length >= 2),
+	});
+
+	const descriptionSuggestions =
+		descriptionSuggestionsData?.suggestions || [];
 
 	const addOption = () => {
 		setOptions([...options, '']);
@@ -153,6 +179,82 @@ export function CreateSurveyClient({ currentUser }: CreateSurveyClientProps) {
 										setFormDescription(e.target.value)
 									}
 								/>
+
+								{/* AI Suggestions for Description */}
+								<div className="space-y-4 mt-4">
+									<Card className="bg-blue-50 border-blue-200 shadow-none">
+										<CardHeader>
+											<CardTitle className="text-blue-700 text-sm flex items-center gap-2">
+												{t(
+													'create.descriptionSuggestions'
+												) || 'AI Suggestions'}
+											</CardTitle>
+											<div className="text-sm text-gray-600">
+												{isLoadingDescriptionSuggestions ? (
+													<div className="space-y-3 mt-4">
+														<Skeleton className="h-4 w-full" />
+														<Skeleton className="h-4 w-4/5" />
+														<Skeleton className="h-4 w-3/4" />
+													</div>
+												) : descriptionSuggestionsError ? (
+													<div className="mt-4 text-red-600">
+														{t(
+															'create.suggestionsError'
+														) ||
+															'Failed to load suggestions'}
+													</div>
+												) : descriptionSuggestions.length >
+												  0 ? (
+													<div className="space-y-2 mt-4">
+														{descriptionSuggestions.map(
+															(
+																suggestion,
+																index
+															) => (
+																<button
+																	key={index}
+																	type="button"
+																	className="block w-full text-left p-3 rounded-md border border-blue-200 bg-white hover:bg-blue-100 transition-colors text-gray-700"
+																	onClick={() =>
+																		setFormDescription(
+																			suggestion
+																		)
+																	}
+																>
+																	{suggestion}
+																</button>
+															)
+														)}
+													</div>
+												) : debouncedQuestion.length >=
+												  2 ? (
+													t(
+														'create.suggestionsEmpty'
+													) ||
+													'No suggestions available'
+												) : (
+													t(
+														'create.suggestionsPrompt'
+													) ||
+													'Type a question to get AI suggestions'
+												)}
+											</div>
+										</CardHeader>
+									</Card>
+
+									<Alert className="bg-blue-50 border-blue-200">
+										<AlertTitle className="text-blue-700">
+											{t('create.descriptionAdvice') ||
+												'Writing Tips'}
+										</AlertTitle>
+										<AlertDescription className="text-gray-600">
+											{t(
+												'create.descriptionAdviceText'
+											) ||
+												'Provide a clear and detailed description to help participants understand your survey better.'}
+										</AlertDescription>
+									</Alert>
+								</div>
 							</div>
 
 							<div className="space-y-2">
