@@ -111,10 +111,6 @@ export function SuccessDialog({ open, onOpenChange }: SuccessDialogProps) {
 					</DialogHeader>
 
 					<div className="space-y-4">
-						<p className="text-sm font-medium">
-							{t('donateQuestion')}
-						</p>
-
 						<div className="space-y-3">
 							<Button
 								className="w-full bg-orange-500 hover:bg-orange-600 text-white font-medium py-3"
